@@ -4,922 +4,936 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Voice Command AI V3</title>
+<title>Voice Command AI V4</title>
 
 <style>
-
-*{
-box-sizing:border-box;
-margin:0;
-padding:0;
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
 }
 
-body{
-font-family:Arial,sans-serif;
-min-height:100vh;
-background:linear-gradient(135deg,#020617,#111827,#030712);
-color:white;
-padding:20px;
-transition:.3s;
+body {
+    font-family: Arial, sans-serif;
+    background: #080b12;
+    color: white;
+    min-height: 100vh;
+    transition: 0.3s;
 }
 
-body.light{
-background:linear-gradient(135deg,#f3f4f6,#ffffff);
-color:#111827;
+body.light {
+    background: #f2f4f8;
+    color: #111;
 }
 
-.container{
-max-width:650px;
-margin:auto;
-padding:25px;
-border-radius:25px;
-background:rgba(255,255,255,.08);
-backdrop-filter:blur(15px);
-border:1px solid rgba(255,255,255,.15);
-box-shadow:0 20px 60px rgba(0,0,0,.4);
+.container {
+    width: 92%;
+    max-width: 700px;
+    margin: auto;
+    padding: 25px 0;
 }
 
-h1{
-text-align:center;
-font-size:32px;
-margin-bottom:8px;
+.header {
+    text-align: center;
+    margin-bottom: 25px;
 }
 
-.subtitle{
-text-align:center;
-color:#9ca3af;
-margin-bottom:25px;
+.logo {
+    font-size: 50px;
 }
 
-.mic-area{
-text-align:center;
+h1 {
+    margin-top: 8px;
+    font-size: 30px;
 }
 
-.mic{
-width:105px;
-height:105px;
-border:none;
-border-radius:50%;
-font-size:45px;
-cursor:pointer;
-background:#2563eb;
-color:white;
-box-shadow:0 0 35px rgba(37,99,235,.6);
-transition:.2s;
+.subtitle {
+    color: #9ca3af;
+    margin-top: 8px;
 }
 
-.mic:hover{
-transform:scale(1.08);
+.card {
+    background: #111827;
+    border: 1px solid #263244;
+    border-radius: 18px;
+    padding: 20px;
+    margin-bottom: 18px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.25);
 }
 
-.mic.listening{
-background:#dc2626;
-animation:pulse 1s infinite;
+.light .card {
+    background: white;
+    border-color: #ddd;
 }
 
-@keyframes pulse{
-0%{box-shadow:0 0 10px #dc2626}
-50%{box-shadow:0 0 45px #dc2626}
-100%{box-shadow:0 0 10px #dc2626}
+.mic {
+    width: 110px;
+    height: 110px;
+    border-radius: 50%;
+    border: none;
+    background: #2563eb;
+    color: white;
+    font-size: 45px;
+    display: block;
+    margin: 15px auto;
+    cursor: pointer;
+    box-shadow: 0 0 25px rgba(37,99,235,0.5);
 }
 
-.status{
-text-align:center;
-margin:18px 0;
-color:#60a5fa;
-font-weight:bold;
+.mic.listening {
+    background: #dc2626;
+    animation: pulse 1s infinite;
 }
 
-.box{
-margin-top:15px;
-padding:17px;
-border-radius:15px;
-background:rgba(0,0,0,.25);
+@keyframes pulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.08); }
+    100% { transform: scale(1); }
 }
 
-body.light .box{
-background:rgba(0,0,0,.06);
+.status {
+    text-align: center;
+    color: #60a5fa;
+    margin-top: 10px;
 }
 
-.label{
-font-size:12px;
-color:#9ca3af;
-margin-bottom:8px;
+.label {
+    font-weight: bold;
+    margin-bottom: 8px;
 }
 
-#command,
-#response{
-font-size:17px;
-line-height:1.5;
+.command {
+    background: #0b1220;
+    padding: 15px;
+    border-radius: 12px;
+    min-height: 50px;
+    color: #93c5fd;
+    word-break: break-word;
 }
 
-textarea{
-width:100%;
-min-height:130px;
-margin-top:20px;
-padding:15px;
-border-radius:15px;
-border:1px solid rgba(255,255,255,.2);
-background:rgba(0,0,0,.25);
-color:white;
-font-size:16px;
-resize:vertical;
-outline:none;
+.light .command {
+    background: #eef2ff;
 }
 
-body.light textarea{
-background:white;
-color:#111827;
-border:1px solid #ccc;
+textarea {
+    width: 100%;
+    min-height: 140px;
+    resize: vertical;
+    border: none;
+    outline: none;
+    border-radius: 12px;
+    padding: 15px;
+    font-size: 16px;
+    background: #0b1220;
+    color: white;
 }
 
-.buttons{
-display:grid;
-grid-template-columns:repeat(2,1fr);
-gap:10px;
-margin-top:15px;
+.light textarea {
+    background: #f1f5f9;
+    color: #111;
 }
 
-.buttons button,
-.toggle{
-padding:12px;
-border:none;
-border-radius:12px;
-cursor:pointer;
-background:#374151;
-color:white;
-font-size:14px;
+.buttons {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+    margin-top: 12px;
 }
 
-.buttons button:hover,
-.toggle:hover{
-background:#4b5563;
+button.small {
+    border: none;
+    border-radius: 10px;
+    padding: 12px;
+    cursor: pointer;
+    background: #1d4ed8;
+    color: white;
+    font-size: 14px;
 }
 
-.examples{
-margin-top:25px;
+button.small:hover {
+    opacity: 0.85;
 }
 
-.examples p{
-padding:6px 0;
-color:#d1d5db;
+.assistant {
+    color: #86efac;
+    line-height: 1.5;
 }
 
-body.light .examples p{
-color:#374151;
+.commands {
+    line-height: 1.8;
+    color: #d1d5db;
 }
 
-.toggle{
-display:block;
-margin:20px auto 0;
+.light .commands {
+    color: #374151;
 }
 
-footer{
-text-align:center;
-margin-top:25px;
-font-size:12px;
-color:#6b7280;
+.command-item {
+    padding: 5px 0;
 }
 
+.footer {
+    text-align: center;
+    color: #6b7280;
+    margin-top: 25px;
+    font-size: 13px;
+}
 </style>
 </head>
-
 
 <body>
 
 <div class="container">
 
-<h1>🎤 Voice Command AI V3</h1>
+    <div class="header">
+        <div class="logo">🎙️</div>
+        <h1>Voice Command AI</h1>
+        <div class="subtitle">Version 4 • Smart Voice Control</div>
+    </div>
 
-<p class="subtitle">
-Voice controlled web assistant
-</p>
+    <div class="card">
 
+        <button class="mic" id="micButton" onclick="startListening()">
+            🎤
+        </button>
 
-<div class="mic-area">
+        <div class="status" id="status">
+            Tap microphone and speak
+        </div>
 
-<button class="mic" id="micBtn">
-🎙️
-</button>
+    </div>
 
-</div>
+    <div class="card">
 
+        <div class="label">Your Command</div>
 
-<div class="status" id="status">
-Tap microphone and speak
-</div>
+        <div class="command" id="command">
+            Waiting for your voice...
+        </div>
 
+    </div>
 
-<div class="box">
+    <div class="card">
 
-<div class="label">
-YOUR COMMAND
-</div>
+        <div class="label">Assistant</div>
 
-<div id="command">
-Waiting for command...
-</div>
+        <div class="assistant" id="assistant">
+            Ready...
+        </div>
 
-</div>
+    </div>
 
+    <div class="card">
 
-<div class="box">
+        <div class="label">📝 Text Box</div>
 
-<div class="label">
-ASSISTANT
-</div>
+        <textarea id="textBox"
+        placeholder="Voice command se yahan text likh sakte ho..."></textarea>
 
-<div id="response">
-Ready for your command...
-</div>
+        <div class="buttons">
 
-</div>
+            <button class="small" onclick="clearText()">
+                🗑️ Clear
+            </button>
 
+            <button class="small" onclick="copyText()">
+                📋 Copy
+            </button>
 
-<textarea
-id="textBox"
-placeholder="Voice se yahan text likhwa sakte ho..."
-></textarea>
+            <button class="small" onclick="showText()">
+                👁️ Show
+            </button>
 
+            <button class="small" onclick="speakText()">
+                🔊 Read
+            </button>
 
-<div class="buttons">
+        </div>
 
-<button onclick="clearText()">
-🗑️ Clear
-</button>
+    </div>
 
-<button onclick="copyText()">
-📋 Copy
-</button>
+    <div class="card">
 
-<button onclick="showText()">
-👁️ Show Text
-</button>
+        <div class="label">⚡ Available Commands</div>
 
-<button onclick="speakText()">
-🔊 Read Text
-</button>
+        <div class="commands">
 
-</div>
+            <div class="command-item">
+                🎵 YouTube kholo
+            </div>
 
+            <div class="command-item">
+                🔎 YouTube par search karo Pakistan
+            </div>
 
-<div class="examples">
+            <div class="command-item">
+                🌐 Google kholo
+            </div>
 
-<div class="label">
-TRY VOICE COMMANDS
-</div>
+            <div class="command-item">
+                🔎 Google par search karo Pakistan
+            </div>
 
-<p>🟢 "Text box mein hello likho"</p>
+            <div class="command-item">
+                📝 Text box mein hello likho
+            </div>
 
-<p>🟢 "Text box mein website banana seekho likho"</p>
+            <div class="command-item">
+                🗑️ Text clear karo
+            </div>
 
-<p>🟢 "Text clear karo"</p>
+            <div class="command-item">
+                📋 Text copy karo
+            </div>
 
-<p>🟢 "Text copy karo"</p>
+            <div class="command-item">
+                🔊 Text parho
+            </div>
 
-<p>🟢 "Text read karo"</p>
+            <div class="command-item">
+                🌙 Dark mode
+            </div>
 
-<p>🟢 "Dark mode karo"</p>
+            <div class="command-item">
+                ☀️ Light mode
+            </div>
 
-<p>🟢 "Light mode karo"</p>
+            <div class="command-item">
+                ↩️ Back
+            </div>
 
-<p>🟢 "YouTube kholo"</p>
+            <div class="command-item">
+                ↪️ Forward
+            </div>
 
-<p>🟢 "Google kholo"</p>
+            <div class="command-item">
+                🔄 Refresh
+            </div>
 
-<p>🟢 "Back jao"</p>
+            <div class="command-item">
+                🕐 Time batao
+            </div>
 
-<p>🟢 "Forward jao"</p>
+            <div class="command-item">
+                📅 Date batao
+            </div>
 
-<p>🟢 "Reload karo"</p>
+            <div class="command-item">
+                📱 WhatsApp kholo
+            </div>
 
-<p>🟢 "Time batao"</p>
+            <div class="command-item">
+                📘 Facebook kholo
+            </div>
 
-<p>🟢 "Date batao"</p>
+            <div class="command-item">
+                📸 Instagram kholo
+            </div>
 
-</div>
+        </div>
 
+    </div>
 
-<button class="toggle" onclick="toggleMode()">
-🌓 Dark / Light Mode
-</button>
-
-
-<footer>
-Voice Command AI V3
-</footer>
+    <div class="footer">
+        Voice Command AI V4 • Powered by Web Speech API
+    </div>
 
 </div>
 
 
 <script>
 
-const micBtn =
-document.getElementById("micBtn");
-
-const statusText =
-document.getElementById("status");
-
-const commandText =
-document.getElementById("command");
-
-const responseText =
-document.getElementById("response");
-
-const textBox =
-document.getElementById("textBox");
-
+/* =========================================
+   VOICE RECOGNITION
+========================================= */
 
 const SpeechRecognition =
-window.SpeechRecognition ||
-window.webkitSpeechRecognition;
-
+    window.SpeechRecognition ||
+    window.webkitSpeechRecognition;
 
 let recognition;
 
+if (SpeechRecognition) {
 
-if(!SpeechRecognition){
+    recognition = new SpeechRecognition();
 
-statusText.innerText =
-"❌ Please use Chrome browser.";
+    recognition.lang = "en-US";
 
-}else{
+    recognition.continuous = false;
 
-recognition =
-new SpeechRecognition();
+    recognition.interimResults = false;
 
-recognition.lang="en-US";
+    recognition.onstart = function() {
 
-recognition.continuous=false;
+        document.getElementById("status").innerText =
+            "🎙️ Listening...";
 
-recognition.interimResults=false;
+        document.getElementById("micButton")
+            .classList.add("listening");
 
+    };
 
-micBtn.onclick=function(){
+    recognition.onend = function() {
 
-try{
+        document.getElementById("status").innerText =
+            "Tap microphone and speak";
 
-recognition.start();
+        document.getElementById("micButton")
+            .classList.remove("listening");
 
-micBtn.classList.add("listening");
+    };
 
-statusText.innerText=
-"🎧 Listening...";
+    recognition.onerror = function(event) {
 
-}catch(e){
+        document.getElementById("assistant").innerText =
+            "Voice error: " + event.error;
 
-console.log(e);
+        document.getElementById("micButton")
+            .classList.remove("listening");
 
-}
+    };
 
-};
+    recognition.onresult = function(event) {
 
+        const command =
+            event.results[0][0].transcript;
 
-recognition.onresult=function(event){
+        document.getElementById("command").innerText =
+            command;
 
-const text =
-event.results[0][0].transcript;
+        processCommand(command);
 
-commandText.innerText=text;
+    };
 
-statusText.innerText=
-"✅ Command received";
+} else {
 
-processCommand(text.toLowerCase());
-
-};
-
-
-recognition.onend=function(){
-
-micBtn.classList.remove("listening");
-
-};
-
-
-recognition.onerror=function(event){
-
-micBtn.classList.remove("listening");
-
-statusText.innerText=
-"❌ "+event.error;
-
-};
+    document.getElementById("status").innerText =
+        "Speech recognition is not supported in this browser.";
 
 }
 
 
-/* VOICE RESPONSE */
+/* =========================================
+   START LISTENING
+========================================= */
 
-function speak(text){
+function startListening() {
 
-responseText.innerText=text;
+    if (!recognition) {
 
-const speech =
-new SpeechSynthesisUtterance(text);
+        speak(
+            "Sorry, your browser does not support voice recognition."
+        );
 
-speech.lang="en-US";
+        return;
 
-speech.rate=.95;
+    }
 
-speech.pitch=1;
-
-speechSynthesis.cancel();
-
-speechSynthesis.speak(speech);
-
-}
-
-
-/* COMMAND PROCESSOR */
-
-function processCommand(command){
-
-command=
-command.toLowerCase().trim();
-
-
-/* HELLO */
-
-if(
-command.includes("hello") ||
-command.includes("hi") ||
-command.includes("salam")
-){
-
-speak(
-"Hello! I am ready for your command."
-);
-
-return;
+    recognition.start();
 
 }
 
 
-/* WRITE TEXT */
+/* =========================================
+   SPEAK
+========================================= */
 
-if(
-command.includes("text box") &&
-(
-command.includes("likho") ||
-command.includes("write")
-)
-){
+function speak(text) {
 
-let text=command;
+    document.getElementById("assistant").innerText =
+        text;
 
-text=text
-.replace("text box mein","")
-.replace("text box me","")
-.replace("text box","")
-.replace("likho","")
-.replace("write","")
-.trim();
+    const speech =
+        new SpeechSynthesisUtterance(text);
 
-if(!text){
+    speech.lang = "en-US";
 
-speak("What should I write?");
+    window.speechSynthesis.cancel();
 
-return;
-
-}
-
-textBox.value=text;
-
-speak("Text has been written.");
-
-return;
+    window.speechSynthesis.speak(speech);
 
 }
 
 
-/* CLEAR TEXT */
+/* =========================================
+   COMMAND PROCESSOR
+========================================= */
 
-if(
-command.includes("text clear") ||
-command.includes("clear text") ||
-command.includes("text hatao") ||
-command.includes("text delete karo")
-){
+function processCommand(command) {
 
-clearText();
+    const cmd =
+        command.toLowerCase().trim();
 
-speak("Text has been cleared.");
 
-return;
+    /* HELLO */
+
+    if (
+        cmd.includes("hello") ||
+        cmd.includes("hi") ||
+        cmd.includes("salam") ||
+        cmd.includes("assalam")
+    ) {
+
+        speak("Hello! I am ready for your command.");
+
+        return;
+    }
+
+
+    /* YOUTUBE SEARCH */
+
+    if (
+        cmd.includes("youtube par search") ||
+        cmd.includes("youtube search")
+    ) {
+
+        let query =
+            cmd
+            .replace("youtube par search karo", "")
+            .replace("youtube par search", "")
+            .replace("youtube search karo", "")
+            .replace("youtube search", "")
+            .trim();
+
+        if (query === "") {
+
+            speak("What should I search on YouTube?");
+
+            return;
+        }
+
+        speak("Searching YouTube for " + query);
+
+        window.open(
+            "https://www.youtube.com/results?search_query=" +
+            encodeURIComponent(query),
+            "_blank"
+        );
+
+        return;
+    }
+
+
+    /* YOUTUBE OPEN */
+
+    if (
+        cmd.includes("youtube kholo") ||
+        cmd === "youtube" ||
+        cmd.includes("open youtube")
+    ) {
+
+        speak("Opening YouTube.");
+
+        window.open(
+            "https://www.youtube.com",
+            "_blank"
+        );
+
+        return;
+    }
+
+
+    /* GOOGLE SEARCH */
+
+    if (
+        cmd.includes("google par search") ||
+        cmd.includes("google search")
+    ) {
+
+        let query =
+            cmd
+            .replace("google par search karo", "")
+            .replace("google par search", "")
+            .replace("google search karo", "")
+            .replace("google search", "")
+            .trim();
+
+        if (query === "") {
+
+            speak("What should I search on Google?");
+
+            return;
+        }
+
+        speak("Searching Google for " + query);
+
+        window.open(
+            "https://www.google.com/search?q=" +
+            encodeURIComponent(query),
+            "_blank"
+        );
+
+        return;
+    }
+
+
+    /* GOOGLE OPEN */
+
+    if (
+        cmd.includes("google kholo") ||
+        cmd === "google" ||
+        cmd.includes("open google")
+    ) {
+
+        speak("Opening Google.");
+
+        window.open(
+            "https://www.google.com",
+            "_blank"
+        );
+
+        return;
+    }
+
+
+    /* WHATSAPP */
+
+    if (
+        cmd.includes("whatsapp kholo") ||
+        cmd.includes("open whatsapp")
+    ) {
+
+        speak("Opening WhatsApp Web.");
+
+        window.open(
+            "https://web.whatsapp.com",
+            "_blank"
+        );
+
+        return;
+    }
+
+
+    /* FACEBOOK */
+
+    if (
+        cmd.includes("facebook kholo") ||
+        cmd.includes("open facebook")
+    ) {
+
+        speak("Opening Facebook.");
+
+        window.open(
+            "https://www.facebook.com",
+            "_blank"
+        );
+
+        return;
+    }
+
+
+    /* INSTAGRAM */
+
+    if (
+        cmd.includes("instagram kholo") ||
+        cmd.includes("open instagram")
+    ) {
+
+        speak("Opening Instagram.");
+
+        window.open(
+            "https://www.instagram.com",
+            "_blank"
+        );
+
+        return;
+    }
+
+
+    /* TEXT WRITE */
+
+    if (
+        cmd.includes("text box mein") ||
+        cmd.includes("textbox mein") ||
+        cmd.includes("text mein")
+    ) {
+
+        let text =
+            cmd
+            .replace("text box mein", "")
+            .replace("textbox mein", "")
+            .replace("text mein", "")
+            .replace("likho", "")
+            .replace("write", "")
+            .trim();
+
+        if (text === "") {
+
+            speak("Please tell me what I should write.");
+
+            return;
+        }
+
+        document.getElementById("textBox").value =
+            text;
+
+        speak("Done. I wrote it in the text box.");
+
+        return;
+    }
+
+
+    /* CLEAR TEXT */
+
+    if (
+        cmd.includes("text clear") ||
+        cmd.includes("text hatao") ||
+        cmd.includes("text delete")
+    ) {
+
+        clearText();
+
+        speak("Text cleared.");
+
+        return;
+    }
+
+
+    /* COPY TEXT */
+
+    if (
+        cmd.includes("text copy") ||
+        cmd.includes("copy karo")
+    ) {
+
+        copyText();
+
+        speak("Text copied.");
+
+        return;
+    }
+
+
+    /* READ TEXT */
+
+    if (
+        cmd.includes("text parho") ||
+        cmd.includes("text read")
+    ) {
+
+        speakText();
+
+        return;
+    }
+
+
+    /* SHOW TEXT */
+
+    if (
+        cmd.includes("text dikhao") ||
+        cmd.includes("show text")
+    ) {
+
+        showText();
+
+        return;
+    }
+
+
+    /* DARK MODE */
+
+    if (
+        cmd.includes("dark mode") ||
+        cmd.includes("dark karo")
+    ) {
+
+        document.body.classList.remove("light");
+
+        speak("Dark mode enabled.");
+
+        return;
+    }
+
+
+    /* LIGHT MODE */
+
+    if (
+        cmd.includes("light mode") ||
+        cmd.includes("light karo")
+    ) {
+
+        document.body.classList.add("light");
+
+        speak("Light mode enabled.");
+
+        return;
+    }
+
+
+    /* BACK */
+
+    if (
+        cmd === "back" ||
+        cmd.includes("back jao")
+    ) {
+
+        speak("Going back.");
+
+        history.back();
+
+        return;
+    }
+
+
+    /* FORWARD */
+
+    if (
+        cmd === "forward" ||
+        cmd.includes("forward jao")
+    ) {
+
+        speak("Going forward.");
+
+        history.forward();
+
+        return;
+    }
+
+
+    /* REFRESH */
+
+    if (
+        cmd.includes("refresh") ||
+        cmd.includes("reload")
+    ) {
+
+        speak("Refreshing the page.");
+
+        setTimeout(function() {
+
+            location.reload();
+
+        }, 800);
+
+        return;
+    }
+
+
+    /* TIME */
+
+    if (
+        cmd.includes("time") ||
+        cmd.includes("waqt")
+    ) {
+
+        const now =
+            new Date();
+
+        const time =
+            now.toLocaleTimeString();
+
+        speak("The current time is " + time);
+
+        return;
+    }
+
+
+    /* DATE */
+
+    if (
+        cmd.includes("date") ||
+        cmd.includes("tareekh")
+    ) {
+
+        const now =
+            new Date();
+
+        const date =
+            now.toLocaleDateString();
+
+        speak("Today's date is " + date);
+
+        return;
+    }
+
+
+    /* UNKNOWN COMMAND */
+
+    speak(
+        "Sorry, I don't understand that command yet."
+    );
 
 }
 
 
-/* COPY TEXT */
+/* =========================================
+   TEXT FUNCTIONS
+========================================= */
 
-if(
-command.includes("text copy") ||
-command.includes("copy text") ||
-command.includes("copy karo")
-){
+function clearText() {
 
-copyText();
-
-speak("Text copied.");
-
-return;
+    document.getElementById("textBox").value = "";
 
 }
 
 
-/* READ TEXT */
+function copyText() {
 
-if(
-command.includes("text read") ||
-command.includes("read text") ||
-command.includes("text parho") ||
-command.includes("text parh")
-){
+    const text =
+        document.getElementById("textBox").value;
 
-speakText();
+    if (text === "") {
 
-return;
+        speak("There is no text to copy.");
 
-}
+        return;
+    }
 
+    navigator.clipboard.writeText(text)
+        .then(function() {
 
-/* SHOW TEXT */
+            speak("Text copied successfully.");
 
-if(
-command.includes("show text") ||
-command.includes("text dikhao")
-){
+        })
+        .catch(function() {
 
-showText();
+            speak("I could not copy the text.");
 
-return;
+        });
 
 }
 
 
-/* YOUTUBE SEARCH */
+function showText() {
 
-if(
-command.includes("youtube") &&
-(
-command.includes("search") ||
-command.includes("par") ||
-command.includes("per")
-)
-){
+    const text =
+        document.getElementById("textBox").value;
 
-let query=command
-.replace("youtube","")
-.replace("search","")
-.replace("par","")
-.replace("per","")
-.replace("karo","")
-.trim();
+    if (text === "") {
 
-if(!query){
+        speak("The text box is empty.");
 
-speak("What should I search on YouTube?");
+        return;
+    }
 
-return;
-
-}
-
-speak("Searching YouTube.");
-
-setTimeout(()=>{
-
-location.href=
-"https://www.youtube.com/results?search_query="+
-encodeURIComponent(query);
-
-},800);
-
-return;
+    speak("Your text is " + text);
 
 }
 
 
-/* YOUTUBE OPEN */
+function speakText() {
 
-if(
-command.includes("youtube kholo") ||
-command.includes("youtube open")
-){
+    const text =
+        document.getElementById("textBox").value;
 
-speak("Opening YouTube.");
+    if (text === "") {
 
-setTimeout(()=>{
+        speak("There is no text to read.");
 
-location.href=
-"https://www.youtube.com";
+        return;
+    }
 
-},800);
+    const speech =
+        new SpeechSynthesisUtterance(text);
 
-return;
+    speech.lang = "en-US";
 
-}
+    window.speechSynthesis.cancel();
 
+    window.speechSynthesis.speak(speech);
 
-/* GOOGLE SEARCH */
-
-if(
-command.includes("google") &&
-(
-command.includes("search") ||
-command.includes("par") ||
-command.includes("per")
-)
-){
-
-let query=command
-.replace("google","")
-.replace("search","")
-.replace("par","")
-.replace("per","")
-.replace("karo","")
-.trim();
-
-if(!query){
-
-speak("What should I search on Google?");
-
-return;
-
-}
-
-speak("Searching Google.");
-
-setTimeout(()=>{
-
-location.href=
-"https://www.google.com/search?q="+
-encodeURIComponent(query);
-
-},800);
-
-return;
-
-}
-
-
-/* GOOGLE OPEN */
-
-if(
-command.includes("google kholo") ||
-command.includes("google open")
-){
-
-speak("Opening Google.");
-
-setTimeout(()=>{
-
-location.href=
-"https://www.google.com";
-
-},800);
-
-return;
-
-}
-
-
-/* WHATSAPP */
-
-if(
-command.includes("whatsapp kholo") ||
-command.includes("whatsapp open")
-){
-
-speak("Opening WhatsApp Web.");
-
-setTimeout(()=>{
-
-location.href=
-"https://web.whatsapp.com";
-
-},800);
-
-return;
-
-}
-
-
-/* BACK */
-
-if(
-command.includes("back jao") ||
-command.includes("peechy jao") ||
-command.includes("peeche jao")
-){
-
-speak("Going back.");
-
-setTimeout(()=>{
-
-history.back();
-
-},600);
-
-return;
-
-}
-
-
-/* FORWARD */
-
-if(
-command.includes("forward jao") ||
-command.includes("aagay jao") ||
-command.includes("aghy jao")
-){
-
-speak("Going forward.");
-
-setTimeout(()=>{
-
-history.forward();
-
-},600);
-
-return;
-
-}
-
-
-/* RELOAD */
-
-if(
-command.includes("reload") ||
-command.includes("refresh")
-){
-
-speak("Reloading page.");
-
-setTimeout(()=>{
-
-location.reload();
-
-},600);
-
-return;
-
-}
-
-
-/* DARK MODE */
-
-if(
-command.includes("dark mode") ||
-command.includes("dark karo")
-){
-
-document.body.classList.remove("light");
-
-speak("Dark mode activated.");
-
-return;
-
-}
-
-
-/* LIGHT MODE */
-
-if(
-command.includes("light mode") ||
-command.includes("light karo")
-){
-
-document.body.classList.add("light");
-
-speak("Light mode activated.");
-
-return;
-
-}
-
-
-/* TIME */
-
-if(
-command.includes("time") ||
-command.includes("kitne bajay")
-){
-
-const now=new Date();
-
-const time=
-now.toLocaleTimeString([],{
-hour:"2-digit",
-minute:"2-digit"
-});
-
-speak("The current time is "+time);
-
-return;
-
-}
-
-
-/* DATE */
-
-if(
-command.includes("date") ||
-command.includes("aaj ki date")
-){
-
-const now=new Date();
-
-const date=
-now.toLocaleDateString([],{
-day:"numeric",
-month:"long",
-year:"numeric"
-});
-
-speak("Today's date is "+date);
-
-return;
-
-}
-
-
-/* UNKNOWN */
-
-speak(
-"Sorry, I don't understand this command yet."
-);
-
-}
-
-
-/* CLEAR */
-
-function clearText(){
-
-textBox.value="";
-
-}
-
-
-/* COPY */
-
-function copyText(){
-
-if(!textBox.value){
-
-speak("There is no text to copy.");
-
-return;
-
-}
-
-navigator.clipboard.writeText(
-textBox.value
-);
-
-}
-
-
-/* SHOW */
-
-function showText(){
-
-if(!textBox.value){
-
-speak("The text box is empty.");
-
-return;
-
-}
-
-alert(textBox.value);
-
-}
-
-
-/* READ */
-
-function speakText(){
-
-if(!textBox.value){
-
-speak("The text box is empty.");
-
-return;
-
-}
-
-speak(textBox.value);
-
-}
-
-
-/* DARK LIGHT BUTTON */
-
-function toggleMode(){
-
-document.body.classList.toggle("light");
+    document.getElementById("assistant").innerText =
+        "🔊 Reading your text...";
 
 }
 
