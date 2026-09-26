@@ -1,0 +1,480 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Voice Command AI</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: Arial, sans-serif;
+    }
+
+    body {
+      min-height: 100vh;
+      background: linear-gradient(135deg, #050816, #111827, #020617);
+      color: white;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 500px;
+      background: rgba(255,255,255,0.08);
+      border: 1px solid rgba(255,255,255,0.15);
+      border-radius: 25px;
+      padding: 30px 20px;
+      text-align: center;
+      backdrop-filter: blur(15px);
+      box-shadow: 0 20px 60px rgba(0,0,0,0.4);
+    }
+
+    .logo {
+      font-size: 55px;
+      margin-bottom: 10px;
+    }
+
+    h1 {
+      font-size: 30px;
+      margin-bottom: 8px;
+    }
+
+    .subtitle {
+      color: #b8c1d1;
+      margin-bottom: 25px;
+      font-size: 14px;
+    }
+
+    .mic {
+      width: 125px;
+      height: 125px;
+      border-radius: 50%;
+      border: none;
+      background: linear-gradient(145deg, #2563eb, #7c3aed);
+      color: white;
+      font-size: 50px;
+      cursor: pointer;
+      box-shadow: 0 0 30px rgba(59,130,246,0.5);
+      transition: 0.3s;
+      margin: 10px auto 25px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .mic:hover {
+      transform: scale(1.05);
+    }
+
+    .mic.listening {
+      animation: pulse 1s infinite;
+      background: linear-gradient(145deg, #ef4444, #dc2626);
+    }
+
+    @keyframes pulse {
+      0% {
+        box-shadow: 0 0 0 0 rgba(239,68,68,0.7);
+      }
+      70% {
+        box-shadow: 0 0 0 25px rgba(239,68,68,0);
+      }
+      100% {
+        box-shadow: 0 0 0 0 rgba(239,68,68,0);
+      }
+    }
+
+    .status {
+      color: #93c5fd;
+      margin-bottom: 15px;
+      font-size: 14px;
+    }
+
+    .box {
+      background: rgba(0,0,0,0.25);
+      border-radius: 15px;
+      padding: 18px;
+      margin-top: 12px;
+      text-align: left;
+    }
+
+    .label {
+      color: #94a3b8;
+      font-size: 12px;
+      margin-bottom: 7px;
+      text-transform: uppercase;
+    }
+
+    #command {
+      min-height: 30px;
+      font-size: 17px;
+      line-height: 1.5;
+    }
+
+    #response {
+      color: #86efac;
+      min-height: 30px;
+      line-height: 1.5;
+    }
+
+    .commands {
+      margin-top: 20px;
+      text-align: left;
+    }
+
+    .commands h3 {
+      margin-bottom: 10px;
+      font-size: 16px;
+    }
+
+    .example {
+      background: rgba(255,255,255,0.06);
+      padding: 10px 12px;
+      border-radius: 10px;
+      margin: 7px 0;
+      color: #dbeafe;
+      font-size: 13px;
+    }
+
+    .footer {
+      margin-top: 20px;
+      color: #64748b;
+      font-size: 11px;
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="container">
+
+    <div class="logo">🎙️</div>
+
+    <h1>Voice Command AI</h1>
+
+    <p class="subtitle">
+      Speak a command and let the assistant respond.
+    </p>
+
+    <button class="mic" id="micButton">🎤</button>
+
+    <div class="status" id="status">
+      Tap the microphone and speak
+    </div>
+
+    <div class="box">
+      <div class="label">Your Command</div>
+      <div id="command">Waiting for your voice...</div>
+    </div>
+
+    <div class="box">
+      <div class="label">Assistant</div>
+      <div id="response">Ready...</div>
+    </div>
+
+    <div class="commands">
+
+      <h3>Try saying:</h3>
+
+      <div class="example">
+        🎵 "YouTube kholo"
+      </div>
+
+      <div class="example">
+        🔎 "Google par search karo Pakistan"
+      </div>
+
+      <div class="example">
+        🌐 "Google kholo"
+      </div>
+
+      <div class="example">
+        🕐 "What time is it"
+      </div>
+
+      <div class="example">
+        👋 "Hello"
+      </div>
+
+    </div>
+
+    <div class="footer">
+      Voice Command AI • Powered by Web Speech API
+    </div>
+
+  </div>
+
+
+<script>
+
+  const micButton = document.getElementById("micButton");
+  const statusText = document.getElementById("status");
+  const commandText = document.getElementById("command");
+  const responseText = document.getElementById("response");
+
+  const SpeechRecognition =
+    window.SpeechRecognition ||
+    window.webkitSpeechRecognition;
+
+  if (!SpeechRecognition) {
+
+    statusText.innerText =
+      "Voice recognition is not supported in this browser.";
+
+  } else {
+
+    const recognition = new SpeechRecognition();
+
+    recognition.lang = "en-US";
+    recognition.continuous = false;
+    recognition.interimResults = false;
+
+    micButton.addEventListener("click", () => {
+
+      try {
+        recognition.start();
+
+        micButton.classList.add("listening");
+
+        statusText.innerText =
+          "🎙️ Listening... Speak now";
+
+        responseText.innerText =
+          "I'm listening...";
+
+      } catch (error) {
+        console.log(error);
+      }
+
+    });
+
+
+    recognition.onresult = function(event) {
+
+      const command =
+        event.results[0][0].transcript.toLowerCase();
+
+      commandText.innerText = command;
+
+      micButton.classList.remove("listening");
+
+      statusText.innerText =
+        "Command received";
+
+      processCommand(command);
+
+    };
+
+
+    recognition.onerror = function(event) {
+
+      micButton.classList.remove("listening");
+
+      statusText.innerText =
+        "Voice error: " + event.error;
+
+      responseText.innerText =
+        "Please try again.";
+
+    };
+
+
+    recognition.onend = function() {
+
+      micButton.classList.remove("listening");
+
+    };
+
+  }
+
+
+  function processCommand(command) {
+
+    // YouTube
+
+    if (
+      command.includes("youtube") &&
+      !command.includes("search")
+    ) {
+
+      responseText.innerText =
+        "Opening YouTube...";
+
+      window.open(
+        "https://www.youtube.com/",
+        "_blank"
+      );
+
+      return;
+    }
+
+
+    // YouTube Search
+
+    if (
+      command.includes("youtube") &&
+      command.includes("search")
+    ) {
+
+      let search =
+        command
+          .replace("youtube", "")
+          .replace("search", "")
+          .trim();
+
+      if (!search) {
+        search = "trending videos";
+      }
+
+      responseText.innerText =
+        "Searching YouTube for: " + search;
+
+      window.open(
+        "https://www.youtube.com/results?search_query=" +
+        encodeURIComponent(search),
+        "_blank"
+      );
+
+      return;
+    }
+
+
+    // Google Search
+
+    if (
+      command.includes("google") &&
+      (
+        command.includes("search") ||
+        command.includes("search karo") ||
+        command.includes("search for")
+      )
+    ) {
+
+      let search =
+        command
+          .replace("google", "")
+          .replace("search", "")
+          .replace("karo", "")
+          .replace("for", "")
+          .trim();
+
+      if (!search) {
+        search = "latest news";
+      }
+
+      responseText.innerText =
+        "Searching Google for: " + search;
+
+      window.open(
+        "https://www.google.com/search?q=" +
+        encodeURIComponent(search),
+        "_blank"
+      );
+
+      return;
+    }
+
+
+    // Open Google
+
+    if (
+      command.includes("google kholo") ||
+      command === "open google" ||
+      command === "google open"
+    ) {
+
+      responseText.innerText =
+        "Opening Google...";
+
+      window.open(
+        "https://www.google.com/",
+        "_blank"
+      );
+
+      return;
+    }
+
+
+    // Time
+
+    if (
+      command.includes("time") ||
+      command.includes("waqt") ||
+      command.includes("kitne bajay")
+    ) {
+
+      const now = new Date();
+
+      const time =
+        now.toLocaleTimeString();
+
+      responseText.innerText =
+        "The current time is " + time;
+
+      speak(
+        "The current time is " + time
+      );
+
+      return;
+    }
+
+
+    // Hello
+
+    if (
+      command.includes("hello") ||
+      command.includes("hi") ||
+      command.includes("salam")
+    ) {
+
+      responseText.innerText =
+        "Hello! 👋 How can I help you?";
+
+      speak(
+        "Hello! How can I help you?"
+      );
+
+      return;
+    }
+
+
+    // Unknown command
+
+    responseText.innerText =
+      "I heard: " + command +
+      ". This command is not added yet.";
+
+    speak(
+      "I heard your command, but this command is not added yet."
+    );
+
+  }
+
+
+  // Text to Speech
+
+  function speak(text) {
+
+    if ("speechSynthesis" in window) {
+
+      const speech =
+        new SpeechSynthesisUtterance(text);
+
+      speech.lang = "en-US";
+
+      window.speechSynthesis.speak(speech);
+
+    }
+
+  }
+
+</script>
+
+</body>
+</html>
