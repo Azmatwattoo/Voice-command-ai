@@ -1,572 +1,925 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Voice Command AI V2</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <style>
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
+<title>Voice Command AI V3</title>
 
-    body {
-      font-family: Arial, sans-serif;
-      min-height: 100vh;
-      background: linear-gradient(135deg, #050505, #111827, #020617);
-      color: white;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      padding: 20px;
-      transition: 0.3s;
-    }
+<style>
 
-    body.light {
-      background: linear-gradient(135deg, #e5e7eb, #ffffff);
-      color: #111827;
-    }
+*{
+box-sizing:border-box;
+margin:0;
+padding:0;
+}
 
-    .container {
-      width: 100%;
-      max-width: 600px;
-      padding: 30px 22px;
-      border-radius: 25px;
-      background: rgba(255,255,255,0.08);
-      backdrop-filter: blur(15px);
-      border: 1px solid rgba(255,255,255,0.15);
-      text-align: center;
-      box-shadow: 0 20px 60px rgba(0,0,0,0.4);
-    }
+body{
+font-family:Arial,sans-serif;
+min-height:100vh;
+background:linear-gradient(135deg,#020617,#111827,#030712);
+color:white;
+padding:20px;
+transition:.3s;
+}
 
-    body.light .container {
-      background: rgba(255,255,255,0.75);
-      border: 1px solid #ddd;
-    }
+body.light{
+background:linear-gradient(135deg,#f3f4f6,#ffffff);
+color:#111827;
+}
 
-    h1 {
-      font-size: 32px;
-      margin-bottom: 8px;
-    }
+.container{
+max-width:650px;
+margin:auto;
+padding:25px;
+border-radius:25px;
+background:rgba(255,255,255,.08);
+backdrop-filter:blur(15px);
+border:1px solid rgba(255,255,255,.15);
+box-shadow:0 20px 60px rgba(0,0,0,.4);
+}
 
-    .subtitle {
-      color: #9ca3af;
-      margin-bottom: 25px;
-    }
+h1{
+text-align:center;
+font-size:32px;
+margin-bottom:8px;
+}
 
-    .mic {
-      width: 105px;
-      height: 105px;
-      border-radius: 50%;
-      border: none;
-      cursor: pointer;
-      font-size: 45px;
-      background: #2563eb;
-      color: white;
-      box-shadow: 0 0 35px rgba(37,99,235,0.6);
-      transition: 0.25s;
-    }
+.subtitle{
+text-align:center;
+color:#9ca3af;
+margin-bottom:25px;
+}
 
-    .mic:hover {
-      transform: scale(1.08);
-    }
+.mic-area{
+text-align:center;
+}
 
-    .mic.listening {
-      background: #dc2626;
-      animation: pulse 1s infinite;
-    }
+.mic{
+width:105px;
+height:105px;
+border:none;
+border-radius:50%;
+font-size:45px;
+cursor:pointer;
+background:#2563eb;
+color:white;
+box-shadow:0 0 35px rgba(37,99,235,.6);
+transition:.2s;
+}
 
-    @keyframes pulse {
-      0% { box-shadow: 0 0 10px #dc2626; }
-      50% { box-shadow: 0 0 45px #dc2626; }
-      100% { box-shadow: 0 0 10px #dc2626; }
-    }
+.mic:hover{
+transform:scale(1.08);
+}
 
-    .status {
-      margin: 20px 0;
-      color: #60a5fa;
-      font-weight: bold;
-    }
+.mic.listening{
+background:#dc2626;
+animation:pulse 1s infinite;
+}
 
-    .box {
-      text-align: left;
-      margin-top: 15px;
-      padding: 17px;
-      border-radius: 15px;
-      background: rgba(0,0,0,0.25);
-      min-height: 70px;
-    }
+@keyframes pulse{
+0%{box-shadow:0 0 10px #dc2626}
+50%{box-shadow:0 0 45px #dc2626}
+100%{box-shadow:0 0 10px #dc2626}
+}
 
-    body.light .box {
-      background: rgba(0,0,0,0.06);
-    }
+.status{
+text-align:center;
+margin:18px 0;
+color:#60a5fa;
+font-weight:bold;
+}
 
-    .label {
-      font-size: 13px;
-      color: #9ca3af;
-      margin-bottom: 8px;
-    }
+.box{
+margin-top:15px;
+padding:17px;
+border-radius:15px;
+background:rgba(0,0,0,.25);
+}
 
-    #command,
-    #response {
-      font-size: 17px;
-      line-height: 1.5;
-    }
+body.light .box{
+background:rgba(0,0,0,.06);
+}
 
-    .examples {
-      margin-top: 25px;
-      text-align: left;
-    }
+.label{
+font-size:12px;
+color:#9ca3af;
+margin-bottom:8px;
+}
 
-    .examples p {
-      padding: 7px 0;
-      color: #d1d5db;
-    }
+#command,
+#response{
+font-size:17px;
+line-height:1.5;
+}
 
-    body.light .examples p {
-      color: #374151;
-    }
+textarea{
+width:100%;
+min-height:130px;
+margin-top:20px;
+padding:15px;
+border-radius:15px;
+border:1px solid rgba(255,255,255,.2);
+background:rgba(0,0,0,.25);
+color:white;
+font-size:16px;
+resize:vertical;
+outline:none;
+}
 
-    .toggle {
-      margin-top: 22px;
-      padding: 10px 18px;
-      border-radius: 20px;
-      border: none;
-      cursor: pointer;
-      background: #374151;
-      color: white;
-    }
+body.light textarea{
+background:white;
+color:#111827;
+border:1px solid #ccc;
+}
 
-    footer {
-      margin-top: 25px;
-      font-size: 12px;
-      color: #6b7280;
-    }
-  </style>
+.buttons{
+display:grid;
+grid-template-columns:repeat(2,1fr);
+gap:10px;
+margin-top:15px;
+}
+
+.buttons button,
+.toggle{
+padding:12px;
+border:none;
+border-radius:12px;
+cursor:pointer;
+background:#374151;
+color:white;
+font-size:14px;
+}
+
+.buttons button:hover,
+.toggle:hover{
+background:#4b5563;
+}
+
+.examples{
+margin-top:25px;
+}
+
+.examples p{
+padding:6px 0;
+color:#d1d5db;
+}
+
+body.light .examples p{
+color:#374151;
+}
+
+.toggle{
+display:block;
+margin:20px auto 0;
+}
+
+footer{
+text-align:center;
+margin-top:25px;
+font-size:12px;
+color:#6b7280;
+}
+
+</style>
 </head>
+
 
 <body>
 
-  <div class="container">
+<div class="container">
 
-    <h1>🎤 Voice Command AI</h1>
-    <p class="subtitle">Speak a command and let the assistant work</p>
+<h1>🎤 Voice Command AI V3</h1>
 
-    <button class="mic" id="micBtn">🎙️</button>
+<p class="subtitle">
+Voice controlled web assistant
+</p>
 
-    <div class="status" id="status">
-      Tap the microphone and speak
-    </div>
 
-    <div class="box">
-      <div class="label">YOUR COMMAND</div>
-      <div id="command">Waiting for command...</div>
-    </div>
+<div class="mic-area">
 
-    <div class="box">
-      <div class="label">ASSISTANT</div>
-      <div id="response">Ready...</div>
-    </div>
+<button class="mic" id="micBtn">
+🎙️
+</button>
 
-    <div class="examples">
-      <div class="label">TRY THESE COMMANDS</div>
+</div>
 
-      <p>🟢 "YouTube kholo"</p>
-      <p>🟢 "YouTube par Pakistani songs search karo"</p>
-      <p>🟢 "Google par Pakistan search karo"</p>
-      <p>🟢 "Google kholo"</p>
-      <p>🟢 "WhatsApp Web kholo"</p>
-      <p>🟢 "Back jao"</p>
-      <p>🟢 "Forward jao"</p>
-      <p>🟢 "Reload karo"</p>
-      <p>🟢 "Dark mode"</p>
-      <p>🟢 "Light mode"</p>
-      <p>🟢 "Hello"</p>
-    </div>
 
-    <button class="toggle" onclick="toggleMode()">
-      🌓 Dark / Light Mode
-    </button>
+<div class="status" id="status">
+Tap microphone and speak
+</div>
 
-    <footer>
-      Voice Command AI V2
-    </footer>
 
-  </div>
+<div class="box">
+
+<div class="label">
+YOUR COMMAND
+</div>
+
+<div id="command">
+Waiting for command...
+</div>
+
+</div>
+
+
+<div class="box">
+
+<div class="label">
+ASSISTANT
+</div>
+
+<div id="response">
+Ready for your command...
+</div>
+
+</div>
+
+
+<textarea
+id="textBox"
+placeholder="Voice se yahan text likhwa sakte ho..."
+></textarea>
+
+
+<div class="buttons">
+
+<button onclick="clearText()">
+🗑️ Clear
+</button>
+
+<button onclick="copyText()">
+📋 Copy
+</button>
+
+<button onclick="showText()">
+👁️ Show Text
+</button>
+
+<button onclick="speakText()">
+🔊 Read Text
+</button>
+
+</div>
+
+
+<div class="examples">
+
+<div class="label">
+TRY VOICE COMMANDS
+</div>
+
+<p>🟢 "Text box mein hello likho"</p>
+
+<p>🟢 "Text box mein website banana seekho likho"</p>
+
+<p>🟢 "Text clear karo"</p>
+
+<p>🟢 "Text copy karo"</p>
+
+<p>🟢 "Text read karo"</p>
+
+<p>🟢 "Dark mode karo"</p>
+
+<p>🟢 "Light mode karo"</p>
+
+<p>🟢 "YouTube kholo"</p>
+
+<p>🟢 "Google kholo"</p>
+
+<p>🟢 "Back jao"</p>
+
+<p>🟢 "Forward jao"</p>
+
+<p>🟢 "Reload karo"</p>
+
+<p>🟢 "Time batao"</p>
+
+<p>🟢 "Date batao"</p>
+
+</div>
+
+
+<button class="toggle" onclick="toggleMode()">
+🌓 Dark / Light Mode
+</button>
+
+
+<footer>
+Voice Command AI V3
+</footer>
+
+</div>
 
 
 <script>
 
-const micBtn = document.getElementById("micBtn");
-const statusText = document.getElementById("status");
-const commandText = document.getElementById("command");
-const responseText = document.getElementById("response");
+const micBtn =
+document.getElementById("micBtn");
+
+const statusText =
+document.getElementById("status");
+
+const commandText =
+document.getElementById("command");
+
+const responseText =
+document.getElementById("response");
+
+const textBox =
+document.getElementById("textBox");
+
 
 const SpeechRecognition =
-  window.SpeechRecognition || window.webkitSpeechRecognition;
-
-if (!SpeechRecognition) {
-
-  statusText.innerText =
-    "❌ Voice recognition is not supported. Please use Chrome.";
-
-} else {
-
-  const recognition = new SpeechRecognition();
-
-  recognition.lang = "en-US";
-  recognition.continuous = false;
-  recognition.interimResults = false;
-
-  micBtn.addEventListener("click", () => {
-
-    try {
-      recognition.start();
-
-      micBtn.classList.add("listening");
-
-      statusText.innerText =
-        "🎧 Listening... Speak now";
-
-    } catch (error) {
-      console.log(error);
-    }
-
-  });
+window.SpeechRecognition ||
+window.webkitSpeechRecognition;
 
 
-  recognition.onresult = function(event) {
-
-    const text = event.results[0][0].transcript;
-
-    commandText.innerText = text;
-
-    statusText.innerText =
-      "✅ Command received";
-
-    processCommand(text.toLowerCase());
-
-  };
+let recognition;
 
 
-  recognition.onend = function() {
+if(!SpeechRecognition){
 
-    micBtn.classList.remove("listening");
+statusText.innerText =
+"❌ Please use Chrome browser.";
 
-  };
+}else{
+
+recognition =
+new SpeechRecognition();
+
+recognition.lang="en-US";
+
+recognition.continuous=false;
+
+recognition.interimResults=false;
 
 
-  recognition.onerror = function(event) {
+micBtn.onclick=function(){
 
-    micBtn.classList.remove("listening");
+try{
 
-    statusText.innerText =
-      "❌ Error: " + event.error;
+recognition.start();
 
-  };
+micBtn.classList.add("listening");
+
+statusText.innerText=
+"🎧 Listening...";
+
+}catch(e){
+
+console.log(e);
+
+}
+
+};
+
+
+recognition.onresult=function(event){
+
+const text =
+event.results[0][0].transcript;
+
+commandText.innerText=text;
+
+statusText.innerText=
+"✅ Command received";
+
+processCommand(text.toLowerCase());
+
+};
+
+
+recognition.onend=function(){
+
+micBtn.classList.remove("listening");
+
+};
+
+
+recognition.onerror=function(event){
+
+micBtn.classList.remove("listening");
+
+statusText.innerText=
+"❌ "+event.error;
+
+};
 
 }
 
 
 /* VOICE RESPONSE */
 
-function speak(text) {
+function speak(text){
 
-  responseText.innerText = text;
+responseText.innerText=text;
 
-  const speech = new SpeechSynthesisUtterance(text);
+const speech =
+new SpeechSynthesisUtterance(text);
 
-  speech.lang = "en-US";
-  speech.rate = 0.95;
-  speech.pitch = 1;
+speech.lang="en-US";
 
-  window.speechSynthesis.cancel();
+speech.rate=.95;
 
-  window.speechSynthesis.speak(speech);
+speech.pitch=1;
+
+speechSynthesis.cancel();
+
+speechSynthesis.speak(speech);
 
 }
 
 
 /* COMMAND PROCESSOR */
 
-function processCommand(command) {
+function processCommand(command){
 
-  /* HELLO */
+command=
+command.toLowerCase().trim();
 
-  if (
-    command.includes("hello") ||
-    command.includes("hi") ||
-    command.includes("salam")
-  ) {
 
-    speak("Hello! I am ready for your command.");
-    return;
+/* HELLO */
 
-  }
+if(
+command.includes("hello") ||
+command.includes("hi") ||
+command.includes("salam")
+){
 
+speak(
+"Hello! I am ready for your command."
+);
 
-  /* YOUTUBE SEARCH */
+return;
 
-  if (
-    command.includes("youtube") &&
-    (
-      command.includes("search") ||
-      command.includes("par")
-    )
-  ) {
+}
 
-    let query = command
-      .replace("youtube", "")
-      .replace("search", "")
-      .replace("karo", "")
-      .replace("kar do", "")
-      .replace("par", "")
-      .trim();
 
-    if (query.length === 0) {
-      speak("What should I search on YouTube?");
-      return;
-    }
+/* WRITE TEXT */
 
-    speak("Searching YouTube for " + query);
+if(
+command.includes("text box") &&
+(
+command.includes("likho") ||
+command.includes("write")
+)
+){
 
-    setTimeout(() => {
+let text=command;
 
-      window.location.href =
-        "https://www.youtube.com/results?search_query=" +
-        encodeURIComponent(query);
+text=text
+.replace("text box mein","")
+.replace("text box me","")
+.replace("text box","")
+.replace("likho","")
+.replace("write","")
+.trim();
 
-    }, 1000);
+if(!text){
 
-    return;
+speak("What should I write?");
 
-  }
+return;
 
+}
 
-  /* OPEN YOUTUBE */
+textBox.value=text;
 
-  if (
-    command.includes("youtube kholo") ||
-    command === "youtube"
-  ) {
+speak("Text has been written.");
 
-    speak("Opening YouTube");
+return;
 
-    setTimeout(() => {
-      window.location.href = "https://www.youtube.com";
-    }, 1000);
+}
 
-    return;
 
-  }
+/* CLEAR TEXT */
 
+if(
+command.includes("text clear") ||
+command.includes("clear text") ||
+command.includes("text hatao") ||
+command.includes("text delete karo")
+){
 
-  /* GOOGLE SEARCH */
+clearText();
 
-  if (
-    command.includes("google") &&
-    (
-      command.includes("search") ||
-      command.includes("par")
-    )
-  ) {
+speak("Text has been cleared.");
 
-    let query = command
-      .replace("google", "")
-      .replace("search", "")
-      .replace("karo", "")
-      .replace("kar do", "")
-      .replace("par", "")
-      .trim();
+return;
 
-    if (query.length === 0) {
+}
 
-      speak("What should I search on Google?");
-      return;
 
-    }
+/* COPY TEXT */
 
-    speak("Searching Google for " + query);
+if(
+command.includes("text copy") ||
+command.includes("copy text") ||
+command.includes("copy karo")
+){
 
-    setTimeout(() => {
+copyText();
 
-      window.location.href =
-        "https://www.google.com/search?q=" +
-        encodeURIComponent(query);
+speak("Text copied.");
 
-    }, 1000);
+return;
 
-    return;
+}
 
-  }
 
+/* READ TEXT */
 
-  /* OPEN GOOGLE */
+if(
+command.includes("text read") ||
+command.includes("read text") ||
+command.includes("text parho") ||
+command.includes("text parh")
+){
 
-  if (
-    command.includes("google kholo") ||
-    command === "google"
-  ) {
+speakText();
 
-    speak("Opening Google");
+return;
 
-    setTimeout(() => {
-      window.location.href = "https://www.google.com";
-    }, 1000);
+}
 
-    return;
 
-  }
+/* SHOW TEXT */
 
+if(
+command.includes("show text") ||
+command.includes("text dikhao")
+){
 
-  /* WHATSAPP */
+showText();
 
-  if (
-    command.includes("whatsapp") ||
-    command.includes("whatsapp web")
-  ) {
+return;
 
-    speak("Opening WhatsApp Web");
+}
 
-    setTimeout(() => {
 
-      window.location.href =
-        "https://web.whatsapp.com";
+/* YOUTUBE SEARCH */
 
-    }, 1000);
+if(
+command.includes("youtube") &&
+(
+command.includes("search") ||
+command.includes("par") ||
+command.includes("per")
+)
+){
 
-    return;
+let query=command
+.replace("youtube","")
+.replace("search","")
+.replace("par","")
+.replace("per","")
+.replace("karo","")
+.trim();
 
-  }
+if(!query){
 
+speak("What should I search on YouTube?");
 
-  /* BACK */
+return;
 
-  if (
-    command.includes("back") ||
-    command.includes("back jao") ||
-    command.includes("peechy jao")
-  ) {
+}
 
-    speak("Going back");
+speak("Searching YouTube.");
 
-    setTimeout(() => {
-      history.back();
-    }, 700);
+setTimeout(()=>{
 
-    return;
+location.href=
+"https://www.youtube.com/results?search_query="+
+encodeURIComponent(query);
 
-  }
+},800);
 
+return;
 
-  /* FORWARD */
+}
 
-  if (
-    command.includes("forward") ||
-    command.includes("forward jao") ||
-    command.includes("aghy jao")
-  ) {
 
-    speak("Going forward");
+/* YOUTUBE OPEN */
 
-    setTimeout(() => {
-      history.forward();
-    }, 700);
+if(
+command.includes("youtube kholo") ||
+command.includes("youtube open")
+){
 
-    return;
+speak("Opening YouTube.");
 
-  }
+setTimeout(()=>{
 
+location.href=
+"https://www.youtube.com";
 
-  /* RELOAD */
+},800);
 
-  if (
-    command.includes("reload") ||
-    command.includes("refresh") ||
-    command.includes("reload karo")
-  ) {
+return;
 
-    speak("Reloading page");
+}
 
-    setTimeout(() => {
-      location.reload();
-    }, 700);
 
-    return;
+/* GOOGLE SEARCH */
 
-  }
+if(
+command.includes("google") &&
+(
+command.includes("search") ||
+command.includes("par") ||
+command.includes("per")
+)
+){
 
+let query=command
+.replace("google","")
+.replace("search","")
+.replace("par","")
+.replace("per","")
+.replace("karo","")
+.trim();
 
-  /* DARK MODE */
+if(!query){
 
-  if (
-    command.includes("dark mode") ||
-    command.includes("dark karo")
-  ) {
+speak("What should I search on Google?");
 
-    document.body.classList.remove("light");
+return;
 
-    speak("Dark mode activated");
+}
 
-    return;
+speak("Searching Google.");
 
-  }
+setTimeout(()=>{
 
+location.href=
+"https://www.google.com/search?q="+
+encodeURIComponent(query);
 
-  /* LIGHT MODE */
+},800);
 
-  if (
-    command.includes("light mode") ||
-    command.includes("light karo")
-  ) {
+return;
 
-    document.body.classList.add("light");
+}
 
-    speak("Light mode activated");
 
-    return;
+/* GOOGLE OPEN */
 
-  }
+if(
+command.includes("google kholo") ||
+command.includes("google open")
+){
 
+speak("Opening Google.");
 
-  /* TIME */
+setTimeout(()=>{
 
-  if (
-    command.includes("time") ||
-    command.includes("kitne bajy")
-  ) {
+location.href=
+"https://www.google.com";
 
-    const now = new Date();
+},800);
 
-    const time =
-      now.toLocaleTimeString([], {
-        hour: "2-digit",
-        minute: "2-digit"
-      });
+return;
 
-    speak("The current time is " + time);
+}
 
-    return;
 
-  }
+/* WHATSAPP */
 
+if(
+command.includes("whatsapp kholo") ||
+command.includes("whatsapp open")
+){
 
-  /* UNKNOWN COMMAND */
+speak("Opening WhatsApp Web.");
 
-  speak(
-    "Sorry, I don't understand this command yet."
-  );
+setTimeout(()=>{
+
+location.href=
+"https://web.whatsapp.com";
+
+},800);
+
+return;
+
+}
+
+
+/* BACK */
+
+if(
+command.includes("back jao") ||
+command.includes("peechy jao") ||
+command.includes("peeche jao")
+){
+
+speak("Going back.");
+
+setTimeout(()=>{
+
+history.back();
+
+},600);
+
+return;
+
+}
+
+
+/* FORWARD */
+
+if(
+command.includes("forward jao") ||
+command.includes("aagay jao") ||
+command.includes("aghy jao")
+){
+
+speak("Going forward.");
+
+setTimeout(()=>{
+
+history.forward();
+
+},600);
+
+return;
+
+}
+
+
+/* RELOAD */
+
+if(
+command.includes("reload") ||
+command.includes("refresh")
+){
+
+speak("Reloading page.");
+
+setTimeout(()=>{
+
+location.reload();
+
+},600);
+
+return;
+
+}
+
+
+/* DARK MODE */
+
+if(
+command.includes("dark mode") ||
+command.includes("dark karo")
+){
+
+document.body.classList.remove("light");
+
+speak("Dark mode activated.");
+
+return;
+
+}
+
+
+/* LIGHT MODE */
+
+if(
+command.includes("light mode") ||
+command.includes("light karo")
+){
+
+document.body.classList.add("light");
+
+speak("Light mode activated.");
+
+return;
+
+}
+
+
+/* TIME */
+
+if(
+command.includes("time") ||
+command.includes("kitne bajay")
+){
+
+const now=new Date();
+
+const time=
+now.toLocaleTimeString([],{
+hour:"2-digit",
+minute:"2-digit"
+});
+
+speak("The current time is "+time);
+
+return;
+
+}
+
+
+/* DATE */
+
+if(
+command.includes("date") ||
+command.includes("aaj ki date")
+){
+
+const now=new Date();
+
+const date=
+now.toLocaleDateString([],{
+day:"numeric",
+month:"long",
+year:"numeric"
+});
+
+speak("Today's date is "+date);
+
+return;
+
+}
+
+
+/* UNKNOWN */
+
+speak(
+"Sorry, I don't understand this command yet."
+);
+
+}
+
+
+/* CLEAR */
+
+function clearText(){
+
+textBox.value="";
+
+}
+
+
+/* COPY */
+
+function copyText(){
+
+if(!textBox.value){
+
+speak("There is no text to copy.");
+
+return;
+
+}
+
+navigator.clipboard.writeText(
+textBox.value
+);
+
+}
+
+
+/* SHOW */
+
+function showText(){
+
+if(!textBox.value){
+
+speak("The text box is empty.");
+
+return;
+
+}
+
+alert(textBox.value);
+
+}
+
+
+/* READ */
+
+function speakText(){
+
+if(!textBox.value){
+
+speak("The text box is empty.");
+
+return;
+
+}
+
+speak(textBox.value);
 
 }
 
 
 /* DARK LIGHT BUTTON */
 
-function toggleMode() {
+function toggleMode(){
 
-  document.body.classList.toggle("light");
+document.body.classList.toggle("light");
 
 }
 
