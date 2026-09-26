@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Voice Command AI V4</title>
+<title>Voice Command AI V5</title>
 
 <style>
 * {
@@ -15,20 +15,20 @@
 
 body {
     font-family: Arial, sans-serif;
-    background: #080b12;
+    background: #070b14;
     color: white;
     min-height: 100vh;
     transition: 0.3s;
 }
 
 body.light {
-    background: #f2f4f8;
-    color: #111;
+    background: #f3f4f6;
+    color: #111827;
 }
 
 .container {
     width: 92%;
-    max-width: 700px;
+    max-width: 750px;
     margin: auto;
     padding: 25px 0;
 }
@@ -39,12 +39,12 @@ body.light {
 }
 
 .logo {
-    font-size: 50px;
+    font-size: 52px;
 }
 
 h1 {
-    margin-top: 8px;
     font-size: 30px;
+    margin-top: 8px;
 }
 
 .subtitle {
@@ -58,7 +58,7 @@ h1 {
     border-radius: 18px;
     padding: 20px;
     margin-bottom: 18px;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.25);
+    box-shadow: 0 10px 30px rgba(0,0,0,.25);
 }
 
 .light .card {
@@ -67,8 +67,8 @@ h1 {
 }
 
 .mic {
-    width: 110px;
-    height: 110px;
+    width: 115px;
+    height: 115px;
     border-radius: 50%;
     border: none;
     background: #2563eb;
@@ -77,7 +77,7 @@ h1 {
     display: block;
     margin: 15px auto;
     cursor: pointer;
-    box-shadow: 0 0 25px rgba(37,99,235,0.5);
+    box-shadow: 0 0 25px rgba(37,99,235,.5);
 }
 
 .mic.listening {
@@ -99,7 +99,7 @@ h1 {
 
 .label {
     font-weight: bold;
-    margin-bottom: 8px;
+    margin-bottom: 10px;
 }
 
 .command {
@@ -115,20 +115,26 @@ h1 {
     background: #eef2ff;
 }
 
-textarea {
+textarea,
+input {
     width: 100%;
-    min-height: 140px;
-    resize: vertical;
     border: none;
     outline: none;
     border-radius: 12px;
-    padding: 15px;
+    padding: 14px;
     font-size: 16px;
     background: #0b1220;
     color: white;
+    margin-bottom: 10px;
 }
 
-.light textarea {
+textarea {
+    min-height: 130px;
+    resize: vertical;
+}
+
+.light textarea,
+.light input {
     background: #f1f5f9;
     color: #111;
 }
@@ -137,7 +143,6 @@ textarea {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
     gap: 10px;
-    margin-top: 12px;
 }
 
 button.small {
@@ -150,8 +155,12 @@ button.small {
     font-size: 14px;
 }
 
-button.small:hover {
-    opacity: 0.85;
+button.delete {
+    background: #dc2626;
+}
+
+button:hover {
+    opacity: .85;
 }
 
 .assistant {
@@ -161,15 +170,34 @@ button.small:hover {
 
 .commands {
     line-height: 1.8;
-    color: #d1d5db;
 }
 
-.light .commands {
-    color: #374151;
+.custom-item {
+    background: #0b1220;
+    border-radius: 12px;
+    padding: 12px;
+    margin-top: 10px;
 }
 
-.command-item {
-    padding: 5px 0;
+.light .custom-item {
+    background: #f1f5f9;
+}
+
+.custom-name {
+    color: #60a5fa;
+    font-weight: bold;
+}
+
+.custom-url {
+    color: #9ca3af;
+    font-size: 13px;
+    word-break: break-all;
+    margin-top: 5px;
+}
+
+.empty {
+    color: #9ca3af;
+    padding: 10px 0;
 }
 
 .footer {
@@ -187,13 +215,22 @@ button.small:hover {
 
     <div class="header">
         <div class="logo">🎙️</div>
+
         <h1>Voice Command AI</h1>
-        <div class="subtitle">Version 4 • Smart Voice Control</div>
+
+        <div class="subtitle">
+            Version 5 • Custom Voice Commands
+        </div>
     </div>
+
+
+    <!-- MICROPHONE -->
 
     <div class="card">
 
-        <button class="mic" id="micButton" onclick="startListening()">
+        <button class="mic"
+                id="micButton"
+                onclick="startListening()">
             🎤
         </button>
 
@@ -203,9 +240,14 @@ button.small:hover {
 
     </div>
 
+
+    <!-- COMMAND -->
+
     <div class="card">
 
-        <div class="label">Your Command</div>
+        <div class="label">
+            Your Command
+        </div>
 
         <div class="command" id="command">
             Waiting for your voice...
@@ -213,38 +255,52 @@ button.small:hover {
 
     </div>
 
+
+    <!-- ASSISTANT -->
+
     <div class="card">
 
-        <div class="label">Assistant</div>
+        <div class="label">
+            Assistant
+        </div>
 
         <div class="assistant" id="assistant">
-            Ready...
+            Ready for your command...
         </div>
 
     </div>
 
+
+    <!-- TEXT BOX -->
+
     <div class="card">
 
-        <div class="label">📝 Text Box</div>
+        <div class="label">
+            📝 Text Box
+        </div>
 
         <textarea id="textBox"
         placeholder="Voice command se yahan text likh sakte ho..."></textarea>
 
         <div class="buttons">
 
-            <button class="small" onclick="clearText()">
+            <button class="small"
+                    onclick="clearText()">
                 🗑️ Clear
             </button>
 
-            <button class="small" onclick="copyText()">
+            <button class="small"
+                    onclick="copyText()">
                 📋 Copy
             </button>
 
-            <button class="small" onclick="showText()">
+            <button class="small"
+                    onclick="showText()">
                 👁️ Show
             </button>
 
-            <button class="small" onclick="speakText()">
+            <button class="small"
+                    onclick="speakText()">
                 🔊 Read
             </button>
 
@@ -252,90 +308,90 @@ button.small:hover {
 
     </div>
 
+
+    <!-- ADD CUSTOM COMMAND -->
+
     <div class="card">
 
-        <div class="label">⚡ Available Commands</div>
+        <div class="label">
+            ➕ Add Custom Command
+        </div>
+
+        <input
+            id="customCommand"
+            type="text"
+            placeholder="Example: Work with AW kholo"
+        >
+
+        <input
+            id="customURL"
+            type="url"
+            placeholder="https://example.com"
+        >
+
+        <button
+            class="small"
+            onclick="addCustomCommand()"
+            style="width:100%;">
+            ➕ Save Custom Command
+        </button>
+
+    </div>
+
+
+    <!-- CUSTOM COMMAND LIST -->
+
+    <div class="card">
+
+        <div class="label">
+            ⚡ My Custom Commands
+        </div>
+
+        <div id="customCommands">
+            <div class="empty">
+                No custom commands added yet.
+            </div>
+        </div>
+
+    </div>
+
+
+    <!-- BASIC COMMANDS -->
+
+    <div class="card">
+
+        <div class="label">
+            🎤 Basic Commands
+        </div>
 
         <div class="commands">
 
-            <div class="command-item">
-                🎵 YouTube kholo
-            </div>
-
-            <div class="command-item">
-                🔎 YouTube par search karo Pakistan
-            </div>
-
-            <div class="command-item">
-                🌐 Google kholo
-            </div>
-
-            <div class="command-item">
-                🔎 Google par search karo Pakistan
-            </div>
-
-            <div class="command-item">
-                📝 Text box mein hello likho
-            </div>
-
-            <div class="command-item">
-                🗑️ Text clear karo
-            </div>
-
-            <div class="command-item">
-                📋 Text copy karo
-            </div>
-
-            <div class="command-item">
-                🔊 Text parho
-            </div>
-
-            <div class="command-item">
-                🌙 Dark mode
-            </div>
-
-            <div class="command-item">
-                ☀️ Light mode
-            </div>
-
-            <div class="command-item">
-                ↩️ Back
-            </div>
-
-            <div class="command-item">
-                ↪️ Forward
-            </div>
-
-            <div class="command-item">
-                🔄 Refresh
-            </div>
-
-            <div class="command-item">
-                🕐 Time batao
-            </div>
-
-            <div class="command-item">
-                📅 Date batao
-            </div>
-
-            <div class="command-item">
-                📱 WhatsApp kholo
-            </div>
-
-            <div class="command-item">
-                📘 Facebook kholo
-            </div>
-
-            <div class="command-item">
-                📸 Instagram kholo
-            </div>
+            <div>🎵 YouTube kholo</div>
+            <div>🔎 YouTube par search karo Pakistan</div>
+            <div>🌐 Google kholo</div>
+            <div>🔎 Google par search karo Pakistan</div>
+            <div>📝 Text box mein hello likho</div>
+            <div>🗑️ Text clear karo</div>
+            <div>📋 Text copy karo</div>
+            <div>🔊 Text parho</div>
+            <div>🌙 Dark mode</div>
+            <div>☀️ Light mode</div>
+            <div>↩️ Back</div>
+            <div>↪️ Forward</div>
+            <div>🔄 Refresh</div>
+            <div>🕐 Time batao</div>
+            <div>📅 Date batao</div>
+            <div>📱 WhatsApp kholo</div>
+            <div>📘 Facebook kholo</div>
+            <div>📸 Instagram kholo</div>
 
         </div>
 
     </div>
 
+
     <div class="footer">
-        Voice Command AI V4 • Powered by Web Speech API
+        Voice Command AI V5 • Powered by Web Speech API
     </div>
 
 </div>
@@ -344,7 +400,17 @@ button.small:hover {
 <script>
 
 /* =========================================
-   VOICE RECOGNITION
+   CUSTOM COMMAND STORAGE
+========================================= */
+
+let customCommands =
+    JSON.parse(
+        localStorage.getItem("voiceCustomCommands") || "[]"
+    );
+
+
+/* =========================================
+   SPEECH RECOGNITION
 ========================================= */
 
 const SpeechRecognition =
@@ -363,6 +429,7 @@ if (SpeechRecognition) {
 
     recognition.interimResults = false;
 
+
     recognition.onstart = function() {
 
         document.getElementById("status").innerText =
@@ -372,6 +439,7 @@ if (SpeechRecognition) {
             .classList.add("listening");
 
     };
+
 
     recognition.onend = function() {
 
@@ -383,6 +451,7 @@ if (SpeechRecognition) {
 
     };
 
+
     recognition.onerror = function(event) {
 
         document.getElementById("assistant").innerText =
@@ -392,6 +461,7 @@ if (SpeechRecognition) {
             .classList.remove("listening");
 
     };
+
 
     recognition.onresult = function(event) {
 
@@ -408,7 +478,7 @@ if (SpeechRecognition) {
 } else {
 
     document.getElementById("status").innerText =
-        "Speech recognition is not supported in this browser.";
+        "Speech recognition is not supported.";
 
 }
 
@@ -426,10 +496,17 @@ function startListening() {
         );
 
         return;
-
     }
 
-    recognition.start();
+    try {
+
+        recognition.start();
+
+    } catch(error) {
+
+        console.log(error);
+
+    }
 
 }
 
@@ -456,13 +533,250 @@ function speak(text) {
 
 
 /* =========================================
-   COMMAND PROCESSOR
+   ADD CUSTOM COMMAND
+========================================= */
+
+function addCustomCommand() {
+
+    const command =
+        document
+        .getElementById("customCommand")
+        .value
+        .trim();
+
+    const url =
+        document
+        .getElementById("customURL")
+        .value
+        .trim();
+
+
+    if (!command || !url) {
+
+        speak(
+            "Please enter both command and website address."
+        );
+
+        return;
+    }
+
+
+    let finalURL = url;
+
+
+    if (
+        !finalURL.startsWith("http://") &&
+        !finalURL.startsWith("https://")
+    ) {
+
+        finalURL =
+            "https://" + finalURL;
+
+    }
+
+
+    customCommands.push({
+
+        command: command.toLowerCase(),
+
+        displayCommand: command,
+
+        url: finalURL
+
+    });
+
+
+    localStorage.setItem(
+        "voiceCustomCommands",
+        JSON.stringify(customCommands)
+    );
+
+
+    document
+    .getElementById("customCommand")
+    .value = "";
+
+
+    document
+    .getElementById("customURL")
+    .value = "";
+
+
+    renderCustomCommands();
+
+
+    speak(
+        "Custom command saved successfully."
+    );
+
+}
+
+
+/* =========================================
+   DISPLAY CUSTOM COMMANDS
+========================================= */
+
+function renderCustomCommands() {
+
+    const container =
+        document.getElementById("customCommands");
+
+
+    if (customCommands.length === 0) {
+
+        container.innerHTML =
+            '<div class="empty">No custom commands added yet.</div>';
+
+        return;
+    }
+
+
+    container.innerHTML = "";
+
+
+    customCommands.forEach(function(item, index) {
+
+        const div =
+            document.createElement("div");
+
+        div.className = "custom-item";
+
+
+        div.innerHTML = `
+
+            <div class="custom-name">
+                🎤 ${escapeHTML(item.displayCommand)}
+            </div>
+
+            <div class="custom-url">
+                🌐 ${escapeHTML(item.url)}
+            </div>
+
+            <br>
+
+            <button
+                class="small delete"
+                onclick="deleteCustomCommand(${index})">
+                🗑️ Delete
+            </button>
+        `;
+
+
+        container.appendChild(div);
+
+    });
+
+}
+
+
+/* =========================================
+   DELETE CUSTOM COMMAND
+========================================= */
+
+function deleteCustomCommand(index) {
+
+    customCommands.splice(index, 1);
+
+
+    localStorage.setItem(
+        "voiceCustomCommands",
+        JSON.stringify(customCommands)
+    );
+
+
+    renderCustomCommands();
+
+
+    speak(
+        "Custom command deleted."
+    );
+
+}
+
+
+/* =========================================
+   ESCAPE HTML
+========================================= */
+
+function escapeHTML(text) {
+
+    return text
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+
+}
+
+
+/* =========================================
+   CHECK CUSTOM COMMANDS
+========================================= */
+
+function checkCustomCommand(cmd) {
+
+    for (
+        let i = 0;
+        i < customCommands.length;
+        i++
+    ) {
+
+        const item =
+            customCommands[i];
+
+
+        if (
+            cmd === item.command ||
+            cmd.includes(item.command)
+        ) {
+
+            speak(
+                "Opening " +
+                item.displayCommand
+            );
+
+
+            setTimeout(function() {
+
+                window.open(
+                    item.url,
+                    "_blank"
+                );
+
+            }, 500);
+
+
+            return true;
+        }
+
+    }
+
+
+    return false;
+
+}
+
+
+/* =========================================
+   MAIN COMMAND PROCESSOR
 ========================================= */
 
 function processCommand(command) {
 
     const cmd =
-        command.toLowerCase().trim();
+        command
+        .toLowerCase()
+        .trim();
+
+
+    /* CUSTOM COMMAND FIRST */
+
+    if (checkCustomCommand(cmd)) {
+
+        return;
+
+    }
 
 
     /* HELLO */
@@ -474,7 +788,9 @@ function processCommand(command) {
         cmd.includes("assalam")
     ) {
 
-        speak("Hello! I am ready for your command.");
+        speak(
+            "Hello! I am ready for your command."
+        );
 
         return;
     }
@@ -495,14 +811,21 @@ function processCommand(command) {
             .replace("youtube search", "")
             .trim();
 
-        if (query === "") {
 
-            speak("What should I search on YouTube?");
+        if (!query) {
+
+            speak(
+                "What should I search on YouTube?"
+            );
 
             return;
         }
 
-        speak("Searching YouTube for " + query);
+
+        speak(
+            "Searching YouTube for " + query
+        );
+
 
         window.open(
             "https://www.youtube.com/results?search_query=" +
@@ -514,7 +837,7 @@ function processCommand(command) {
     }
 
 
-    /* YOUTUBE OPEN */
+    /* YOUTUBE */
 
     if (
         cmd.includes("youtube kholo") ||
@@ -548,14 +871,21 @@ function processCommand(command) {
             .replace("google search", "")
             .trim();
 
-        if (query === "") {
 
-            speak("What should I search on Google?");
+        if (!query) {
+
+            speak(
+                "What should I search on Google?"
+            );
 
             return;
         }
 
-        speak("Searching Google for " + query);
+
+        speak(
+            "Searching Google for " + query
+        );
+
 
         window.open(
             "https://www.google.com/search?q=" +
@@ -567,7 +897,7 @@ function processCommand(command) {
     }
 
 
-    /* GOOGLE OPEN */
+    /* GOOGLE */
 
     if (
         cmd.includes("google kholo") ||
@@ -644,36 +974,42 @@ function processCommand(command) {
 
     if (
         cmd.includes("text box mein") ||
-        cmd.includes("textbox mein") ||
-        cmd.includes("text mein")
+        cmd.includes("textbox mein")
     ) {
 
         let text =
             cmd
             .replace("text box mein", "")
             .replace("textbox mein", "")
-            .replace("text mein", "")
             .replace("likho", "")
             .replace("write", "")
             .trim();
 
-        if (text === "") {
 
-            speak("Please tell me what I should write.");
+        if (!text) {
+
+            speak(
+                "Please tell me what I should write."
+            );
 
             return;
         }
 
-        document.getElementById("textBox").value =
-            text;
 
-        speak("Done. I wrote it in the text box.");
+        document
+        .getElementById("textBox")
+        .value = text;
+
+
+        speak(
+            "Done. I wrote it in the text box."
+        );
 
         return;
     }
 
 
-    /* CLEAR TEXT */
+    /* CLEAR */
 
     if (
         cmd.includes("text clear") ||
@@ -689,7 +1025,7 @@ function processCommand(command) {
     }
 
 
-    /* COPY TEXT */
+    /* COPY */
 
     if (
         cmd.includes("text copy") ||
@@ -698,13 +1034,11 @@ function processCommand(command) {
 
         copyText();
 
-        speak("Text copied.");
-
         return;
     }
 
 
-    /* READ TEXT */
+    /* READ */
 
     if (
         cmd.includes("text parho") ||
@@ -717,20 +1051,7 @@ function processCommand(command) {
     }
 
 
-    /* SHOW TEXT */
-
-    if (
-        cmd.includes("text dikhao") ||
-        cmd.includes("show text")
-    ) {
-
-        showText();
-
-        return;
-    }
-
-
-    /* DARK MODE */
+    /* DARK */
 
     if (
         cmd.includes("dark mode") ||
@@ -745,7 +1066,7 @@ function processCommand(command) {
     }
 
 
-    /* LIGHT MODE */
+    /* LIGHT */
 
     if (
         cmd.includes("light mode") ||
@@ -816,13 +1137,14 @@ function processCommand(command) {
         cmd.includes("waqt")
     ) {
 
-        const now =
-            new Date();
-
         const time =
-            now.toLocaleTimeString();
+            new Date()
+            .toLocaleTimeString();
 
-        speak("The current time is " + time);
+
+        speak(
+            "The current time is " + time
+        );
 
         return;
     }
@@ -835,19 +1157,20 @@ function processCommand(command) {
         cmd.includes("tareekh")
     ) {
 
-        const now =
-            new Date();
-
         const date =
-            now.toLocaleDateString();
+            new Date()
+            .toLocaleDateString();
 
-        speak("Today's date is " + date);
+
+        speak(
+            "Today's date is " + date
+        );
 
         return;
     }
 
 
-    /* UNKNOWN COMMAND */
+    /* UNKNOWN */
 
     speak(
         "Sorry, I don't understand that command yet."
@@ -862,7 +1185,9 @@ function processCommand(command) {
 
 function clearText() {
 
-    document.getElementById("textBox").value = "";
+    document
+    .getElementById("textBox")
+    .value = "";
 
 }
 
@@ -870,24 +1195,35 @@ function clearText() {
 function copyText() {
 
     const text =
-        document.getElementById("textBox").value;
+        document
+        .getElementById("textBox")
+        .value;
 
-    if (text === "") {
 
-        speak("There is no text to copy.");
+    if (!text) {
+
+        speak(
+            "There is no text to copy."
+        );
 
         return;
     }
 
-    navigator.clipboard.writeText(text)
+
+    navigator.clipboard
+        .writeText(text)
         .then(function() {
 
-            speak("Text copied successfully.");
+            speak(
+                "Text copied successfully."
+            );
 
         })
         .catch(function() {
 
-            speak("I could not copy the text.");
+            speak(
+                "I could not copy the text."
+            );
 
         });
 
@@ -897,47 +1233,6 @@ function copyText() {
 function showText() {
 
     const text =
-        document.getElementById("textBox").value;
-
-    if (text === "") {
-
-        speak("The text box is empty.");
-
-        return;
-    }
-
-    speak("Your text is " + text);
-
-}
-
-
-function speakText() {
-
-    const text =
-        document.getElementById("textBox").value;
-
-    if (text === "") {
-
-        speak("There is no text to read.");
-
-        return;
-    }
-
-    const speech =
-        new SpeechSynthesisUtterance(text);
-
-    speech.lang = "en-US";
-
-    window.speechSynthesis.cancel();
-
-    window.speechSynthesis.speak(speech);
-
-    document.getElementById("assistant").innerText =
-        "🔊 Reading your text...";
-
-}
-
-</script>
-
-</body>
-</html>
+        document
+        .getElementById("textBox")
+      
