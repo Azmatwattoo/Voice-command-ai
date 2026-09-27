@@ -1,23 +1,21 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
 
 <meta charset="UTF-8">
 
 <meta
-name="viewport"
-content="width=device-width, initial-scale=1.0"
+  name="viewport"
+  content="width=device-width, initial-scale=1.0"
 >
 
-<title>Voice Command AI V5</title>
-
+<title>Voice Command AI V6</title>
 
 <style>
 
-/* =========================================
-   RESET
-========================================= */
+/* =========================
+   BASIC RESET
+========================= */
 
 *{
     box-sizing:border-box;
@@ -25,160 +23,90 @@ content="width=device-width, initial-scale=1.0"
     padding:0;
 }
 
-
-/* =========================================
-   BODY
-========================================= */
-
 body{
-
-    font-family:
-    Arial,
-    sans-serif;
-
-    background:
-    radial-gradient(
-        circle at top,
-        #172554 0%,
-        #070b14 45%,
-        #03050a 100%
-    );
-
-    color:white;
-
+    font-family:Arial,sans-serif;
+    background:#070b14;
+    color:#ffffff;
     min-height:100vh;
-
-    transition:.3s;
-
+    transition:0.3s;
 }
-
-
-/* =========================================
-   LIGHT MODE
-========================================= */
 
 body.light{
-
-    background:#f3f4f6;
-
+    background:#f3f6fb;
     color:#111827;
-
 }
 
-
-/* =========================================
-   CONTAINER
-========================================= */
+/* =========================
+   MAIN CONTAINER
+========================= */
 
 .container{
-
-    width:92%;
-
-    max-width:760px;
-
+    width:100%;
+    max-width:900px;
     margin:auto;
-
-    padding:
-    25px 0 40px;
-
+    padding:18px;
 }
 
-
-/* =========================================
+/* =========================
    HEADER
-========================================= */
+========================= */
 
-.header{
-
+header{
     text-align:center;
-
-    margin-bottom:25px;
-
-}
-
-
-.logo{
-
-    width:82px;
-
-    height:82px;
-
-    margin:auto;
+    padding:28px 18px;
+    margin-bottom:18px;
 
     border-radius:24px;
 
-    display:flex;
-
-    align-items:center;
-
-    justify-content:center;
-
-    font-size:44px;
-
     background:
-    linear-gradient(
-        135deg,
-        #2563eb,
-        #7c3aed
-    );
+        linear-gradient(
+            135deg,
+            #111827,
+            #172554,
+            #1e1b4b
+        );
+
+    border:1px solid #293956;
 
     box-shadow:
-    0 0 35px
-    rgba(59,130,246,.35);
-
+        0 15px 40px rgba(0,0,0,0.35);
 }
 
-
-h1{
-
+header h1{
     font-size:30px;
-
-    margin-top:14px;
-
+    margin-bottom:8px;
 }
 
-
-.subtitle{
-
-    color:#9ca3af;
-
-    margin-top:8px;
-
-    font-size:14px;
-
+header p{
+    color:#aab6ca;
+    font-size:15px;
+    margin-bottom:14px;
 }
-
 
 .version{
-
     display:inline-block;
 
-    margin-top:10px;
+    padding:8px 15px;
 
-    padding:6px 12px;
+    border-radius:30px;
 
-    border-radius:20px;
-
-    background:#172554;
-
-    color:#93c5fd;
+    background:#2563eb;
 
     font-size:12px;
 
+    font-weight:bold;
+
+    letter-spacing:0.5px;
 }
 
-
-/* =========================================
+/* =========================
    CARD
-========================================= */
+========================= */
 
 .card{
+    background:#0d1422;
 
-    background:
-    rgba(17,24,39,.92);
-
-    border:
-    1px solid #263244;
+    border:1px solid #202d43;
 
     border-radius:20px;
 
@@ -187,335 +115,286 @@ h1{
     margin-bottom:18px;
 
     box-shadow:
-    0 12px 35px
-    rgba(0,0,0,.25);
-
-    backdrop-filter:blur(10px);
-
+        0 10px 30px rgba(0,0,0,0.22);
 }
 
-
-.light .card{
-
-    background:white;
-
-    border-color:#ddd;
-
+body.light .card{
+    background:#ffffff;
+    border-color:#dce3ed;
 }
 
+.card h2{
+    font-size:20px;
+    margin-bottom:15px;
+}
 
-/* =========================================
+/* =========================
    MICROPHONE
-========================================= */
+========================= */
+
+.mic-area{
+    text-align:center;
+}
 
 .mic{
-
-    width:125px;
-
-    height:125px;
+    width:115px;
+    height:115px;
 
     border-radius:50%;
 
     border:none;
 
     background:
-    linear-gradient(
-        135deg,
-        #2563eb,
-        #4f46e5
-    );
+        linear-gradient(
+            135deg,
+            #2563eb,
+            #7c3aed
+        );
 
     color:white;
 
-    font-size:48px;
-
-    display:block;
-
-    margin:
-    10px auto 15px;
+    font-size:44px;
 
     cursor:pointer;
 
     box-shadow:
-    0 0 30px
-    rgba(37,99,235,.5);
+        0 0 35px rgba(37,99,235,0.45);
 
-    transition:.2s;
-
+    transition:0.2s;
 }
 
+.mic:hover{
+    transform:scale(1.05);
+}
 
 .mic:active{
-
-    transform:scale(.95);
-
+    transform:scale(0.96);
 }
-
 
 .mic.listening{
-
-    background:
-    linear-gradient(
-        135deg,
-        #dc2626,
-        #ef4444
-    );
-
-    animation:
-    pulse 1s infinite;
-
+    animation:pulse 1s infinite;
 }
-
 
 @keyframes pulse{
 
     0%{
-        transform:scale(1);
+        box-shadow:
+        0 0 0 0
+        rgba(124,58,237,0.7);
     }
 
-    50%{
-        transform:scale(1.08);
+    70%{
+        box-shadow:
+        0 0 0 28px
+        rgba(124,58,237,0);
     }
 
     100%{
-        transform:scale(1);
+        box-shadow:
+        0 0 0 0
+        rgba(124,58,237,0);
     }
 
 }
 
-
-/* =========================================
+/* =========================
    STATUS
-========================================= */
+========================= */
 
 .status{
-
-    text-align:center;
+    margin-top:15px;
 
     color:#60a5fa;
 
-    margin-top:10px;
-
-    font-size:15px;
-
-}
-
-
-/* =========================================
-   LABEL
-========================================= */
-
-.label{
-
     font-weight:bold;
 
-    margin-bottom:11px;
-
-    font-size:16px;
-
+    line-height:1.5;
 }
 
+/* =========================
+   COMMAND BOX
+========================= */
 
-/* =========================================
-   COMMAND DISPLAY
-========================================= */
+.command-box{
 
-.command{
+    background:#070b14;
 
-    background:#0b1220;
+    border-radius:14px;
 
     padding:15px;
 
-    border-radius:13px;
+    min-height:60px;
 
-    min-height:52px;
+    line-height:1.6;
 
-    color:#93c5fd;
+    color:#dbeafe;
 
     word-break:break-word;
 
 }
 
+body.light .command-box{
 
-.light .command{
+    background:#f1f5f9;
+
+    color:#1e293b;
+
+}
+
+/* =========================
+   ASSISTANT BOX
+========================= */
+
+.assistant-box{
+
+    margin-top:12px;
+
+    background:#101a2d;
+
+    border-radius:14px;
+
+    padding:15px;
+
+    min-height:60px;
+
+    line-height:1.6;
+
+    word-break:break-word;
+
+}
+
+body.light .assistant-box{
 
     background:#eef2ff;
 
 }
 
-
-/* =========================================
-   ASSISTANT
-========================================= */
-
-.assistant{
-
-    color:#86efac;
-
-    line-height:1.6;
-
-    white-space:pre-wrap;
-
-    word-break:break-word;
-
-}
-
-
-/* =========================================
+/* =========================
    INPUTS
-========================================= */
+========================= */
 
 textarea,
 input{
 
     width:100%;
 
-    border:
-    1px solid transparent;
+    border:none;
 
     outline:none;
 
-    border-radius:13px;
+    border-radius:14px;
 
     padding:14px;
 
-    font-size:16px;
-
-    background:#0b1220;
+    background:#070b14;
 
     color:white;
 
-    margin-bottom:10px;
+    border:1px solid #293850;
+
+    font-size:15px;
 
 }
-
 
 textarea{
 
-    min-height:135px;
+    min-height:110px;
 
     resize:vertical;
 
-}
-
-
-textarea:focus,
-input:focus{
-
-    border-color:#2563eb;
+    line-height:1.5;
 
 }
 
+body.light textarea,
+body.light input{
 
-.light textarea,
-.light input{
+    background:#f8fafc;
 
-    background:#f1f5f9;
+    color:#111827;
 
-    color:#111;
+    border-color:#cbd5e1;
 
 }
 
-
-/* =========================================
+/* =========================
    BUTTONS
-========================================= */
+========================= */
 
-.buttons{
-
-    display:grid;
-
-    grid-template-columns:
-    repeat(2,1fr);
-
-    gap:10px;
-
-}
-
-
-button.small{
+.btn{
 
     border:none;
 
-    border-radius:11px;
+    border-radius:12px;
 
-    padding:12px;
+    padding:11px 15px;
 
-    cursor:pointer;
+    margin:
+        5px
+        3px
+        0
+        0;
 
-    background:#1d4ed8;
+    background:#2563eb;
 
     color:white;
 
-    font-size:14px;
+    cursor:pointer;
 
-    transition:.2s;
+    font-weight:bold;
 
-}
-
-
-button.small:hover{
-
-    opacity:.85;
-
-    transform:
-    translateY(-1px);
+    transition:0.2s;
 
 }
 
+.btn:hover{
 
-button.delete{
+    opacity:0.88;
 
-    background:#dc2626;
-
-}
-
-
-button.green{
-
-    background:#059669;
+    transform:translateY(-1px);
 
 }
 
-
-button.gray{
+.btn.secondary{
 
     background:#374151;
 
 }
 
+.btn.success{
 
-button.ai{
-
-    background:
-    linear-gradient(
-        135deg,
-        #7c3aed,
-        #2563eb
-    );
-
-    font-weight:bold;
+    background:#059669;
 
 }
 
+.btn.danger{
 
-/* =========================================
-   QUICK COMMANDS
-========================================= */
+    background:#dc2626;
+
+}
+
+.btn.purple{
+
+    background:#7c3aed;
+
+}
+
+/* =========================
+   QUICK COMMAND GRID
+========================= */
 
 .quick-grid{
 
     display:grid;
 
     grid-template-columns:
-    repeat(3,1fr);
+        repeat(3,1fr);
 
     gap:9px;
 
 }
 
-
-.quick{
+.quick-grid button{
 
     border:none;
 
@@ -523,233 +402,247 @@ button.ai{
 
     padding:13px 7px;
 
-    background:#172554;
-
-    color:#bfdbfe;
-
-    cursor:pointer;
-
-    font-size:13px;
-
-}
-
-
-.quick:hover{
-
-    background:#1d4ed8;
+    background:#172338;
 
     color:white;
 
-}
+    cursor:pointer;
 
+    font-weight:bold;
 
-/* =========================================
-   CUSTOM / HISTORY
-========================================= */
-
-.custom-item,
-.history-item{
-
-    background:#0b1220;
-
-    border-radius:13px;
-
-    padding:13px;
-
-    margin-top:10px;
+    transition:0.2s;
 
 }
 
+.quick-grid button:hover{
 
-.light .custom-item,
-.light .history-item{
+    background:#243654;
+
+    transform:translateY(-1px);
+
+}
+
+body.light .quick-grid button{
+
+    background:#e8eef7;
+
+    color:#111827;
+
+}
+
+/* =========================
+   AI AREA
+========================= */
+
+.ai-answer{
+
+    margin-top:15px;
+
+    padding:15px;
+
+    border-radius:14px;
+
+    background:#070b14;
+
+    line-height:1.7;
+
+    min-height:60px;
+
+    white-space:pre-wrap;
+
+    word-break:break-word;
+
+}
+
+body.light .ai-answer{
 
     background:#f1f5f9;
 
 }
 
+.ai-status{
 
-.custom-name{
-
-    color:#60a5fa;
-
-    font-weight:bold;
-
-}
-
-
-.custom-url{
-
-    color:#9ca3af;
+    margin-top:10px;
 
     font-size:13px;
 
-    word-break:break-all;
-
-    margin-top:5px;
+    color:#94a3b8;
 
 }
 
-
-.history-command{
-
-    color:#93c5fd;
-
-    font-weight:bold;
-
-}
-
-
-.history-time{
-
-    color:#6b7280;
-
-    font-size:12px;
-
-    margin-top:4px;
-
-}
-
-
-.empty{
-
-    color:#9ca3af;
-
-    padding:10px 0;
-
-}
-
-
-/* =========================================
-   COMMAND LIST
-========================================= */
-
-.commands{
-
-    line-height:1.9;
-
-    color:#d1d5db;
-
-}
-
-
-.light .commands{
-
-    color:#374151;
-
-}
-
-
-.command-row{
-
-    padding:5px 0;
-
-}
-
-
-/* =========================================
-   DIVIDER
-========================================= */
-
-.divider{
-
-    height:1px;
-
-    background:#263244;
-
-    margin:14px 0;
-
-}
-
-
-.light .divider{
-
-    background:#ddd;
-
-}
-
-
-/* =========================================
-   FOOTER
-========================================= */
-
-.footer{
-
-    text-align:center;
-
-    color:#6b7280;
-
-    margin-top:25px;
-
-    font-size:13px;
-
-}
-
-
-/* =========================================
+/* =========================
    BADGE
-========================================= */
+========================= */
 
 .badge{
 
     display:inline-block;
 
-    padding:5px 9px;
+    margin-top:10px;
+
+    padding:6px 10px;
 
     border-radius:20px;
 
-    background:#064e3b;
+    background:#172554;
 
-    color:#86efac;
-
-    font-size:11px;
-
-    margin-top:8px;
-
-}
-
-
-/* =========================================
-   AI STATUS
-========================================= */
-
-.ai-status{
-
-    margin-top:8px;
+    color:#93c5fd;
 
     font-size:12px;
 
-    color:#9ca3af;
+}
+
+/* =========================
+   LIST ITEMS
+========================= */
+
+.history-item,
+.custom-item{
+
+    background:#101a2d;
+
+    padding:12px;
+
+    border-radius:12px;
+
+    margin-top:8px;
+
+    line-height:1.5;
+
+    word-break:break-word;
 
 }
 
+body.light .history-item,
+body.light .custom-item{
 
-/* =========================================
+    background:#eef2f7;
+
+}
+
+.small{
+
+    font-size:12px;
+
+    color:#94a3b8;
+
+}
+
+/* =========================
+   COMMAND LIST
+========================= */
+
+.command-list{
+
+    line-height:1.9;
+
+    color:#cbd5e1;
+
+}
+
+body.light .command-list{
+
+    color:#334155;
+
+}
+
+/* =========================
+   FOOTER
+========================= */
+
+footer{
+
+    text-align:center;
+
+    padding:20px;
+
+    color:#64748b;
+
+    font-size:13px;
+
+}
+
+/* =========================
+   THEME BUTTON
+========================= */
+
+.theme-btn{
+
+    position:fixed;
+
+    right:15px;
+
+    top:15px;
+
+    z-index:100;
+
+    border:none;
+
+    border-radius:50%;
+
+    width:45px;
+
+    height:45px;
+
+    cursor:pointer;
+
+    background:#1e293b;
+
+    color:white;
+
+    font-size:20px;
+
+    box-shadow:
+        0 5px 15px rgba(0,0,0,0.25);
+
+}
+
+body.light .theme-btn{
+
+    background:#e2e8f0;
+
+    color:#111827;
+
+}
+
+/* =========================
    MOBILE
-========================================= */
+========================= */
 
-@media(max-width:500px){
+@media(max-width:600px){
 
-    h1{
+    .container{
 
-        font-size:26px;
-
-    }
-
-
-    .mic{
-
-        width:112px;
-
-        height:112px;
+        padding:12px;
 
     }
 
+    header{
+
+        padding:24px 14px;
+
+    }
+
+    header h1{
+
+        font-size:25px;
+
+    }
 
     .quick-grid{
 
         grid-template-columns:
-        repeat(2,1fr);
+            repeat(2,1fr);
+
+    }
+
+    .mic{
+
+        width:100px;
+
+        height:100px;
+
+        font-size:38px;
 
     }
 
@@ -759,575 +652,476 @@ button.ai{
 
 </head>
 
-
 <body>
+
+<!-- =========================
+     THEME BUTTON
+========================= -->
+
+<button
+    class="theme-btn"
+    id="themeButton"
+    onclick="toggleTheme()"
+>
+    🌙
+</button>
 
 
 <div class="container">
 
 
-<!-- HEADER -->
+<!-- =========================
+     HEADER
+========================= -->
 
-<div class="header">
+<header>
 
-<div class="logo">
-🎙️
+    <h1>
+        🎙️ Voice Command AI
+    </h1>
+
+    <p>
+        Your Personal Smart Voice Assistant
+    </p>
+
+    <span class="version">
+        VERSION 6 • SMART AI
+    </span>
+
+</header>
+
+
+<!-- =========================
+     MICROPHONE CARD
+========================= -->
+
+<div class="card mic-area">
+
+    <button
+        class="mic"
+        id="micButton"
+        onclick="startListening()"
+    >
+        🎤
+    </button>
+
+    <div
+        class="status"
+        id="status"
+    >
+        Tap the microphone and speak
+    </div>
+
+    <span
+        class="badge"
+        id="supportBadge"
+    >
+        Checking voice support...
+    </span>
+
 </div>
 
-<h1>
-Voice Command AI
-</h1>
 
-<div class="subtitle">
-Your Personal Voice Assistant
-</div>
-
-<div class="version">
-VERSION 5 • SMART VOICE COMMANDS
-</div>
-
-</div>
-
-
-<!-- MICROPHONE CARD -->
+<!-- =========================
+     COMMAND CARD
+========================= -->
 
 <div class="card">
 
-<button
-class="mic"
-id="micButton"
-onclick="startListening()"
->
-🎤
-</button>
+    <h2>
+        🗣️ Your Command
+    </h2>
 
-<div
-class="status"
-id="status"
->
-Tap microphone and speak
-</div>
+    <div
+        class="command-box"
+        id="command"
+    >
+        Your voice command will appear here...
+    </div>
 
-<div
-style="text-align:center;"
->
-
-<span
-class="badge"
-id="supportBadge"
->
-Checking voice support...
-</span>
-
-</div>
+    <div
+        class="assistant-box"
+        id="assistant"
+    >
+        Assistant response will appear here...
+    </div>
 
 </div>
 
 
-<!-- COMMAND CARD -->
+<!-- =========================
+     AI ASSISTANT CARD
+========================= -->
 
 <div class="card">
 
-<div class="label">
-🎤 Your Command
+    <h2>
+        🤖 AI Assistant
+    </h2>
+
+    <textarea
+        id="aiQuestion"
+        placeholder="Ask anything..."
+    ></textarea>
+
+    <button
+        class="btn purple"
+        onclick="askAI()"
+    >
+        ✨ Ask AI
+    </button>
+
+    <button
+        class="btn secondary"
+        onclick="clearAI()"
+    >
+        Clear
+    </button>
+
+    <div
+        class="ai-answer"
+        id="aiAnswer"
+    >
+        AI answer will appear here...
+    </div>
+
+    <div
+        class="ai-status"
+        id="aiStatus"
+    >
+        AI Assistant ready
+    </div>
+
 </div>
 
-<div
-class="command"
-id="command"
->
-Waiting for your voice...
-</div>
 
-</div>
-
-
-<!-- ASSISTANT CARD -->
+<!-- =========================
+     QUICK COMMANDS
+========================= -->
 
 <div class="card">
 
-<div class="label">
-🤖 Assistant
+    <h2>
+        ⚡ Quick Commands
+    </h2>
+
+    <div class="quick-grid">
+
+        <button onclick="runQuick('youtube')">
+            ▶️ YouTube
+        </button>
+
+        <button onclick="runQuick('google')">
+            🔎 Google
+        </button>
+
+        <button onclick="runQuick('whatsapp')">
+            💬 WhatsApp
+        </button>
+
+        <button onclick="runQuick('facebook')">
+            📘 Facebook
+        </button>
+
+        <button onclick="runQuick('instagram')">
+            📸 Instagram
+        </button>
+
+        <button onclick="runQuick('tiktok')">
+            🎵 TikTok
+        </button>
+
+        <button onclick="runQuick('time')">
+            🕐 Time
+        </button>
+
+        <button onclick="runQuick('date')">
+            📅 Date
+        </button>
+
+        <button onclick="runQuick('dark')">
+            🌙 Dark
+        </button>
+
+        <button onclick="runQuick('light')">
+            ☀️ Light
+        </button>
+
+        <button onclick="runQuick('back')">
+            ◀️ Back
+        </button>
+
+        <button onclick="runQuick('forward')">
+            ▶️ Forward
+        </button>
+
+        <button onclick="runQuick('refresh')">
+            🔄 Refresh
+        </button>
+
+    </div>
+
 </div>
-
-<div
-class="assistant"
-id="assistant"
->
-Ready for your command...
-</div>
-
-</div>
-
-
-<!-- AI ASSISTANT -->
+<!-- =========================
+     TEXT TOOLS
+========================= -->
 
 <div class="card">
 
-<div class="label">
-✨ Ask AI
-</div>
+    <h2>📝 Smart Text Tools</h2>
 
-<textarea
-id="aiQuestion"
-placeholder="Ask anything... Example: What is HTML?"
-></textarea>
+    <textarea
+        id="textBox"
+        placeholder="Write or paste your text here..."
+    ></textarea>
 
-<button
-class="small ai"
-onclick="askAI()"
-style="width:100%;"
->
-✨ Ask AI
-</button>
+    <button
+        class="btn"
+        onclick="clearText()"
+    >
+        🗑️ Clear
+    </button>
 
-<div
-id="aiAnswer"
-class="assistant"
-style="
-margin-top:15px;
-padding:15px;
-border-radius:14px;
-background:#0b1220;
-min-height:50px;
-"
->
-AI answer will appear here...
-</div>
+    <button
+        class="btn success"
+        onclick="copyText()"
+    >
+        📋 Copy
+    </button>
 
-<div
-id="aiStatus"
-class="ai-status"
->
-AI Assistant ready
-</div>
+    <button
+        class="btn"
+        onclick="showText()"
+    >
+        👁️ Show
+    </button>
+
+    <button
+        class="btn purple"
+        onclick="speakText()"
+    >
+        🔊 Read
+    </button>
 
 </div>
 
 
-<!-- QUICK COMMANDS -->
+<!-- =========================
+     CUSTOM COMMANDS
+========================= -->
 
 <div class="card">
 
-<div class="label">
-⚡ Quick Commands
-</div>
+    <h2>⚙️ Custom Commands</h2>
 
-<div class="quick-grid">
+    <input
+        type="text"
+        id="customCommand"
+        placeholder="Command name e.g. Open my website"
+    >
 
-<button
-class="quick"
-onclick="runQuick('youtube')"
->
-🎵 YouTube
-</button>
+    <br><br>
 
-<button
-class="quick"
-onclick="runQuick('google')"
->
-🌐 Google
-</button>
+    <input
+        type="url"
+        id="customURL"
+        placeholder="Website URL e.g. https://example.com"
+    >
 
-<button
-class="quick"
-onclick="runQuick('whatsapp')"
->
-📱 WhatsApp
-</button>
+    <button
+        class="btn success"
+        onclick="addCustomCommand()"
+    >
+        ➕ Add Command
+    </button>
 
-<button
-class="quick"
-onclick="runQuick('facebook')"
->
-📘 Facebook
-</button>
-
-<button
-class="quick"
-onclick="runQuick('instagram')"
->
-📸 Instagram
-</button>
-
-<button
-class="quick"
-onclick="runQuick('tiktok')"
->
-🎵 TikTok
-</button>
-
-<button
-class="quick"
-onclick="runQuick('time')"
->
-🕐 Time
-</button>
-
-<button
-class="quick"
-onclick="runQuick('date')"
->
-📅 Date
-</button>
-
-<button
-class="quick"
-onclick="runQuick('dark')"
->
-🌙 Dark
-</button>
-
-<button
-class="quick"
-onclick="runQuick('light')"
->
-☀️ Light
-</button>
-
-<button
-class="quick"
-onclick="runQuick('back')"
->
-↩️ Back
-</button>
-
-<button
-class="quick"
-onclick="runQuick('forward')"
->
-↪️ Forward
-</button>
-
-<button
-class="quick"
-onclick="runQuick('refresh')"
->
-🔄 Refresh
-</button>
-
-</div>
+    <div
+        id="customCommands"
+        style="margin-top:15px;"
+    >
+    </div>
 
 </div>
 
 
-<!-- TEXT BOX -->
+<!-- =========================
+     COMMAND HISTORY
+========================= -->
 
 <div class="card">
 
-<div class="label">
-📝 Text Box
-</div>
+    <h2>📜 Command History</h2>
 
-<textarea
-id="textBox"
-placeholder="Voice command se yahan text likh sakte ho..."
-></textarea>
+    <button
+        class="btn danger"
+        onclick="clearHistory()"
+    >
+        🗑️ Clear History
+    </button>
 
-<div class="buttons">
-
-<button
-class="small"
-onclick="clearText()"
->
-🗑️ Clear
-</button>
-
-<button
-class="small"
-onclick="copyText()"
->
-📋 Copy
-</button>
-
-<button
-class="small"
-onclick="showText()"
->
-👁️ Show
-</button>
-
-<button
-class="small"
-onclick="speakText()"
->
-🔊 Read
-</button>
+    <div
+        id="historyList"
+        style="margin-top:10px;"
+    >
+    </div>
 
 </div>
 
-</div>
-<!-- CUSTOM COMMAND -->
+
+<!-- =========================
+     BASIC COMMANDS
+========================= -->
 
 <div class="card">
 
-<div class="label">
-➕ Add Custom Command
-</div>
+    <h2>💡 Voice Commands</h2>
 
-<input
-id="customCommand"
-type="text"
-placeholder="Example: TikTok kholo"
->
+    <div class="command-list">
 
-<input
-id="customURL"
-type="text"
-placeholder="https://www.tiktok.com"
->
+        <p>🎤 <b>"Open YouTube"</b></p>
 
-<button
-class="small"
-onclick="addCustomCommand()"
-style="width:100%;"
->
-➕ Save Custom Command
-</button>
+        <p>🔎 <b>"Search Google cats"</b></p>
 
-</div>
+        <p>▶️ <b>"Search YouTube music"</b></p>
 
+        <p>💬 <b>"Open WhatsApp"</b></p>
 
-<!-- CUSTOM COMMAND LIST -->
+        <p>📘 <b>"Open Facebook"</b></p>
 
-<div class="card">
+        <p>📸 <b>"Open Instagram"</b></p>
 
-<div class="label">
-⚡ My Custom Commands
-</div>
+        <p>🎵 <b>"Open TikTok"</b></p>
 
-<div id="customCommands"></div>
+        <p>📝 <b>"Write hello world"</b></p>
 
-</div>
+        <p>📋 <b>"Copy text"</b></p>
 
+        <p>🔊 <b>"Read text"</b></p>
 
-<!-- HISTORY -->
+        <p>🗑️ <b>"Clear text"</b></p>
 
-<div class="card">
+        <p>🌙 <b>"Dark mode"</b></p>
 
-<div class="label">
-📜 Command History
-</div>
+        <p>☀️ <b>"Light mode"</b></p>
 
-<div id="historyList"></div>
+        <p>🕐 <b>"What time is it"</b></p>
 
-<div class="divider"></div>
+        <p>📅 <b>"What's today's date"</b></p>
 
-<button
-class="small delete"
-onclick="clearHistory()"
-style="width:100%;"
->
-🗑️ Clear History
-</button>
+        <p>◀️ <b>"Go back"</b></p>
+
+        <p>▶️ <b>"Go forward"</b></p>
+
+        <p>🔄 <b>"Refresh page"</b></p>
+
+        <p>🤖 <b>"Ask AI..."</b></p>
+
+    </div>
 
 </div>
 
 
-<!-- BASIC COMMANDS -->
+<!-- =========================
+     FOOTER
+========================= -->
 
-<div class="card">
+<footer>
 
-<div class="label">
-🎤 Voice Commands
-</div>
+    Voice Command AI V6
 
-<div class="commands">
+    <br>
 
-<div class="command-row">
-🎵 YouTube kholo
-</div>
+    Smart • Fast • Voice Powered
 
-<div class="command-row">
-🔎 YouTube par search karo Pakistan
-</div>
-
-<div class="command-row">
-🌐 Google kholo
-</div>
-
-<div class="command-row">
-🔎 Google par search karo Pakistan
-</div>
-
-<div class="command-row">
-📝 Text box mein hello likho
-</div>
-
-<div class="command-row">
-🗑️ Text clear karo
-</div>
-
-<div class="command-row">
-📋 Text copy karo
-</div>
-
-<div class="command-row">
-🔊 Text parho
-</div>
-
-<div class="command-row">
-👁️ Text dikhao
-</div>
-
-<div class="command-row">
-🌙 Dark mode
-</div>
-
-<div class="command-row">
-☀️ Light mode
-</div>
-
-<div class="command-row">
-↩️ Back
-</div>
-
-<div class="command-row">
-↪️ Forward
-</div>
-
-<div class="command-row">
-🔄 Refresh
-</div>
-
-<div class="command-row">
-🕐 Time batao
-</div>
-
-<div class="command-row">
-📅 Date batao
-</div>
-
-<div class="command-row">
-📱 WhatsApp kholo
-</div>
-
-<div class="command-row">
-📘 Facebook kholo
-</div>
-
-<div class="command-row">
-📸 Instagram kholo
-</div>
-
-<div class="command-row">
-🎵 TikTok kholo
-</div>
-
-</div>
-
-</div>
-
-
-<!-- FOOTER -->
-
-<div class="footer">
-Voice Command AI V5 • Smart Voice Assistant
-</div>
+</footer>
 
 
 </div>
 
+
+<!-- =========================
+     JAVASCRIPT START
+========================= -->
 
 <script>
 
-
-/* =========================================
+/* =========================
    STORAGE
-========================================= */
+========================= */
 
-let customCommands = [];
+let customCommands =
+    JSON.parse(
+        localStorage.getItem("customCommands") || "[]"
+    );
 
-let commandHistory = [];
-
-
-try{
-
-    customCommands =
-        JSON.parse(
-            localStorage.getItem(
-                "voiceCustomCommands"
-            ) || "[]"
-        );
-
-    if(
-        !Array.isArray(customCommands)
-    ){
-
-        customCommands = [];
-
-    }
-
-}catch(error){
-
-    customCommands = [];
-
-}
+let commandHistory =
+    JSON.parse(
+        localStorage.getItem("commandHistory") || "[]"
+    );
 
 
-try{
-
-    commandHistory =
-        JSON.parse(
-            localStorage.getItem(
-                "voiceCommandHistory"
-            ) || "[]"
-        );
-
-    if(
-        !Array.isArray(commandHistory)
-    ){
-
-        commandHistory = [];
-
-    }
-
-}catch(error){
-
-    commandHistory = [];
-
-}
-
-
-/* =========================================
-   THEME
-========================================= */
+/* =========================
+   THEME LOAD
+========================= */
 
 function loadTheme(){
 
-    const theme =
-        localStorage.getItem(
-            "voiceTheme"
-        ) || "dark";
+    const savedTheme =
+        localStorage.getItem("theme");
 
+    if(savedTheme === "light"){
 
-    if(theme === "light"){
+        document.body.classList.add("light");
 
-        document.body.classList.add(
-            "light"
-        );
+        document.getElementById("themeButton")
+            .innerText = "🌙";
 
     }else{
 
-        document.body.classList.remove(
-            "light"
-        );
+        document.body.classList.remove("light");
+
+        document.getElementById("themeButton")
+            .innerText = "☀️";
 
     }
 
 }
 
 
-/* =========================================
+/* =========================
+   TOGGLE THEME
+========================= */
+
+function toggleTheme(){
+
+    document.body.classList.toggle("light");
+
+    const isLight =
+        document.body.classList.contains("light");
+
+    localStorage.setItem(
+        "theme",
+        isLight ? "light" : "dark"
+    );
+
+    document.getElementById("themeButton")
+        .innerText =
+        isLight ? "🌙" : "☀️";
+
+}
+
+
+/* =========================
    SPEECH RECOGNITION
-========================================= */
+========================= */
 
 const SpeechRecognition =
     window.SpeechRecognition ||
     window.webkitSpeechRecognition;
 
-
 let recognition = null;
+
+let isListening = false;
 
 
 if(SpeechRecognition){
@@ -1335,192 +1129,116 @@ if(SpeechRecognition){
     recognition =
         new SpeechRecognition();
 
+    recognition.lang = "en-US";
 
-    recognition.lang =
-        "en-US";
+    recognition.continuous = false;
 
+    recognition.interimResults = false;
 
-    recognition.continuous =
-        false;
-
-
-    recognition.interimResults =
-        false;
+    recognition.maxAlternatives = 3;
 
 
-    recognition.maxAlternatives =
-        3;
+    recognition.onstart = function(){
+
+        isListening = true;
+
+        const mic =
+            document.getElementById("micButton");
+
+        mic.classList.add("listening");
+
+        document.getElementById("status")
+            .innerText =
+            "🎙️ Listening... Speak now";
+
+    };
 
 
-    document
-        .getElementById(
-            "supportBadge"
-        )
+    recognition.onend = function(){
+
+        isListening = false;
+
+        document.getElementById("micButton")
+            .classList.remove("listening");
+
+        document.getElementById("status")
+            .innerText =
+            "Tap the microphone and speak";
+
+    };
+
+
+    recognition.onerror = function(event){
+
+        isListening = false;
+
+        document.getElementById("micButton")
+            .classList.remove("listening");
+
+        document.getElementById("status")
+            .innerText =
+            "⚠️ Voice error: " +
+            event.error;
+
+    };
+
+
+    recognition.onresult = function(event){
+
+        const result =
+            event.results[
+                event.results.length - 1
+            ];
+
+        let text =
+            result[0].transcript.trim();
+
+        document.getElementById("command")
+            .innerText = text;
+
+        addHistory(text);
+
+        processCommand(text);
+
+    };
+
+
+    document.getElementById("supportBadge")
         .innerText =
-        "✓ Voice supported";
-
-
-    recognition.onstart =
-        function(){
-
-            document
-                .getElementById(
-                    "status"
-                )
-                .innerText =
-                "🎙️ Listening... Speak now";
-
-
-            document
-                .getElementById(
-                    "micButton"
-                )
-                .classList.add(
-                    "listening"
-                );
-
-        };
-
-
-    recognition.onend =
-        function(){
-
-            document
-                .getElementById(
-                    "status"
-                )
-                .innerText =
-                "Tap microphone and speak";
-
-
-            document
-                .getElementById(
-                    "micButton"
-                )
-                .classList.remove(
-                    "listening"
-                );
-
-        };
-
-
-    recognition.onerror =
-        function(event){
-
-            document
-                .getElementById(
-                    "micButton"
-                )
-                .classList.remove(
-                    "listening"
-                );
-
-
-            document
-                .getElementById(
-                    "status"
-                )
-                .innerText =
-                "Tap microphone and speak";
-
-
-            if(
-                event.error ===
-                "not-allowed"
-            ){
-
-                speak(
-                    "Microphone permission is blocked."
-                );
-
-
-            }else if(
-                event.error ===
-                "no-speech"
-            ){
-
-                speak(
-                    "I could not hear you. Please try again."
-                );
-
-
-            }else{
-
-                speak(
-                    "Voice error: " +
-                    event.error
-                );
-
-            }
-
-        };
-
-
-    recognition.onresult =
-        function(event){
-
-            const command =
-                event
-                    .results[0][0]
-                    .transcript;
-
-
-            document
-                .getElementById(
-                    "command"
-                )
-                .innerText =
-                command;
-
-
-            addHistory(
-                command
-            );
-
-
-            processCommand(
-                command
-            );
-
-        };
-
+        "✓ Voice Recognition Supported";
 
 }else{
 
-    document
-        .getElementById(
-            "supportBadge"
-        )
+    document.getElementById("supportBadge")
         .innerText =
-        "⚠️ Voice not supported";
-
-
-    document
-        .getElementById(
-            "status"
-        )
-        .innerText =
-        "Speech recognition is not supported in this browser";
+        "⚠️ Voice Recognition Not Supported";
 
 }
 
 
-/* =========================================
+/* =========================
    START LISTENING
-========================================= */
+========================= */
 
 function startListening(){
 
     if(!recognition){
 
-        speak(
-            "Sorry, your browser does not support voice recognition."
+        alert(
+            "Voice recognition is not supported in this browser. Try Chrome."
         );
 
         return;
 
     }
 
+    if(isListening){
+
+        recognition.stop();
+
+        return;
+
+    }
 
     try{
 
@@ -1528,308 +1246,204 @@ function startListening(){
 
     }catch(error){
 
-        console.log(
-            "Recognition start:",
-            error
-        );
+        console.log(error);
 
     }
 
 }
 
 
-/* =========================================
+/* =========================
    SPEAK
-========================================= */
+========================= */
 
 function speak(text){
 
-    const assistant =
-        document.getElementById(
-            "assistant"
-        );
+    if(!("speechSynthesis" in window)){
 
-
-    if(assistant){
-
-        assistant.innerText =
-            text;
+        return;
 
     }
 
+    window.speechSynthesis.cancel();
 
-    if(
-        "speechSynthesis"
-        in window
-    ){
-
-        const speech =
-            new SpeechSynthesisUtterance(
-                String(text)
-            );
-
-
-        speech.lang =
-            "en-US";
-
-
-        speech.rate =
-            1;
-
-
-        speech.pitch =
-            1;
-
-
-        window.speechSynthesis.cancel();
-
-
-        window.speechSynthesis.speak(
-            speech
+    const message =
+        new SpeechSynthesisUtterance(
+            String(text)
         );
 
-    }
+    message.lang = "en-US";
+
+    message.rate = 1;
+
+    message.pitch = 1;
+
+    window.speechSynthesis.speak(message);
 
 }
 
 
-/* =========================================
+/* =========================
    NORMALIZE COMMAND
-========================================= */
+========================= */
 
 function normalizeCommand(text){
 
-    return String(text)
-
+    return String(text || "")
         .toLowerCase()
-
         .trim()
-
-        .replace(
-            /[.,!?]/g,
-            ""
-        )
-
-        .replace(
-            /\s+/g,
-            " "
-        );
+        .replace(/\s+/g," ");
 
 }
 
 
-/* =========================================
+/* =========================
    NORMALIZE URL
-========================================= */
+========================= */
 
 function normalizeURL(url){
 
-    url =
-        String(
-            url || ""
-        ).trim();
+    let value =
+        String(url || "").trim();
 
-
-    if(!url){
+    if(!value){
 
         return "";
 
     }
 
-
     if(
-        !url.startsWith(
-            "http://"
-        ) &&
-        !url.startsWith(
-            "https://"
-        )
+        !value.startsWith("http://") &&
+        !value.startsWith("https://")
     ){
 
-        url =
-            "https://" +
-            url;
+        value =
+            "https://" + value;
 
     }
 
-
-    return url;
+    return value;
 
 }
 
 
-/* =========================================
+/* =========================
    OPEN WEBSITE
-========================================= */
+========================= */
 
 function openWebsite(url){
 
-    const newWindow =
-        window.open(
-            url,
-            "_blank"
-        );
+    const finalURL =
+        normalizeURL(url);
 
+    if(!finalURL){
 
-    if(!newWindow){
-
-        window.location.href =
-            url;
+        return;
 
     }
 
+    window.open(
+        finalURL,
+        "_blank"
+    );
+
 }
-
-
-/* =========================================
-   HISTORY
-========================================= */
+   /* =========================
+   HISTORY FUNCTIONS
+========================= */
 
 function addHistory(command){
 
+    if(!command) return;
+
     commandHistory.unshift({
-
-        command:
-            String(command),
-
-        time:
-            new Date()
-                .toLocaleTimeString()
-
+        text: String(command),
+        time: new Date().toLocaleString()
     });
 
+    /* Keep latest 30 commands */
 
-    if(
-        commandHistory.length >
-        20
-    ){
+    commandHistory =
+        commandHistory.slice(0,30);
 
-        commandHistory =
-            commandHistory.slice(
-                0,
-                20
-            );
-
-    }
-
-
-    try{
-
-        localStorage.setItem(
-
-            "voiceCommandHistory",
-
-            JSON.stringify(
-                commandHistory
-            )
-
-        );
-
-    }catch(error){
-
-        console.log(
-            error
-        );
-
-    }
-
+    localStorage.setItem(
+        "commandHistory",
+        JSON.stringify(commandHistory)
+    );
 
     renderHistory();
 
 }
 
 
+/* =========================
+   RENDER HISTORY
+========================= */
+
 function renderHistory(){
 
-    const container =
-        document.getElementById(
-            "historyList"
-        );
+    const box =
+        document.getElementById("historyList");
 
+    if(!box) return;
 
-    if(!container){
+    if(commandHistory.length === 0){
 
-        return;
-
-    }
-
-
-    container.innerHTML =
-        "";
-
-
-    if(
-        commandHistory.length ===
-        0
-    ){
-
-        container.innerHTML =
-            '<div class="empty">No commands yet.</div>';
+        box.innerHTML =
+            '<div class="small">No commands yet.</div>';
 
         return;
 
     }
 
+    box.innerHTML =
+        commandHistory.map(
+            function(item){
 
-    commandHistory.forEach(
-        function(item){
+                return `
+                    <div class="history-item">
 
-            const div =
-                document.createElement(
-                    "div"
-                );
+                        <b>🎤 ${escapeHTML(item.text)}</b>
 
+                        <div class="small">
+                            ${escapeHTML(item.time)}
+                        </div>
 
-            div.className =
-                "history-item";
+                    </div>
+                `;
 
-
-            div.innerHTML = `
-
-                <div class="history-command">
-                    🎤 ${escapeHTML(item.command)}
-                </div>
-
-                <div class="history-time">
-                    🕐 ${escapeHTML(item.time)}
-                </div>
-
-            `;
-
-
-            container.appendChild(
-                div
-            );
-
-        }
-    );
+            }
+        ).join("");
 
 }
 
+
+/* =========================
+   CLEAR HISTORY
+========================= */
 
 function clearHistory(){
 
     commandHistory = [];
 
-
     localStorage.removeItem(
-        "voiceCommandHistory"
+        "commandHistory"
     );
-
 
     renderHistory();
 
+    document.getElementById("assistant")
+        .innerText =
+        "Command history cleared.";
 
-    speak(
-        "Command history cleared."
-    );
+    speak("Command history cleared.");
 
 }
 
 
-/* =========================================
-   CUSTOM COMMANDS
-========================================= */
+/* =========================
+   CUSTOM COMMAND
+========================= */
 
 function addCustomCommand(){
 
@@ -1838,433 +1452,293 @@ function addCustomCommand(){
             "customCommand"
         );
 
-
     const urlInput =
         document.getElementById(
             "customURL"
         );
 
-
     const command =
         commandInput.value.trim();
 
-
     const url =
         normalizeURL(
-            urlInput.value
+            urlInput.value.trim()
         );
-
 
     if(!command){
 
-        speak(
-            "Please enter a custom command."
+        alert(
+            "Please enter a command."
         );
-
-
-        commandInput.focus();
 
         return;
 
     }
-
 
     if(!url){
 
-        speak(
-            "Please enter a website address."
-        );
-
-
-        urlInput.focus();
-
-        return;
-
-    }
-
-
-    const commandLower =
-        normalizeCommand(
-            command
-        );
-
-
-    const existing =
-        customCommands.find(
-            function(item){
-
-                return normalizeCommand(
-                    item.command
-                ) === commandLower;
-
-            }
-        );
-
-
-    if(existing){
-
-        speak(
-            "This custom command already exists."
+        alert(
+            "Please enter a website URL."
         );
 
         return;
 
     }
-
 
     customCommands.push({
 
-        command:
-            commandLower,
+        command:command,
 
-        displayCommand:
-            command,
-
-        url:
-            url
+        url:url
 
     });
 
+    localStorage.setItem(
+        "customCommands",
+        JSON.stringify(customCommands)
+    );
 
-    try{
+    commandInput.value = "";
 
-        localStorage.setItem(
-
-            "voiceCustomCommands",
-
-            JSON.stringify(
-                customCommands
-            )
-
-        );
-
-    }catch(error){
-
-        speak(
-            "Could not save the command."
-        );
-
-        return;
-
-    }
-
-
-    commandInput.value =
-        "";
-
-    urlInput.value =
-        "";
-
+    urlInput.value = "";
 
     renderCustomCommands();
 
+    document.getElementById("assistant")
+        .innerText =
+        "Custom command added successfully.";
 
     speak(
-        "Custom command saved successfully."
+        "Custom command added successfully."
     );
 
 }
 
 
+/* =========================
+   RENDER CUSTOM COMMANDS
+========================= */
+
 function renderCustomCommands(){
 
-    const container =
+    const box =
         document.getElementById(
             "customCommands"
         );
 
+    if(!box) return;
 
-    container.innerHTML =
-        "";
+    if(customCommands.length === 0){
 
-
-    if(
-        customCommands.length ===
-        0
-    ){
-
-        container.innerHTML =
-            '<div class="empty">No custom commands added yet.</div>';
+        box.innerHTML =
+            '<div class="small">No custom commands added.</div>';
 
         return;
 
     }
 
+    box.innerHTML =
+        customCommands.map(
+            function(item,index){
 
-    customCommands.forEach(
-        function(item,index){
+                return `
 
-            const div =
-                document.createElement(
-                    "div"
-                );
+                    <div class="custom-item">
 
+                        <b>
+                            🎤 ${escapeHTML(item.command)}
+                        </b>
 
-            div.className =
-                "custom-item";
+                        <div class="small">
+                            ${escapeHTML(item.url)}
+                        </div>
 
+                        <button
+                            class="btn"
+                            onclick="testCustomCommand(${index})"
+                        >
+                            ▶️ Open
+                        </button>
 
-            div.innerHTML = `
+                        <button
+                            class="btn danger"
+                            onclick="deleteCustomCommand(${index})"
+                        >
+                            🗑️ Delete
+                        </button>
 
-                <div class="custom-name">
-                    🎤 ${escapeHTML(item.displayCommand)}
-                </div>
+                    </div>
 
-                <div class="custom-url">
-                    🌐 ${escapeHTML(item.url)}
-                </div>
+                `;
 
-                <div class="divider"></div>
-
-                <button
-                    class="small"
-                    onclick="testCustomCommand(${index})"
-                >
-                    ▶️ Test
-                </button>
-
-                <button
-                    class="small delete"
-                    onclick="deleteCustomCommand(${index})"
-                >
-                    🗑️ Delete
-                </button>
-
-            `;
-
-
-            container.appendChild(
-                div
-            );
-
-        }
-    );
+            }
+        ).join("");
 
 }
 
+
+/* =========================
+   TEST CUSTOM COMMAND
+========================= */
 
 function testCustomCommand(index){
 
     const item =
         customCommands[index];
 
+    if(!item) return;
 
-    if(!item){
+    openWebsite(item.url);
 
-        return;
-
-    }
-
-
-    speak(
-        "Opening " +
-        item.displayCommand
-    );
-
-
-    setTimeout(
-        function(){
-
-            openWebsite(
-                item.url
-            );
-
-        },
-        500
-    );
+    document.getElementById("assistant")
+        .innerText =
+        "Opening " + item.command;
 
 }
 
 
+/* =========================
+   DELETE CUSTOM COMMAND
+========================= */
+
 function deleteCustomCommand(index){
 
-    const item =
-        customCommands[index];
-
-
-    if(!item){
+    if(
+        !confirm(
+            "Delete this custom command?"
+        )
+    ){
 
         return;
 
     }
-
 
     customCommands.splice(
         index,
         1
     );
 
-
-    try{
-
-        localStorage.setItem(
-
-            "voiceCustomCommands",
-
-            JSON.stringify(
-                customCommands
-            )
-
-        );
-
-    }catch(error){
-
-        console.log(
-            error
-        );
-
-    }
-
+    localStorage.setItem(
+        "customCommands",
+        JSON.stringify(customCommands)
+    );
 
     renderCustomCommands();
 
-
-    speak(
-        "Custom command deleted."
-    );
-
 }
 
 
-/* =========================================
+/* =========================
    ESCAPE HTML
-========================================= */
+========================= */
 
 function escapeHTML(text){
 
-    return String(text)
-
-        .replace(
-            /&/g,
-            "&amp;"
-        )
-
-        .replace(
-            /</g,
-            "&lt;"
-        )
-
-        .replace(
-            />/g,
-            "&gt;"
-        )
-
-        .replace(
-            /"/g,
-            "&quot;"
-        )
-
-        .replace(
-            /'/g,
-            "&#039;"
-        );
+    return String(text || "")
+        .replace(/&/g,"&amp;")
+        .replace(/</g,"&lt;")
+        .replace(/>/g,"&gt;")
+        .replace(/"/g,"&quot;")
+        .replace(/'/g,"&#039;");
 
 }
-    /* =========================================
+
+
+/* =========================
    QUICK COMMANDS
-========================================= */
+========================= */
 
 function runQuick(type){
 
-    if(type === "youtube"){
-        processCommand("youtube kholo");
-        return;
-    }
+    const commands = {
 
-    if(type === "google"){
-        processCommand("google kholo");
-        return;
-    }
+        youtube:
+            "open youtube",
 
-    if(type === "whatsapp"){
-        processCommand("whatsapp kholo");
-        return;
-    }
+        google:
+            "open google",
 
-    if(type === "facebook"){
-        processCommand("facebook kholo");
-        return;
-    }
+        whatsapp:
+            "open whatsapp",
 
-    if(type === "instagram"){
-        processCommand("instagram kholo");
-        return;
-    }
+        facebook:
+            "open facebook",
 
-    if(type === "tiktok"){
-        processCommand("tiktok kholo");
-        return;
-    }
+        instagram:
+            "open instagram",
 
-    if(type === "time"){
-        processCommand("time batao");
-        return;
-    }
+        tiktok:
+            "open tiktok",
 
-    if(type === "date"){
-        processCommand("date batao");
-        return;
-    }
+        time:
+            "what time is it",
 
-    if(type === "dark"){
-        processCommand("dark mode");
-        return;
-    }
+        date:
+            "what is today's date",
 
-    if(type === "light"){
-        processCommand("light mode");
-        return;
-    }
+        dark:
+            "dark mode",
 
-    if(type === "back"){
-        processCommand("back");
-        return;
-    }
+        light:
+            "light mode",
 
-    if(type === "forward"){
-        processCommand("forward");
-        return;
-    }
+        back:
+            "go back",
 
-    if(type === "refresh"){
-        processCommand("refresh");
-        return;
-    }
+        forward:
+            "go forward",
+
+        refresh:
+            "refresh page"
+
+    };
+
+    const command =
+        commands[type];
+
+    if(!command) return;
+
+    document.getElementById("command")
+        .innerText = command;
+
+    addHistory(command);
+
+    processCommand(command);
 
 }
 
 
-/* =========================================
-   TEXT FUNCTIONS
-========================================= */
+/* =========================
+   TEXT CLEAR
+========================= */
 
 function clearText(){
 
-    document.getElementById(
-        "textBox"
-    ).value = "";
+    document.getElementById("textBox")
+        .value = "";
 
-    speak(
-        "Text cleared."
-    );
+    document.getElementById("assistant")
+        .innerText =
+        "Text cleared.";
+
+    speak("Text cleared.");
 
 }
 
 
+/* =========================
+   COPY TEXT
+========================= */
+
 async function copyText(){
 
-    const textarea =
-        document.getElementById(
-            "textBox"
-        );
-
     const text =
-        textarea.value;
+        document.getElementById("textBox")
+            .value;
 
+    if(!text){
 
-    if(!text.trim()){
-
-        speak(
+        alert(
             "There is no text to copy."
         );
 
@@ -2272,21 +1746,29 @@ async function copyText(){
 
     }
 
-
     try{
 
         if(
             navigator.clipboard &&
-            navigator.clipboard.writeText
+            window.isSecureContext
         ){
 
-            await navigator.clipboard.writeText(
-                text
-            );
+            await navigator.clipboard
+                .writeText(text);
 
         }else{
 
-            textarea.select();
+            const box =
+                document.getElementById(
+                    "textBox"
+                );
+
+            box.select();
+
+            box.setSelectionRange(
+                0,
+                999999
+            );
 
             document.execCommand(
                 "copy"
@@ -2294,108 +1776,88 @@ async function copyText(){
 
         }
 
+        document.getElementById("assistant")
+            .innerText =
+            "Text copied successfully.";
 
         speak(
             "Text copied successfully."
         );
 
-
     }catch(error){
 
-        try{
-
-            textarea.select();
-
-            document.execCommand(
-                "copy"
-            );
-
-            speak(
-                "Text copied successfully."
-            );
-
-        }catch(error2){
-
-            speak(
-                "I could not copy the text."
-            );
-
-        }
+        alert(
+            "Copy failed. Please select the text manually."
+        );
 
     }
 
 }
 
+
+/* =========================
+   SHOW TEXT
+========================= */
 
 function showText(){
 
     const text =
-        document.getElementById(
-            "textBox"
-        ).value;
+        document.getElementById("textBox")
+            .value.trim();
 
+    if(!text){
 
-    if(!text.trim()){
-
-        speak(
-            "The text box is empty."
-        );
+        document.getElementById("assistant")
+            .innerText =
+            "There is no text to show.";
 
         return;
 
     }
 
-
-    document.getElementById(
-        "command"
-    ).innerText =
-        text;
-
-
-    speak(
-        "Here is your text."
-    );
+    document.getElementById("assistant")
+        .innerText = text;
 
 }
 
+
+/* =========================
+   SPEAK TEXT
+========================= */
 
 function speakText(){
 
     const text =
-        document.getElementById(
-            "textBox"
-        ).value.trim();
-
+        document.getElementById("textBox")
+            .value.trim();
 
     if(!text){
 
-        speak(
-            "The text box is empty."
+        alert(
+            "Please enter some text first."
         );
 
         return;
 
     }
 
+    speak(text);
 
-    speak(
-        text
-    );
+    document.getElementById("assistant")
+        .innerText =
+        "🔊 Reading your text...";
 
 }
 
 
-/* =========================================
+/* =========================
    CUSTOM COMMAND CHECK
-========================================= */
+========================= */
 
 function checkCustomCommand(cmd){
 
     const normalized =
-        normalizeCommand(
-            cmd
-        );
-
+        normalizeCommand(cmd);
 
     for(
         let i = 0;
@@ -2403,38 +1865,29 @@ function checkCustomCommand(cmd){
         i++
     ){
 
-        const item =
-            customCommands[i];
-
-
-        const savedCommand =
+        const saved =
             normalizeCommand(
-                item.command
+                customCommands[i].command
             );
 
-
         if(
-            normalized === savedCommand ||
-            normalized.includes(savedCommand)
+            normalized === saved ||
+            normalized.includes(saved)
         ){
+
+            openWebsite(
+                customCommands[i].url
+            );
+
+            document.getElementById("assistant")
+                .innerText =
+                "Opening " +
+                customCommands[i].command;
 
             speak(
                 "Opening " +
-                item.displayCommand
+                customCommands[i].command
             );
-
-
-            setTimeout(
-                function(){
-
-                    openWebsite(
-                        item.url
-                    );
-
-                },
-                500
-            );
-
 
             return true;
 
@@ -2442,860 +1895,684 @@ function checkCustomCommand(cmd){
 
     }
 
-
     return false;
 
 }
 
 
-/* =========================================
+/* =========================
    YOUTUBE SEARCH
-========================================= */
+========================= */
 
-function youtubeSearch(cmd){
-
-    let query =
-        cmd
-
-        .replace(
-            "youtube par search karo",
-            ""
-        )
-
-        .replace(
-            "youtube par search",
-            ""
-        )
-
-        .replace(
-            "youtube search karo",
-            ""
-        )
-
-        .replace(
-            "youtube search",
-            ""
-        )
-
-        .trim();
-
-
-    if(!query){
-
-        speak(
-            "What should I search on YouTube?"
-        );
-
-        return;
-
-    }
-
-
-    speak(
-        "Searching YouTube for " +
-        query
-    );
-
-
-    openWebsite(
-
-        "https://www.youtube.com/results?search_query=" +
-
-        encodeURIComponent(
-            query
-        )
-
-    );
-
-}
-
-
-/* =========================================
-   GOOGLE SEARCH
-========================================= */
-
-function googleSearch(cmd){
+function youtubeSearch(command){
 
     let query =
-        cmd
-
-        .replace(
-            "google par search karo",
-            ""
-        )
-
-        .replace(
-            "google par search",
-            ""
-        )
-
-        .replace(
-            "google search karo",
-            ""
-        )
-
-        .replace(
-            "google search",
-            ""
-        )
-
-        .trim();
-
+        normalizeCommand(command)
+            .replace(
+                /^search youtube/i,
+                ""
+            )
+            .replace(
+                /^youtube search/i,
+                ""
+            )
+            .replace(
+                /^search on youtube/i,
+                ""
+            )
+            .trim();
 
     if(!query){
-
-        speak(
-            "What should I search on Google?"
-        );
-
-        return;
-
-    }
-
-
-    speak(
-        "Searching Google for " +
-        query
-    );
-
-
-    openWebsite(
-
-        "https://www.google.com/search?q=" +
-
-        encodeURIComponent(
-            query
-        )
-
-    );
-
-}
-
-
-/* =========================================
-   MAIN COMMAND PROCESSOR
-========================================= */
-
-function processCommand(command){
-
-    const cmd =
-        normalizeCommand(
-            command
-        );
-
-
-    if(!cmd){
-
-        speak(
-            "Please say a command."
-        );
-
-        return;
-
-    }
-
-
-    /* CUSTOM COMMANDS FIRST */
-
-    if(
-        checkCustomCommand(
-            cmd
-        )
-    ){
-
-        return;
-
-    }
-
-
-    /* HELLO */
-
-    if(
-
-        cmd.includes("hello") ||
-
-        cmd === "hi" ||
-
-        cmd.includes("salam") ||
-
-        cmd.includes("assalam")
-
-    ){
-
-        speak(
-            "Hello! I am ready for your command."
-        );
-
-        return;
-
-    }
-
-
-    /* YOUTUBE SEARCH */
-
-    if(
-
-        cmd.includes(
-            "youtube par search"
-        ) ||
-
-        cmd.includes(
-            "youtube search"
-        )
-
-    ){
-
-        youtubeSearch(
-            cmd
-        );
-
-        return;
-
-    }
-
-
-    /* YOUTUBE */
-
-    if(
-
-        cmd.includes(
-            "youtube kholo"
-        ) ||
-
-        cmd === "youtube" ||
-
-        cmd.includes(
-            "open youtube"
-        )
-
-    ){
-
-        speak(
-            "Opening YouTube."
-        );
-
 
         openWebsite(
             "https://www.youtube.com"
         );
 
-
         return;
 
     }
 
+    const url =
+        "https://www.youtube.com/results?search_query=" +
+        encodeURIComponent(query);
 
-    /* GOOGLE SEARCH */
+    openWebsite(url);
 
-    if(
+    document.getElementById("assistant")
+        .innerText =
+        "Searching YouTube for " +
+        query;
 
-        cmd.includes(
-            "google par search"
-        ) ||
-
-        cmd.includes(
-            "google search"
-        )
-
-    ){
-
-        googleSearch(
-            cmd
-        );
-
-        return;
-
-    }
+}
 
 
-    /* GOOGLE */
+/* =========================
+   GOOGLE SEARCH
+========================= */
 
-    if(
+function googleSearch(command){
 
-        cmd.includes(
-            "google kholo"
-        ) ||
+    let query =
+        normalizeCommand(command)
+            .replace(
+                /^search google/i,
+                ""
+            )
+            .replace(
+                /^google search/i,
+                ""
+            )
+            .replace(
+                /^search on google/i,
+                ""
+            )
+            .trim();
 
-        cmd === "google" ||
-
-        cmd.includes(
-            "open google"
-        )
-
-    ){
-
-        speak(
-            "Opening Google."
-        );
-
+    if(!query){
 
         openWebsite(
             "https://www.google.com"
         );
 
+        return;
+
+    }
+
+    const url =
+        "https://www.google.com/search?q=" +
+        encodeURIComponent(query);
+
+    openWebsite(url);
+
+    document.getElementById("assistant")
+        .innerText =
+        "Searching Google for " +
+        query;
+
+}
+
+
+/* =========================
+   PROCESS COMMAND START
+========================= */
+
+function processCommand(command){
+
+    const cmd =
+        normalizeCommand(command);
+
+    if(!cmd){
 
         return;
 
     }
 
-
-    /* WHATSAPP */
+    /* Custom commands first */
 
     if(
-
-        cmd.includes(
-            "whatsapp kholo"
-        ) ||
-
-        cmd.includes(
-            "open whatsapp"
-        ) ||
-
-        cmd === "whatsapp"
-
+        checkCustomCommand(cmd)
     ){
 
-        speak(
-            "Opening WhatsApp Web."
+        return;
+
+    }
+
+    /* Greeting */
+
+    if(
+        cmd === "hello" ||
+        cmd === "hi" ||
+        cmd.includes("salam")
+    ){
+
+        const response =
+            "Hello! How can I help you?";
+
+        document.getElementById("assistant")
+            .innerText = response;
+
+        speak(response);
+
+        return;
+
+    }
+
+    /* YouTube search */
+
+    if(
+        cmd.startsWith("search youtube") ||
+        cmd.startsWith("youtube search") ||
+        cmd.startsWith("search on youtube")
+    ){
+
+        youtubeSearch(cmd);
+
+        return;
+
+    }
+
+    /* YouTube open */
+
+    if(
+        cmd.includes("open youtube") ||
+        cmd === "youtube"
+    ){
+
+        openWebsite(
+            "https://www.youtube.com"
         );
 
+        document.getElementById("assistant")
+            .innerText =
+            "Opening YouTube...";
+
+        speak("Opening YouTube");
+
+        return;
+
+    }
+
+    /* Google search */
+
+    if(
+        cmd.startsWith("search google") ||
+        cmd.startsWith("google search") ||
+        cmd.startsWith("search on google")
+    ){
+
+        googleSearch(cmd);
+
+        return;
+
+    }
+
+    /* Google open */
+
+    if(
+        cmd.includes("open google") ||
+        cmd === "google"
+    ){
+
+        openWebsite(
+            "https://www.google.com"
+        );
+
+        document.getElementById("assistant")
+            .innerText =
+            "Opening Google...";
+
+        speak("Opening Google");
+
+        return;
+
+    }
+
+    /* WhatsApp */
+
+    if(
+        cmd.includes("open whatsapp") ||
+        cmd === "whatsapp"
+    ){
 
         openWebsite(
             "https://web.whatsapp.com"
         );
 
+        document.getElementById("assistant")
+            .innerText =
+            "Opening WhatsApp...";
+
+        speak("Opening WhatsApp");
 
         return;
 
     }
 
-
-    /* FACEBOOK */
+    /* Facebook */
 
     if(
-
-        cmd.includes(
-            "facebook kholo"
-        ) ||
-
-        cmd.includes(
-            "open facebook"
-        ) ||
-
+        cmd.includes("open facebook") ||
         cmd === "facebook"
-
     ){
-
-        speak(
-            "Opening Facebook."
-        );
-
 
         openWebsite(
             "https://www.facebook.com"
         );
 
+        document.getElementById("assistant")
+            .innerText =
+            "Opening Facebook...";
+
+        speak("Opening Facebook");
 
         return;
 
-    }
-
-
-    /* INSTAGRAM */
-
-    if(
-
-        cmd.includes(
-            "instagram kholo"
-        ) ||
-
-        cmd.includes(
-            "open instagram"
-        ) ||
-
-        cmd === "instagram"
-
-    ){
-
-        speak(
-            "Opening Instagram."
-        );
-
-
-        openWebsite(
-            "https://www.instagram.com"
-        );
-
-
-        return;
-
-    }
-
-
-    /* TIKTOK */
-
-    if(
-
-        cmd.includes(
-            "tiktok kholo"
-        ) ||
-
-        cmd === "tiktok" ||
-
-        cmd.includes(
-            "open tiktok"
-        )
-
-    ){
-
-        speak(
-            "Opening TikTok."
-        );
-
-
-        openWebsite(
-            "https://www.tiktok.com"
-        );
-
-
-        return;
-
-    }
-
-
-    /* TEXT WRITE */
-
-    if(
-
-        cmd.includes(
-            "text box mein"
-        ) ||
-
-        cmd.includes(
-            "textbox mein"
-        )
-
-    ){
-
-        let text =
-            cmd
-
-            .replace(
-                "text box mein",
-                ""
-            )
-
-            .replace(
-                "textbox mein",
-                ""
-            )
-
-            .replace(
-                "likho",
-                ""
-            )
-
-            .replace(
-                "write",
-                ""
-            )
-
-            .trim();
-
-
-        if(!text){
-
-            speak(
-                "Please tell me what I should write."
-            );
-
-            return;
-
-        }
-
-
-        document.getElementById(
-            "textBox"
-        ).value =
-            text;
-
-
-        speak(
-            "Done. I wrote it in the text box."
-        );
-
-
-        return;
-
-    }
-
-
-    /* CLEAR TEXT */
-
-    if(
-
-        cmd.includes(
-            "text clear"
-        ) ||
-
-        cmd.includes(
-            "text hatao"
-        ) ||
-
-        cmd.includes(
-            "text delete"
-        )
-
-    ){
-
-        clearText();
-
-        return;
-
-    }
-
-
-    /* COPY TEXT */
-
-    if(
-
-        cmd.includes(
-            "text copy"
-        ) ||
-
-        cmd.includes(
-            "copy karo"
-        )
-
-    ){
-
-        copyText();
-
-        return;
-
-    }
-
-
-    /* READ TEXT */
-
-    if(
-
-        cmd.includes(
-            "text parho"
-        ) ||
-
-        cmd.includes(
-            "text read"
-        ) ||
-
-        cmd.includes(
-            "read text"
-        )
-
-    ){
-
-        speakText();
-
-        return;
-
-    }
-
-
-    /* SHOW TEXT */
-
-    if(
-
-        cmd.includes(
-            "show text"
-        ) ||
-
-        cmd.includes(
-            "text dikhao"
-        )
-
-    ){
-
-        showText();
-
-        return;
-
-    }
-
-
-    /* DARK MODE */
-
-    if(
-
-        cmd.includes(
-            "dark mode"
-        ) ||
-
-        cmd.includes(
-            "dark karo"
-        )
-
-    ){
-
-        document.body.classList.remove(
-            "light"
-        );
-
-
-        localStorage.setItem(
-            "voiceTheme",
-            "dark"
-        );
-
-
-        speak(
-            "Dark mode enabled."
-        );
-
-
-        return;
-
-    }
-
-
-    /* LIGHT MODE */
-
-    if(
-
-        cmd.includes(
-            "light mode"
-        ) ||
-
-        cmd.includes(
-            "light karo"
-        )
-
-    ){
-
-        document.body.classList.add(
-            "light"
-        );
-
-
-        localStorage.setItem(
-            "voiceTheme",
-            "light"
-        );
-
-
-        speak(
-            "Light mode enabled."
-        );
-
-
-        return;
-
-    }
-
-
-    /* BACK */
-
-    if(
-
-        cmd === "back" ||
-
-        cmd.includes(
-            "go back"
-        ) ||
-
-        cmd.includes(
-            "peeche"
-        )
-
-    ){
-
-        speak(
-            "Going back."
-        );
-
-
-        setTimeout(
-            function(){
-
-                history.back();
-
-            },
-            300
-        );
-
-
-        return;
-
-    }
-
-
-    /* FORWARD */
-
-    if(
-
-        cmd === "forward" ||
-
-        cmd.includes(
-            "go forward"
-        ) ||
-
-        cmd.includes(
-            "aagay"
-        )
-
-    ){
-
-        speak(
-            "Going forward."
-        );
-
-
-        setTimeout(
-            function(){
-
-                history.forward();
-
-            },
-            300
-        );
-
-
-        return;
-
-    }
-
-
-    /* REFRESH */
-
-    if(
-
-        cmd === "refresh" ||
-
-        cmd.includes(
-            "page refresh"
-        ) ||
-
-        cmd.includes(
-            "reload"
-        )
-
-    ){
-
-        speak(
-            "Refreshing the page."
-        );
-
-
-        setTimeout(
-            function(){
-
-                location.reload();
-
-            },
-            500
-        );
-
-
-        return;
-
-    }
-
-
-    /* TIME */
-
-    if(
-
-        cmd === "time" ||
-
-        cmd.includes(
-            "time batao"
-        ) ||
-
-        cmd.includes(
-            "what time"
-        )
-
-    ){
-
-        const now =
-            new Date();
-
-
-        const time =
-            now.toLocaleTimeString(
-                [],
-                {
-                    hour:"numeric",
-                    minute:"2-digit"
-                }
-            );
-
-
-        speak(
-            "The time is " +
-            time
-        );
-
-
-        return;
-
-    }
-
-
-    /* DATE */
-
-    if(
-
-        cmd === "date" ||
-
-        cmd.includes(
-            "date batao"
-        ) ||
-
-        cmd.includes(
-            "today date"
-        )
-
-    ){
-
-        const now =
-            new Date();
-
-
-        const date =
-            now.toLocaleDateString(
-                [],
-                {
-                    weekday:"long",
-                    year:"numeric",
-                    month:"long",
-                    day:"numeric"
-                }
-            );
-
-
-        speak(
-            "Today is " +
-            date
-        );
-
-
-        return;
-
-    }
-
-
-    /* AI FALLBACK */
-
-    askAI(
-        command
+       }
+   /* =========================
+   INSTAGRAM
+========================= */
+
+if(
+    cmd.includes("open instagram") ||
+    cmd === "instagram"
+){
+
+    openWebsite(
+        "https://www.instagram.com"
     );
 
-    }
-    /* =========================================
-   AI ASSISTANT
-========================================= */
+    document.getElementById("assistant")
+        .innerText =
+        "Opening Instagram...";
 
-async function askAI(commandFromVoice = ""){
+    speak("Opening Instagram");
+
+    return;
+
+}
+
+
+/* =========================
+   TIKTOK
+========================= */
+
+if(
+    cmd.includes("open tiktok") ||
+    cmd === "tiktok"
+){
+
+    openWebsite(
+        "https://www.tiktok.com"
+    );
+
+    document.getElementById("assistant")
+        .innerText =
+        "Opening TikTok...";
+
+    speak("Opening TikTok");
+
+    return;
+
+}
+
+
+/* =========================
+   WRITE TEXT
+========================= */
+
+if(
+    cmd.startsWith("write ")
+){
+
+    const text =
+        command
+            .substring(6)
+            .trim();
+
+    if(text){
+
+        document.getElementById("textBox")
+            .value = text;
+
+        document.getElementById("assistant")
+            .innerText =
+            "Text written successfully.";
+
+        speak("Text written successfully.");
+
+    }
+
+    return;
+
+}
+
+
+/* =========================
+   CLEAR TEXT COMMAND
+========================= */
+
+if(
+    cmd.includes("clear text") ||
+    cmd === "clear"
+){
+
+    clearText();
+
+    return;
+
+}
+
+
+/* =========================
+   COPY TEXT COMMAND
+========================= */
+
+if(
+    cmd.includes("copy text") ||
+    cmd === "copy"
+){
+
+    copyText();
+
+    return;
+
+}
+
+
+/* =========================
+   SHOW TEXT COMMAND
+========================= */
+
+if(
+    cmd.includes("show text") ||
+    cmd === "show text"
+){
+
+    showText();
+
+    return;
+
+}
+
+
+/* =========================
+   READ TEXT COMMAND
+========================= */
+
+if(
+    cmd.includes("read text") ||
+    cmd.includes("read my text")
+){
+
+    speakText();
+
+    return;
+
+}
+
+
+/* =========================
+   DARK MODE
+========================= */
+
+if(
+    cmd.includes("dark mode") ||
+    cmd === "dark"
+){
+
+    document.body.classList.remove(
+        "light"
+    );
+
+    localStorage.setItem(
+        "theme",
+        "dark"
+    );
+
+    document.getElementById("themeButton")
+        .innerText = "☀️";
+
+    document.getElementById("assistant")
+        .innerText =
+        "Dark mode activated.";
+
+    speak("Dark mode activated.");
+
+    return;
+
+}
+
+
+/* =========================
+   LIGHT MODE
+========================= */
+
+if(
+    cmd.includes("light mode") ||
+    cmd === "light"
+){
+
+    document.body.classList.add(
+        "light"
+    );
+
+    localStorage.setItem(
+        "theme",
+        "light"
+    );
+
+    document.getElementById("themeButton")
+        .innerText = "🌙";
+
+    document.getElementById("assistant")
+        .innerText =
+        "Light mode activated.";
+
+    speak("Light mode activated.");
+
+    return;
+
+}
+
+
+/* =========================
+   GO BACK
+========================= */
+
+if(
+    cmd === "go back" ||
+    cmd === "back" ||
+    cmd.includes("go backward")
+){
+
+    document.getElementById("assistant")
+        .innerText =
+        "Going back...";
+
+    window.history.back();
+
+    return;
+
+}
+
+
+/* =========================
+   GO FORWARD
+========================= */
+
+if(
+    cmd === "go forward" ||
+    cmd === "forward"
+){
+
+    document.getElementById("assistant")
+        .innerText =
+        "Going forward...";
+
+    window.history.forward();
+
+    return;
+
+}
+
+
+/* =========================
+   REFRESH
+========================= */
+
+if(
+    cmd === "refresh" ||
+    cmd === "refresh page" ||
+    cmd.includes("reload page")
+){
+
+    document.getElementById("assistant")
+        .innerText =
+        "Refreshing page...";
+
+    setTimeout(
+        function(){
+
+            location.reload();
+
+        },
+        500
+    );
+
+    return;
+
+}
+
+
+/* =========================
+   TIME
+========================= */
+
+if(
+    cmd.includes("what time") ||
+    cmd === "time" ||
+    cmd.includes("current time")
+){
+
+    const now =
+        new Date();
+
+    const time =
+        now.toLocaleTimeString(
+            [],
+            {
+                hour:"numeric",
+                minute:"2-digit"
+            }
+        );
+
+    const response =
+        "The current time is " +
+        time;
+
+    document.getElementById("assistant")
+        .innerText =
+        response;
+
+    speak(response);
+
+    return;
+
+}
+
+
+/* =========================
+   DATE
+========================= */
+
+if(
+    cmd.includes("what is today's date") ||
+    cmd.includes("what is todays date") ||
+    cmd.includes("today's date") ||
+    cmd.includes("todays date") ||
+    cmd === "date"
+){
+
+    const now =
+        new Date();
+
+    const date =
+        now.toLocaleDateString(
+            [],
+            {
+                weekday:"long",
+                year:"numeric",
+                month:"long",
+                day:"numeric"
+            }
+        );
+
+    const response =
+        "Today is " + date;
+
+    document.getElementById("assistant")
+        .innerText =
+        response;
+
+    speak(response);
+
+    return;
+
+}
+
+
+/* =========================
+   AI VOICE COMMAND
+========================= */
+
+if(
+    cmd.startsWith("ask ai") ||
+    cmd.startsWith("ask the ai") ||
+    cmd.startsWith("ai ")
+){
+
+    let question =
+        command
+            .replace(
+                /^ask ai/i,
+                ""
+            )
+            .replace(
+                /^ask the ai/i,
+                ""
+            )
+            .replace(
+                /^ai/i,
+                ""
+            )
+            .trim();
+
+    if(question){
+
+        document.getElementById("aiQuestion")
+            .value = question;
+
+        askAI(question);
+
+    }else{
+
+        document.getElementById("assistant")
+            .innerText =
+            "Please tell me what you want to ask AI.";
+
+        speak(
+            "Please tell me what you want to ask AI."
+        );
+
+    }
+
+    return;
+
+}
+
+
+/* =========================
+   UNKNOWN COMMAND
+========================= */
+
+document.getElementById("assistant")
+    .innerText =
+    "I don't recognize that command. You can ask AI for help.";
+
+speak(
+    "I don't recognize that command. You can ask AI for help."
+);
+
+}
+
+
+/* =========================
+   AI ASSISTANT
+========================= */
+
+async function askAI(
+    commandFromVoice = ""
+){
 
     const input =
         document.getElementById(
@@ -3312,15 +2589,9 @@ async function askAI(commandFromVoice = ""){
             "aiStatus"
         );
 
-
     let question =
         input.value.trim();
 
-
-    /*
-       Agar voice command se AI fallback
-       hua hai to voice command use karo.
-    */
 
     if(
         !question &&
@@ -3343,14 +2614,16 @@ async function askAI(commandFromVoice = ""){
         answer.innerText =
             "Please type a question first.";
 
+        aiStatus.innerText =
+            "Waiting for your question.";
+
         return;
 
     }
 
 
     answer.innerText =
-        "Thinking...";
-
+        "🤔 Thinking...";
 
     aiStatus.innerText =
         "Connecting to AI...";
@@ -3362,20 +2635,18 @@ async function askAI(commandFromVoice = ""){
             await fetch(
                 "/api/ask",
                 {
-
                     method:"POST",
 
                     headers:{
                         "Content-Type":
-                        "application/json"
+                            "application/json"
                     },
 
                     body:
-                    JSON.stringify({
-                        question:
-                        question
-                    })
-
+                        JSON.stringify({
+                            question:
+                                question
+                        })
                 }
             );
 
@@ -3386,12 +2657,6 @@ async function askAI(commandFromVoice = ""){
             ) || "";
 
 
-        /*
-           Prevent:
-           Unexpected token '<'
-           JSON error
-        */
-
         if(
             !contentType.includes(
                 "application/json"
@@ -3401,15 +2666,13 @@ async function askAI(commandFromVoice = ""){
             const text =
                 await response.text();
 
-
             console.error(
                 "Non-JSON response:",
                 text
             );
 
-
             throw new Error(
-                "AI backend returned a non-JSON response. Check /api/ask."
+                "AI backend returned a non-JSON response."
             );
 
         }
@@ -3422,24 +2685,17 @@ async function askAI(commandFromVoice = ""){
         if(!response.ok){
 
             throw new Error(
-
                 data.error ||
-
                 "AI request failed."
-
             );
 
         }
 
 
         const finalAnswer =
-
             data.answer ||
-
             data.response ||
-
             data.text ||
-
             data.message;
 
 
@@ -3455,18 +2711,10 @@ async function askAI(commandFromVoice = ""){
         answer.innerText =
             finalAnswer;
 
-
         aiStatus.innerText =
             "✓ AI response received";
 
-
-        /*
-           Voice response
-        */
-
-        speak(
-            finalAnswer
-        );
+        speak(finalAnswer);
 
 
     }catch(error){
@@ -3478,11 +2726,8 @@ async function askAI(commandFromVoice = ""){
 
 
         answer.innerText =
-
             "AI Assistant is not connected yet.\n\n" +
-
             "Backend error: " +
-
             error.message;
 
 
@@ -3494,39 +2739,52 @@ async function askAI(commandFromVoice = ""){
 }
 
 
-/* =========================================
-   AI ENTER SHORTCUT
-========================================= */
+/* =========================
+   CLEAR AI
+========================= */
 
-document
-    .getElementById(
-        "aiQuestion"
-    )
-    .addEventListener(
-        "keydown",
-        function(event){
+function clearAI(){
 
-            if(
+    document.getElementById("aiQuestion")
+        .value = "";
 
-                event.key === "Enter" &&
+    document.getElementById("aiAnswer")
+        .innerText =
+        "AI answer will appear here...";
 
-                !event.shiftKey
+    document.getElementById("aiStatus")
+        .innerText =
+        "AI Assistant ready";
 
-            ){
+}
 
-                event.preventDefault();
 
-                askAI();
+/* =========================
+   ENTER KEY FOR AI
+========================= */
 
-            }
+document.getElementById(
+    "aiQuestion"
+).addEventListener(
+    "keydown",
+    function(event){
+
+        if(
+            event.key === "Enter" &&
+            !event.shiftKey
+        ){
+
+            event.preventDefault();
+
+            askAI();
 
         }
-    );
 
-
-/* =========================================
-   INITIALIZE
-========================================= */
+    }
+);
+   /* =========================
+   INITIALIZE APP
+========================= */
 
 loadTheme();
 
@@ -3535,10 +2793,85 @@ renderHistory();
 renderCustomCommands();
 
 
+/* =========================
+   PAGE READY
+========================= */
+
+window.addEventListener(
+    "load",
+    function(){
+
+        console.log(
+            "Voice Command AI V6 loaded successfully."
+        );
+
+    }
+);
+
+
+/* =========================
+   KEYBOARD SHORTCUT
+========================= */
+
+document.addEventListener(
+    "keydown",
+    function(event){
+
+        /* Space = microphone */
+
+        if(
+            event.code === "Space" &&
+            document.activeElement.tagName !== "TEXTAREA" &&
+            document.activeElement.tagName !== "INPUT"
+        ){
+
+            event.preventDefault();
+
+            startListening();
+
+        }
+
+    }
+);
+
+
+/* =========================
+   STOP SPEECH
+========================= */
+
+document.addEventListener(
+    "keydown",
+    function(event){
+
+        if(event.key === "Escape"){
+
+            if(
+                "speechSynthesis" in window
+            ){
+
+                speechSynthesis.cancel();
+
+            }
+
+            if(
+                recognition &&
+                isListening
+            ){
+
+                recognition.stop();
+
+            }
+
+            document.getElementById("status")
+                .innerText =
+                "Voice assistant stopped.";
+
+        }
+
+    }
+);
+
 </script>
 
-
 </body>
-
-
 </html>
