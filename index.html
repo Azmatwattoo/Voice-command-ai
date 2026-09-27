@@ -2871,7 +2871,85 @@ document.addEventListener(
 
     }
 );
+async function askAI(commandFromVoice = "") {
 
+    const input = document.getElementById("aiQuestion");
+    const answer = document.getElementById("aiAnswer");
+    const aiStatus = document.getElementById("aiStatus");
+
+    let question = input ? input.value.trim() : "";
+
+    if (!question && commandFromVoice) {
+        question = String(commandFromVoice).trim();
+
+        if (input) {
+            input.value = question;
+        }
+    }
+
+    if (!question) {
+        answer.innerText = "Please type a question first.";
+        aiStatus.innerText = "Waiting for your question.";
+        return;
+    }
+
+    answer.innerText = "🤔 Thinking...";
+    aiStatus.innerText = "Connecting to AI...";
+
+    try {
+
+        const response = await fetch(
+            "https://voice-command-5i2uzo5kg-azmat4.vercel.app/api/ask",
+            {
+                method: "POST",
+
+                headers: {
+                    "Content-Type": "application/json"
+                },
+
+                body: JSON.stringify({
+                    question: question
+                })
+            }
+        );
+
+        const data = await response.json();
+
+        if (!response.ok) {
+            throw new Error(
+                data.error || "AI request failed."
+            );
+        }
+
+        const finalAnswer =
+            data.answer ||
+            data.response ||
+            data.text ||
+            data.message;
+
+        if (!finalAnswer) {
+            throw new Error("AI returned an empty response.");
+        }
+
+        answer.innerText = finalAnswer;
+        aiStatus.innerText = "✓ AI response received";
+
+        if (typeof speak === "function") {
+            speak(finalAnswer);
+        }
+
+    } catch (error) {
+
+        console.error("AI Assistant error:", error);
+
+        answer.innerText =
+            "AI Assistant is not connected yet.\n\nBackend error: " +
+            error.message;
+
+        aiStatus.innerText =
+            "⚠️ Check your /api/ask backend.";
+    }
+}
 </script>
 
 </body>
