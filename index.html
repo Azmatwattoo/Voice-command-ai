@@ -2693,4 +2693,44 @@ async function askAI() {
   </div>
 
 </section>
-</html>
+    <script>
+async function askAI() {
+  const questionBox = document.getElementById("aiQuestion");
+  const answerBox = document.getElementById("aiAnswer");
+
+  const question = questionBox.value.trim();
+
+  if (!question) {
+    answerBox.textContent = "Please enter a question.";
+    return;
+  }
+
+  answerBox.textContent = "🤖 Thinking...";
+
+  try {
+    const response = await fetch("/api/ask", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        question: question
+      })
+    });
+
+    const data = await response.json();
+
+    if (!response.ok) {
+      throw new Error(data.error || "AI request failed");
+    }
+
+    answerBox.textContent = data.answer || "No answer received.";
+
+  } catch (error) {
+    console.error(error);
+    answerBox.textContent = "❌ Error: " + error.message;
+  }
+}
+    </script>
+    </body>
+    </html>
