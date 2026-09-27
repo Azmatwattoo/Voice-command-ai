@@ -7,12 +7,24 @@ const openai = new OpenAI({
 export default async function handler(req, res) {
 
   // CORS
-  res.setHeader("Access-Control-Allow-Origin", "*");
-  res.setHeader("Access-Control-Allow-Methods", "POST, OPTIONS");
-  res.setHeader("Access-Control-Allow-Headers", "Content-Type");
+  res.setHeader(
+    "Access-Control-Allow-Origin",
+    "https://azmatwattoo.github.io"
+  );
 
+  res.setHeader(
+    "Access-Control-Allow-Methods",
+    "POST, OPTIONS"
+  );
+
+  res.setHeader(
+    "Access-Control-Allow-Headers",
+    "Content-Type"
+  );
+
+  // Browser preflight
   if (req.method === "OPTIONS") {
-    return res.status(200).end();
+    return res.status(204).end();
   }
 
   if (req.method !== "POST") {
@@ -45,10 +57,11 @@ export default async function handler(req, res) {
 
         try {
 
-          const response = await openai.responses.create({
-            model: model,
-            input: question
-          });
+          const response =
+            await openai.responses.create({
+              model: model,
+              input: question
+            });
 
           return res.status(200).json({
             answer: response.output_text
@@ -70,9 +83,7 @@ export default async function handler(req, res) {
           }
 
         }
-
       }
-
     }
 
     return res.status(503).json({
@@ -90,7 +101,5 @@ export default async function handler(req, res) {
         error.message ||
         "AI request failed."
     });
-
   }
-
 }
