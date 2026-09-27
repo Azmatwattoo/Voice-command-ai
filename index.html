@@ -2588,7 +2588,44 @@ renderHistory();
 console.log(
     "Voice Command AI V6 loaded successfully."
 );
+async function askAI() {
+  const questionBox = document.getElementById("aiQuestion");
+  const answerBox = document.getElementById("aiAnswer");
 
+  const question = questionBox.value.trim();
+
+  if (!question) {
+    answerBox.textContent = "Please enter a question.";
+    return;
+  }
+
+  answerBox.textContent = "🤖 Thinking...";
+
+  try {
+    const response = await fetch("/api/ask", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        question: question
+      })
+    });
+
+    const data = await response.json();
+
+    if (!response.ok) {
+      throw new Error(data.error || "AI request failed");
+    }
+
+    answerBox.textContent = data.answer || "No answer received.";
+
+  } catch (error) {
+    console.error(error);
+    answerBox.textContent =
+      "❌ AI se connection nahi ho saka. Please try again.";
+  }
+}
 </script>
 
 </body>
