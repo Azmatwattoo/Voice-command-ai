@@ -6,6 +6,15 @@ const openai = new OpenAI({
 
 export default async function handler(req, res) {
 
+  // CORS
+  res.setHeader("Access-Control-Allow-Origin", "*");
+  res.setHeader("Access-Control-Allow-Methods", "POST, OPTIONS");
+  res.setHeader("Access-Control-Allow-Headers", "Content-Type");
+
+  if (req.method === "OPTIONS") {
+    return res.status(200).end();
+  }
+
   if (req.method !== "POST") {
     return res.status(405).json({
       error: "Method not allowed"
@@ -54,7 +63,6 @@ export default async function handler(req, res) {
             error.message
           );
 
-          // Wait 2 seconds before retry
           if (attempt < 2) {
             await new Promise(resolve =>
               setTimeout(resolve, 2000)
@@ -68,7 +76,9 @@ export default async function handler(req, res) {
     }
 
     return res.status(503).json({
-      error: lastError?.message || "All AI models are temporarily unavailable."
+      error:
+        lastError?.message ||
+        "All AI models are temporarily unavailable."
     });
 
   } catch (error) {
@@ -76,7 +86,9 @@ export default async function handler(req, res) {
     console.error(error);
 
     return res.status(500).json({
-      error: error.message || "AI request failed."
+      error:
+        error.message ||
+        "AI request failed."
     });
 
   }
