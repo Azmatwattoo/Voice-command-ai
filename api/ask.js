@@ -1,10 +1,7 @@
-// V6 AI BACKEND - OPENAI
-
-import OpenAI from "openai";
+// V6 AI BACKEND - GEMINI FREE
 
 export default async function handler(req, res) {
 
-  // CORS
   res.setHeader(
     "Access-Control-Allow-Origin",
     "https://azmatwattoo.github.io"
@@ -20,7 +17,6 @@ export default async function handler(req, res) {
     "Content-Type"
   );
 
-  // Browser preflight
   if (req.method === "OPTIONS") {
     return res.status(204).end();
   }
@@ -33,10 +29,9 @@ export default async function handler(req, res) {
 
   try {
 
-    // Check API key
-    if (!process.env.OPENAI_API_KEY) {
+    if (!process.env.GEMINI_API_KEY) {
       return res.status(500).json({
-        error: "OPENAI_API_KEY is missing in Vercel."
+        error: "GEMINI_API_KEY is missing in Vercel."
       });
     }
 
@@ -48,20 +43,46 @@ export default async function handler(req, res) {
       });
     }
 
-    const openai = new OpenAI({
-      apiKey: process.env.OPENAI_API_KEY
-    });
+    const response = await fetch(
+      "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent",
+      {
+        method: "POST",
 
-    const response = await openai.responses.create({
-      model: "gpt-5.6-luna",
-      input: String(question).trim()
-    });
+        headers: {
+          "Content-Type": "application/json",
+          "x-goog-api-key": process.env.GEMINI_API_KEY
+        },
 
-    const answer = response.output_text;
+        body: JSON.stringify({
+          contents: [
+            {
+              parts: [
+                {
+                  text: String(question).trim()
+                }
+              ]
+            }
+          ]
+        })
+      }
+    );
+
+    const data = await response.json();
+
+    if (!response.ok) {
+      return res.status(response.status).json({
+        error:
+          data?.error?.message ||
+          "Gemini API request failed."
+      });
+    }
+
+    const answer =
+      data?.candidates?.[0]?.content?.parts?.[0]?.text;
 
     if (!answer) {
       return res.status(500).json({
-        error: "AI returned an empty response."
+        error: "Gemini returned an empty response."
       });
     }
 
@@ -71,10 +92,12 @@ export default async function handler(req, res) {
 
   } catch (error) {
 
-    console.error("V6 OpenAI Error:", error);
+    console.error("Gemini Error:", error);
 
     return res.status(500).json({
-      error: error?.message || "OpenAI request failed."
+      error:
+        error?.message ||
+        "Gemini request failed."
     });
   }
 }
