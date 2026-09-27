@@ -1,11 +1,6 @@
 // V6 AI BACKEND - OPENAI
-// Gemini code removed
 
 import OpenAI from "openai";
-
-const openai = new OpenAI({
-  apiKey: process.env.OPENAI_API_KEY
-});
 
 export default async function handler(req, res) {
 
@@ -30,7 +25,6 @@ export default async function handler(req, res) {
     return res.status(204).end();
   }
 
-  // Only POST requests
   if (req.method !== "POST") {
     return res.status(405).json({
       error: "Method not allowed"
@@ -39,6 +33,13 @@ export default async function handler(req, res) {
 
   try {
 
+    // Check API key
+    if (!process.env.OPENAI_API_KEY) {
+      return res.status(500).json({
+        error: "OPENAI_API_KEY is missing in Vercel."
+      });
+    }
+
     const { question } = req.body || {};
 
     if (!question || !String(question).trim()) {
@@ -46,6 +47,10 @@ export default async function handler(req, res) {
         error: "Question is required."
       });
     }
+
+    const openai = new OpenAI({
+      apiKey: process.env.OPENAI_API_KEY
+    });
 
     const response = await openai.responses.create({
       model: "gpt-5.6-luna",
@@ -69,9 +74,7 @@ export default async function handler(req, res) {
     console.error("V6 OpenAI Error:", error);
 
     return res.status(500).json({
-      error:
-        error?.message ||
-        "OpenAI request failed."
+      error: error?.message || "OpenAI request failed."
     });
   }
 }
