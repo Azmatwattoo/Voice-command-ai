@@ -2633,25 +2633,20 @@ async function askAI(
 
         const response =
     await fetch(
-       "https://voice-command-ai-five.vercel.app/api/ask
+        "https://voice-command-ai-five.vercel.app/api/ask",
+        {
+            method: "POST",
+
+            headers: {
+                "Content-Type": "application/json"
+            },
+
+            body: JSON.stringify({
+                question: question
+            })
+        }
+    );
       
-                {
-                    method:"POST",
-
-                    headers:{
-                        "Content-Type":
-                            "application/json"
-                    },
-
-                    body:
-                        JSON.stringify({
-                            question:
-                                question
-                        })
-                }
-            );
-
-
         const contentType =
             response.headers.get(
                 "content-type"
