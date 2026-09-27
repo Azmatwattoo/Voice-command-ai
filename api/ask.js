@@ -23,7 +23,7 @@ export default async function handler(req, res) {
     }
 
     const response = await openai.responses.create({
-      model: "gpt-5.6-luna",
+      model: "gpt-5.6-terra",
       input: question
     });
 
