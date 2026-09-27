@@ -2592,4 +2592,67 @@ console.log(
 </script>
 
 </body>
+    <!-- AI ASSISTANT -->
+<section id="aiAssistant" style="
+  margin:20px 0;
+  padding:20px;
+  border-radius:20px;
+  background:rgba(20,28,50,.9);
+  border:1px solid rgba(100,130,255,.25);
+">
+
+  <h2 style="margin-bottom:8px;">🤖 AI Assistant</h2>
+
+  <p style="opacity:.7;margin-bottom:15px;">
+    Ask anything and get an AI answer.
+  </p>
+
+  <textarea
+    id="aiQuestion"
+    placeholder="Ask your question..."
+    style="
+      width:100%;
+      min-height:90px;
+      padding:14px;
+      border-radius:14px;
+      border:1px solid #303b5c;
+      background:#0b1120;
+      color:white;
+      resize:vertical;
+      font-size:15px;
+    "
+  ></textarea>
+
+  <button
+    onclick="askAI()"
+    style="
+      width:100%;
+      margin-top:12px;
+      padding:14px;
+      border:0;
+      border-radius:14px;
+      background:linear-gradient(135deg,#315cff,#7c3cff);
+      color:white;
+      font-size:16px;
+      font-weight:bold;
+    "
+  >
+    ✨ Ask AI
+  </button>
+
+  <div
+    id="aiAnswer"
+    style="
+      margin-top:15px;
+      padding:15px;
+      border-radius:14px;
+      background:#0b1120;
+      line-height:1.6;
+      min-height:50px;
+    "
+  >
+    AI answer will appear here...
+  </div>
+
+</section>
 </html>
