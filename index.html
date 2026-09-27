@@ -1,394 +1,830 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Voice Command AI V6</title>
+<head>
+
+<meta charset="UTF-8">
+
+<meta
+name="viewport"
+content="width=device-width, initial-scale=1.0"
+>
+
+<title>Voice Command AI V5</title>
+
 
 <style>
+
+/* =========================================
+   RESET
+========================================= */
+
 *{
     box-sizing:border-box;
     margin:0;
     padding:0;
 }
 
+
+/* =========================================
+   BODY
+========================================= */
+
 body{
-    font-family:Arial,sans-serif;
+
+    font-family:
+    Arial,
+    sans-serif;
+
     background:
-    radial-gradient(circle at top,#172554 0%,#070b14 45%,#03050a 100%);
+    radial-gradient(
+        circle at top,
+        #172554 0%,
+        #070b14 45%,
+        #03050a 100%
+    );
+
     color:white;
+
     min-height:100vh;
+
     transition:.3s;
+
 }
+
+
+/* =========================================
+   LIGHT MODE
+========================================= */
 
 body.light{
+
     background:#f3f4f6;
+
     color:#111827;
+
 }
+
+
+/* =========================================
+   CONTAINER
+========================================= */
 
 .container{
+
     width:92%;
-    max-width:780px;
+
+    max-width:760px;
+
     margin:auto;
-    padding:24px 0 40px;
+
+    padding:
+    25px 0 40px;
+
 }
+
+
+/* =========================================
+   HEADER
+========================================= */
 
 .header{
+
     text-align:center;
-    margin-bottom:24px;
+
+    margin-bottom:25px;
+
 }
+
 
 .logo{
+
     width:82px;
+
     height:82px;
+
     margin:auto;
+
     border-radius:24px;
+
     display:flex;
+
     align-items:center;
+
     justify-content:center;
+
     font-size:44px;
-    background:linear-gradient(135deg,#2563eb,#7c3aed);
-    box-shadow:0 0 35px rgba(59,130,246,.35);
+
+    background:
+    linear-gradient(
+        135deg,
+        #2563eb,
+        #7c3aed
+    );
+
+    box-shadow:
+    0 0 35px
+    rgba(59,130,246,.35);
+
 }
+
 
 h1{
+
     font-size:30px;
+
     margin-top:14px;
+
 }
+
 
 .subtitle{
+
     color:#9ca3af;
+
     margin-top:8px;
+
     font-size:14px;
+
 }
+
 
 .version{
+
     display:inline-block;
+
     margin-top:10px;
+
     padding:6px 12px;
+
     border-radius:20px;
+
     background:#172554;
+
     color:#93c5fd;
+
     font-size:12px;
+
 }
+
+
+/* =========================================
+   CARD
+========================================= */
 
 .card{
-    background:rgba(17,24,39,.92);
-    border:1px solid #263244;
+
+    background:
+    rgba(17,24,39,.92);
+
+    border:
+    1px solid #263244;
+
     border-radius:20px;
+
     padding:20px;
+
     margin-bottom:18px;
-    box-shadow:0 12px 35px rgba(0,0,0,.25);
+
+    box-shadow:
+    0 12px 35px
+    rgba(0,0,0,.25);
+
     backdrop-filter:blur(10px);
+
 }
+
 
 .light .card{
+
     background:white;
+
     border-color:#ddd;
+
 }
+
+
+/* =========================================
+   MICROPHONE
+========================================= */
 
 .mic{
+
     width:125px;
+
     height:125px;
+
     border-radius:50%;
+
     border:none;
-    background:linear-gradient(135deg,#2563eb,#4f46e5);
+
+    background:
+    linear-gradient(
+        135deg,
+        #2563eb,
+        #4f46e5
+    );
+
     color:white;
+
     font-size:48px;
+
     display:block;
-    margin:10px auto 15px;
+
+    margin:
+    10px auto 15px;
+
     cursor:pointer;
-    box-shadow:0 0 30px rgba(37,99,235,.5);
+
+    box-shadow:
+    0 0 30px
+    rgba(37,99,235,.5);
+
     transition:.2s;
+
 }
+
 
 .mic:active{
+
     transform:scale(.95);
+
 }
+
 
 .mic.listening{
-    background:linear-gradient(135deg,#dc2626,#ef4444);
-    animation:pulse 1s infinite;
+
+    background:
+    linear-gradient(
+        135deg,
+        #dc2626,
+        #ef4444
+    );
+
+    animation:
+    pulse 1s infinite;
+
 }
+
 
 @keyframes pulse{
-    0%{transform:scale(1)}
-    50%{transform:scale(1.08)}
-    100%{transform:scale(1)}
+
+    0%{
+        transform:scale(1);
+    }
+
+    50%{
+        transform:scale(1.08);
+    }
+
+    100%{
+        transform:scale(1);
+    }
+
 }
+
+
+/* =========================================
+   STATUS
+========================================= */
 
 .status{
+
     text-align:center;
+
     color:#60a5fa;
+
     margin-top:10px;
+
     font-size:15px;
+
 }
+
+
+/* =========================================
+   LABEL
+========================================= */
 
 .label{
+
     font-weight:bold;
+
     margin-bottom:11px;
+
     font-size:16px;
+
 }
+
+
+/* =========================================
+   COMMAND DISPLAY
+========================================= */
 
 .command{
+
     background:#0b1220;
+
     padding:15px;
+
     border-radius:13px;
+
     min-height:52px;
+
     color:#93c5fd;
+
     word-break:break-word;
+
 }
+
 
 .light .command{
+
     background:#eef2ff;
+
 }
 
+
+/* =========================================
+   ASSISTANT
+========================================= */
+
 .assistant{
+
     color:#86efac;
+
     line-height:1.6;
+
     white-space:pre-wrap;
+
     word-break:break-word;
+
 }
+
+
+/* =========================================
+   INPUTS
+========================================= */
 
 textarea,
 input{
+
     width:100%;
-    border:1px solid transparent;
+
+    border:
+    1px solid transparent;
+
     outline:none;
+
     border-radius:13px;
+
     padding:14px;
+
     font-size:16px;
+
     background:#0b1220;
+
     color:white;
+
     margin-bottom:10px;
+
 }
 
+
 textarea{
+
     min-height:135px;
+
     resize:vertical;
+
 }
+
 
 textarea:focus,
 input:focus{
+
     border-color:#2563eb;
+
 }
+
 
 .light textarea,
 .light input{
+
     background:#f1f5f9;
+
     color:#111;
+
 }
+
+
+/* =========================================
+   BUTTONS
+========================================= */
 
 .buttons{
+
     display:grid;
-    grid-template-columns:repeat(2,1fr);
+
+    grid-template-columns:
+    repeat(2,1fr);
+
     gap:10px;
+
 }
+
 
 button.small{
+
     border:none;
+
     border-radius:11px;
+
     padding:12px;
+
     cursor:pointer;
+
     background:#1d4ed8;
+
     color:white;
+
     font-size:14px;
+
     transition:.2s;
+
 }
+
 
 button.small:hover{
+
     opacity:.85;
-    transform:translateY(-1px);
+
+    transform:
+    translateY(-1px);
+
 }
+
 
 button.delete{
+
     background:#dc2626;
+
 }
+
 
 button.green{
+
     background:#059669;
+
 }
+
 
 button.gray{
+
     background:#374151;
+
 }
+
 
 button.ai{
-    background:linear-gradient(135deg,#7c3aed,#2563eb);
+
+    background:
+    linear-gradient(
+        135deg,
+        #7c3aed,
+        #2563eb
+    );
+
     font-weight:bold;
+
 }
+
+
+/* =========================================
+   QUICK COMMANDS
+========================================= */
 
 .quick-grid{
+
     display:grid;
-    grid-template-columns:repeat(3,1fr);
+
+    grid-template-columns:
+    repeat(3,1fr);
+
     gap:9px;
+
 }
+
 
 .quick{
+
     border:none;
+
     border-radius:12px;
+
     padding:13px 7px;
+
     background:#172554;
+
     color:#bfdbfe;
+
     cursor:pointer;
+
     font-size:13px;
+
 }
 
+
 .quick:hover{
+
     background:#1d4ed8;
+
     color:white;
+
 }
+
+
+/* =========================================
+   CUSTOM / HISTORY
+========================================= */
 
 .custom-item,
 .history-item{
+
     background:#0b1220;
+
     border-radius:13px;
+
     padding:13px;
+
     margin-top:10px;
+
 }
+
 
 .light .custom-item,
 .light .history-item{
+
     background:#f1f5f9;
+
 }
+
 
 .custom-name{
+
     color:#60a5fa;
+
     font-weight:bold;
+
 }
+
 
 .custom-url{
+
     color:#9ca3af;
+
     font-size:13px;
+
     word-break:break-all;
+
     margin-top:5px;
+
 }
+
 
 .history-command{
+
     color:#93c5fd;
+
     font-weight:bold;
+
 }
+
 
 .history-time{
+
     color:#6b7280;
+
     font-size:12px;
+
     margin-top:4px;
+
 }
+
 
 .empty{
+
     color:#9ca3af;
+
     padding:10px 0;
+
 }
+
+
+/* =========================================
+   COMMAND LIST
+========================================= */
 
 .commands{
+
     line-height:1.9;
+
     color:#d1d5db;
+
 }
+
 
 .light .commands{
+
     color:#374151;
+
 }
+
 
 .command-row{
+
     padding:5px 0;
+
 }
+
+
+/* =========================================
+   DIVIDER
+========================================= */
 
 .divider{
+
     height:1px;
+
     background:#263244;
+
     margin:14px 0;
+
 }
+
 
 .light .divider{
+
     background:#ddd;
+
 }
+
+
+/* =========================================
+   FOOTER
+========================================= */
 
 .footer{
+
     text-align:center;
+
     color:#6b7280;
+
     margin-top:25px;
+
     font-size:13px;
+
 }
+
+
+/* =========================================
+   BADGE
+========================================= */
 
 .badge{
+
     display:inline-block;
+
     padding:5px 9px;
+
     border-radius:20px;
+
     background:#064e3b;
+
     color:#86efac;
+
     font-size:11px;
+
     margin-top:8px;
+
 }
 
+
+/* =========================================
+   AI STATUS
+========================================= */
+
 .ai-status{
+
     margin-top:8px;
+
     font-size:12px;
+
     color:#9ca3af;
+
 }
+
+
+/* =========================================
+   MOBILE
+========================================= */
 
 @media(max-width:500px){
 
     h1{
+
         font-size:26px;
+
     }
+
 
     .mic{
+
         width:112px;
+
         height:112px;
+
     }
 
+
     .quick-grid{
-        grid-template-columns:repeat(2,1fr);
+
+        grid-template-columns:
+        repeat(2,1fr);
+
     }
+
 }
+
 </style>
+
 </head>
+
 
 <body>
 
+
 <div class="container">
+
+
+<!-- HEADER -->
 
 <div class="header">
 
-<div class="logo">🎙️</div>
+<div class="logo">
+🎙️
+</div>
 
-<h1>Voice Command AI</h1>
+<h1>
+Voice Command AI
+</h1>
 
 <div class="subtitle">
 Your Personal Voice Assistant
 </div>
 
 <div class="version">
-VERSION 6 • SMART VOICE COMMANDS
+VERSION 5 • SMART VOICE COMMANDS
 </div>
 
 </div>
+
+
+<!-- MICROPHONE CARD -->
 
 <div class="card">
 
 <button
 class="mic"
 id="micButton"
-onclick="startListening()">
+onclick="startListening()"
+>
 🎤
 </button>
 
 <div
 class="status"
-id="status">
+id="status"
+>
 Tap microphone and speak
 </div>
 
-<div style="text-align:center;">
+<div
+style="text-align:center;"
+>
+
 <span
 class="badge"
-id="supportBadge">
+id="supportBadge"
+>
 Checking voice support...
 </span>
+
 </div>
 
 </div>
+
+
+<!-- COMMAND CARD -->
 
 <div class="card">
 
@@ -398,11 +834,15 @@ Checking voice support...
 
 <div
 class="command"
-id="command">
+id="command"
+>
 Waiting for your voice...
 </div>
 
 </div>
+
+
+<!-- ASSISTANT CARD -->
 
 <div class="card">
 
@@ -412,11 +852,15 @@ Waiting for your voice...
 
 <div
 class="assistant"
-id="assistant">
+id="assistant"
+>
 Ready for your command...
 </div>
 
 </div>
+
+
+<!-- AI ASSISTANT -->
 
 <div class="card">
 
@@ -426,12 +870,14 @@ Ready for your command...
 
 <textarea
 id="aiQuestion"
-placeholder="Ask anything... Example: What is HTML?"></textarea>
+placeholder="Ask anything... Example: What is HTML?"
+></textarea>
 
 <button
 class="small ai"
 onclick="askAI()"
-style="width:100%;">
+style="width:100%;"
+>
 ✨ Ask AI
 </button>
 
@@ -444,17 +890,22 @@ padding:15px;
 border-radius:14px;
 background:#0b1220;
 min-height:50px;
-">
+"
+>
 AI answer will appear here...
 </div>
 
 <div
 id="aiStatus"
-class="ai-status">
+class="ai-status"
+>
 AI Assistant ready
 </div>
 
 </div>
+
+
+<!-- QUICK COMMANDS -->
 
 <div class="card">
 
@@ -464,22 +915,103 @@ AI Assistant ready
 
 <div class="quick-grid">
 
-<button class="quick" onclick="runQuick('youtube')">🎵 YouTube</button>
-<button class="quick" onclick="runQuick('google')">🌐 Google</button>
-<button class="quick" onclick="runQuick('whatsapp')">📱 WhatsApp</button>
-<button class="quick" onclick="runQuick('facebook')">📘 Facebook</button>
-<button class="quick" onclick="runQuick('instagram')">📸 Instagram</button>
-<button class="quick" onclick="runQuick('tiktok')">🎵 TikTok</button>
-<button class="quick" onclick="runQuick('time')">🕐 Time</button>
-<button class="quick" onclick="runQuick('date')">📅 Date</button>
-<button class="quick" onclick="runQuick('dark')">🌙 Dark</button>
-<button class="quick" onclick="runQuick('light')">☀️ Light</button>
-<button class="quick" onclick="runQuick('back')">↩️ Back</button>
-<button class="quick" onclick="runQuick('forward')">↪️ Forward</button>
-<button class="quick" onclick="runQuick('refresh')">🔄 Refresh</button>
+<button
+class="quick"
+onclick="runQuick('youtube')"
+>
+🎵 YouTube
+</button>
+
+<button
+class="quick"
+onclick="runQuick('google')"
+>
+🌐 Google
+</button>
+
+<button
+class="quick"
+onclick="runQuick('whatsapp')"
+>
+📱 WhatsApp
+</button>
+
+<button
+class="quick"
+onclick="runQuick('facebook')"
+>
+📘 Facebook
+</button>
+
+<button
+class="quick"
+onclick="runQuick('instagram')"
+>
+📸 Instagram
+</button>
+
+<button
+class="quick"
+onclick="runQuick('tiktok')"
+>
+🎵 TikTok
+</button>
+
+<button
+class="quick"
+onclick="runQuick('time')"
+>
+🕐 Time
+</button>
+
+<button
+class="quick"
+onclick="runQuick('date')"
+>
+📅 Date
+</button>
+
+<button
+class="quick"
+onclick="runQuick('dark')"
+>
+🌙 Dark
+</button>
+
+<button
+class="quick"
+onclick="runQuick('light')"
+>
+☀️ Light
+</button>
+
+<button
+class="quick"
+onclick="runQuick('back')"
+>
+↩️ Back
+</button>
+
+<button
+class="quick"
+onclick="runQuick('forward')"
+>
+↪️ Forward
+</button>
+
+<button
+class="quick"
+onclick="runQuick('refresh')"
+>
+🔄 Refresh
+</button>
 
 </div>
+
 </div>
+
+
+<!-- TEXT BOX -->
 
 <div class="card">
 
@@ -489,14 +1021,38 @@ AI Assistant ready
 
 <textarea
 id="textBox"
-placeholder="Voice command se yahan text likh sakte ho..."></textarea>
+placeholder="Voice command se yahan text likh sakte ho..."
+></textarea>
 
 <div class="buttons">
 
-<button class="small" onclick="clearText()">🗑️ Clear</button>
-<button class="small" onclick="copyText()">📋 Copy</button>
-<button class="small" onclick="showText()">👁️ Show</button>
-<button class="small" onclick="speakText()">🔊 Read</button>
+<button
+class="small"
+onclick="clearText()"
+>
+🗑️ Clear
+</button>
+
+<button
+class="small"
+onclick="copyText()"
+>
+📋 Copy
+</button>
+
+<button
+class="small"
+onclick="showText()"
+>
+👁️ Show
+</button>
+
+<button
+class="small"
+onclick="speakText()"
+>
+🔊 Read
+</button>
 
 </div>
 
@@ -512,17 +1068,20 @@ placeholder="Voice command se yahan text likh sakte ho..."></textarea>
 <input
 id="customCommand"
 type="text"
-placeholder="Example: TikTok kholo">
+placeholder="Example: TikTok kholo"
+>
 
 <input
 id="customURL"
 type="text"
-placeholder="https://www.tiktok.com">
+placeholder="https://www.tiktok.com"
+>
 
 <button
 class="small"
 onclick="addCustomCommand()"
-style="width:100%;">
+style="width:100%;"
+>
 ➕ Save Custom Command
 </button>
 
@@ -557,7 +1116,8 @@ style="width:100%;">
 <button
 class="small delete"
 onclick="clearHistory()"
-style="width:100%;">
+style="width:100%;"
+>
 🗑️ Clear History
 </button>
 
@@ -574,71 +1134,158 @@ style="width:100%;">
 
 <div class="commands">
 
-<div class="command-row">🎵 YouTube kholo</div>
-<div class="command-row">🔎 YouTube par search karo Pakistan</div>
-<div class="command-row">🌐 Google kholo</div>
-<div class="command-row">🔎 Google par search karo Pakistan</div>
-<div class="command-row">📝 Text box mein hello likho</div>
-<div class="command-row">🗑️ Text clear karo</div>
-<div class="command-row">📋 Text copy karo</div>
-<div class="command-row">🔊 Text parho</div>
-<div class="command-row">👁️ Text dikhao</div>
-<div class="command-row">🌙 Dark mode</div>
-<div class="command-row">☀️ Light mode</div>
-<div class="command-row">↩️ Back</div>
-<div class="command-row">↪️ Forward</div>
-<div class="command-row">🔄 Refresh</div>
-<div class="command-row">🕐 Time batao</div>
-<div class="command-row">📅 Date batao</div>
-<div class="command-row">📱 WhatsApp kholo</div>
-<div class="command-row">📘 Facebook kholo</div>
-<div class="command-row">📸 Instagram kholo</div>
-<div class="command-row">🎵 TikTok kholo</div>
-
-</div>
+<div class="command-row">
+🎵 YouTube kholo
 </div>
 
+<div class="command-row">
+🔎 YouTube par search karo Pakistan
+</div>
+
+<div class="command-row">
+🌐 Google kholo
+</div>
+
+<div class="command-row">
+🔎 Google par search karo Pakistan
+</div>
+
+<div class="command-row">
+📝 Text box mein hello likho
+</div>
+
+<div class="command-row">
+🗑️ Text clear karo
+</div>
+
+<div class="command-row">
+📋 Text copy karo
+</div>
+
+<div class="command-row">
+🔊 Text parho
+</div>
+
+<div class="command-row">
+👁️ Text dikhao
+</div>
+
+<div class="command-row">
+🌙 Dark mode
+</div>
+
+<div class="command-row">
+☀️ Light mode
+</div>
+
+<div class="command-row">
+↩️ Back
+</div>
+
+<div class="command-row">
+↪️ Forward
+</div>
+
+<div class="command-row">
+🔄 Refresh
+</div>
+
+<div class="command-row">
+🕐 Time batao
+</div>
+
+<div class="command-row">
+📅 Date batao
+</div>
+
+<div class="command-row">
+📱 WhatsApp kholo
+</div>
+
+<div class="command-row">
+📘 Facebook kholo
+</div>
+
+<div class="command-row">
+📸 Instagram kholo
+</div>
+
+<div class="command-row">
+🎵 TikTok kholo
+</div>
+
+</div>
+
+</div>
+
+
+<!-- FOOTER -->
 
 <div class="footer">
-Voice Command AI V6 • Smart Voice Assistant
+Voice Command AI V5 • Smart Voice Assistant
 </div>
+
 
 </div>
 
 
 <script>
 
+
 /* =========================================
    STORAGE
 ========================================= */
 
 let customCommands = [];
+
 let commandHistory = [];
 
+
 try{
+
     customCommands =
         JSON.parse(
-            localStorage.getItem("voiceCustomCommands") || "[]"
+            localStorage.getItem(
+                "voiceCustomCommands"
+            ) || "[]"
         );
 
-    if(!Array.isArray(customCommands)){
+    if(
+        !Array.isArray(customCommands)
+    ){
+
         customCommands = [];
+
     }
+
 }catch(error){
+
     customCommands = [];
+
 }
 
+
 try{
+
     commandHistory =
         JSON.parse(
-            localStorage.getItem("voiceCommandHistory") || "[]"
+            localStorage.getItem(
+                "voiceCommandHistory"
+            ) || "[]"
         );
 
-    if(!Array.isArray(commandHistory)){
+    if(
+        !Array.isArray(commandHistory)
+    ){
+
         commandHistory = [];
+
     }
+
 }catch(error){
+
     commandHistory = [];
+
 }
 
 
@@ -649,13 +1296,25 @@ try{
 function loadTheme(){
 
     const theme =
-        localStorage.getItem("voiceTheme") || "dark";
+        localStorage.getItem(
+            "voiceTheme"
+        ) || "dark";
+
 
     if(theme === "light"){
-        document.body.classList.add("light");
+
+        document.body.classList.add(
+            "light"
+        );
+
     }else{
-        document.body.classList.remove("light");
+
+        document.body.classList.remove(
+            "light"
+        );
+
     }
+
 }
 
 
@@ -667,94 +1326,180 @@ const SpeechRecognition =
     window.SpeechRecognition ||
     window.webkitSpeechRecognition;
 
+
 let recognition = null;
+
 
 if(SpeechRecognition){
 
-    recognition = new SpeechRecognition();
+    recognition =
+        new SpeechRecognition();
 
-    /*
-       en-US gives good English recognition.
-       Roman Urdu can still be recognized,
-       but browser support varies.
-    */
-    recognition.lang = "en-US";
 
-    recognition.continuous = false;
-    recognition.interimResults = false;
-    recognition.maxAlternatives = 3;
+    recognition.lang =
+        "en-US";
 
-    document.getElementById("supportBadge").innerText =
+
+    recognition.continuous =
+        false;
+
+
+    recognition.interimResults =
+        false;
+
+
+    recognition.maxAlternatives =
+        3;
+
+
+    document
+        .getElementById(
+            "supportBadge"
+        )
+        .innerText =
         "✓ Voice supported";
 
 
-    recognition.onstart = function(){
+    recognition.onstart =
+        function(){
 
-        document.getElementById("status").innerText =
-            "🎙️ Listening... Speak now";
-
-        document.getElementById("micButton")
-            .classList.add("listening");
-
-    };
-
-
-    recognition.onend = function(){
-
-        document.getElementById("status").innerText =
-            "Tap microphone and speak";
-
-        document.getElementById("micButton")
-            .classList.remove("listening");
-
-    };
+            document
+                .getElementById(
+                    "status"
+                )
+                .innerText =
+                "🎙️ Listening... Speak now";
 
 
-    recognition.onerror = function(event){
+            document
+                .getElementById(
+                    "micButton"
+                )
+                .classList.add(
+                    "listening"
+                );
 
-        document.getElementById("micButton")
-            .classList.remove("listening");
-
-        document.getElementById("status").innerText =
-            "Tap microphone and speak";
-
-        if(event.error === "not-allowed"){
-
-            speak("Microphone permission is blocked.");
-
-        }else if(event.error === "no-speech"){
-
-            speak("I could not hear you. Please try again.");
-
-        }else{
-
-            speak("Voice error: " + event.error);
-
-        }
-
-    };
+        };
 
 
-    recognition.onresult = function(event){
+    recognition.onend =
+        function(){
 
-        const command =
-            event.results[0][0].transcript;
+            document
+                .getElementById(
+                    "status"
+                )
+                .innerText =
+                "Tap microphone and speak";
 
-        document.getElementById("command").innerText =
-            command;
 
-        addHistory(command);
+            document
+                .getElementById(
+                    "micButton"
+                )
+                .classList.remove(
+                    "listening"
+                );
 
-        processCommand(command);
+        };
 
-    };
+
+    recognition.onerror =
+        function(event){
+
+            document
+                .getElementById(
+                    "micButton"
+                )
+                .classList.remove(
+                    "listening"
+                );
+
+
+            document
+                .getElementById(
+                    "status"
+                )
+                .innerText =
+                "Tap microphone and speak";
+
+
+            if(
+                event.error ===
+                "not-allowed"
+            ){
+
+                speak(
+                    "Microphone permission is blocked."
+                );
+
+
+            }else if(
+                event.error ===
+                "no-speech"
+            ){
+
+                speak(
+                    "I could not hear you. Please try again."
+                );
+
+
+            }else{
+
+                speak(
+                    "Voice error: " +
+                    event.error
+                );
+
+            }
+
+        };
+
+
+    recognition.onresult =
+        function(event){
+
+            const command =
+                event
+                    .results[0][0]
+                    .transcript;
+
+
+            document
+                .getElementById(
+                    "command"
+                )
+                .innerText =
+                command;
+
+
+            addHistory(
+                command
+            );
+
+
+            processCommand(
+                command
+            );
+
+        };
+
 
 }else{
 
-    document.getElementById("supportBadge").innerText =
+    document
+        .getElementById(
+            "supportBadge"
+        )
+        .innerText =
         "⚠️ Voice not supported";
 
-    document.getElementById("status").innerText =
+
+    document
+        .getElementById(
+            "status"
+        )
+        .innerText =
         "Speech recognition is not supported in this browser";
 
 }
@@ -773,7 +1518,9 @@ function startListening(){
         );
 
         return;
+
     }
+
 
     try{
 
@@ -781,9 +1528,13 @@ function startListening(){
 
     }catch(error){
 
-        console.log("Recognition start:",error);
+        console.log(
+            "Recognition start:",
+            error
+        );
 
     }
+
 }
 
 
@@ -794,25 +1545,51 @@ function startListening(){
 function speak(text){
 
     const assistant =
-        document.getElementById("assistant");
+        document.getElementById(
+            "assistant"
+        );
+
 
     if(assistant){
-        assistant.innerText = text;
+
+        assistant.innerText =
+            text;
+
     }
 
-    if("speechSynthesis" in window){
+
+    if(
+        "speechSynthesis"
+        in window
+    ){
 
         const speech =
-            new SpeechSynthesisUtterance(String(text));
+            new SpeechSynthesisUtterance(
+                String(text)
+            );
 
-        speech.lang = "en-US";
-        speech.rate = 1;
-        speech.pitch = 1;
+
+        speech.lang =
+            "en-US";
+
+
+        speech.rate =
+            1;
+
+
+        speech.pitch =
+            1;
+
 
         window.speechSynthesis.cancel();
 
-        window.speechSynthesis.speak(speech);
+
+        window.speechSynthesis.speak(
+            speech
+        );
+
     }
+
 }
 
 
@@ -823,10 +1600,20 @@ function speak(text){
 function normalizeCommand(text){
 
     return String(text)
+
         .toLowerCase()
+
         .trim()
-        .replace(/[.,!?]/g,"")
-        .replace(/\s+/g," ");
+
+        .replace(
+            /[.,!?]/g,
+            ""
+        )
+
+        .replace(
+            /\s+/g,
+            " "
+        );
 
 }
 
@@ -837,22 +1624,37 @@ function normalizeCommand(text){
 
 function normalizeURL(url){
 
-    url = String(url || "").trim();
+    url =
+        String(
+            url || ""
+        ).trim();
+
 
     if(!url){
+
         return "";
+
     }
+
 
     if(
-        !url.startsWith("http://") &&
-        !url.startsWith("https://")
+        !url.startsWith(
+            "http://"
+        ) &&
+        !url.startsWith(
+            "https://"
+        )
     ){
 
-        url = "https://" + url;
+        url =
+            "https://" +
+            url;
 
     }
 
+
     return url;
+
 }
 
 
@@ -863,11 +1665,16 @@ function normalizeURL(url){
 function openWebsite(url){
 
     const newWindow =
-        window.open(url,"_blank");
+        window.open(
+            url,
+            "_blank"
+        );
+
 
     if(!newWindow){
 
-        window.location.href = url;
+        window.location.href =
+            url;
 
     }
 
@@ -881,71 +1688,122 @@ function openWebsite(url){
 function addHistory(command){
 
     commandHistory.unshift({
-        command:String(command),
-        time:new Date().toLocaleTimeString()
+
+        command:
+            String(command),
+
+        time:
+            new Date()
+                .toLocaleTimeString()
+
     });
 
-    if(commandHistory.length > 20){
+
+    if(
+        commandHistory.length >
+        20
+    ){
+
         commandHistory =
-            commandHistory.slice(0,20);
+            commandHistory.slice(
+                0,
+                20
+            );
+
     }
+
 
     try{
 
         localStorage.setItem(
+
             "voiceCommandHistory",
-            JSON.stringify(commandHistory)
+
+            JSON.stringify(
+                commandHistory
+            )
+
         );
 
     }catch(error){
 
-        console.log(error);
+        console.log(
+            error
+        );
 
     }
 
+
     renderHistory();
+
 }
 
 
 function renderHistory(){
 
     const container =
-        document.getElementById("historyList");
+        document.getElementById(
+            "historyList"
+        );
+
 
     if(!container){
+
         return;
+
     }
 
-    container.innerHTML = "";
 
-    if(commandHistory.length === 0){
+    container.innerHTML =
+        "";
+
+
+    if(
+        commandHistory.length ===
+        0
+    ){
 
         container.innerHTML =
             '<div class="empty">No commands yet.</div>';
 
         return;
+
     }
 
-    commandHistory.forEach(function(item){
 
-        const div =
-            document.createElement("div");
+    commandHistory.forEach(
+        function(item){
 
-        div.className = "history-item";
+            const div =
+                document.createElement(
+                    "div"
+                );
 
-        div.innerHTML = `
-            <div class="history-command">
-                🎤 ${escapeHTML(item.command)}
-            </div>
 
-            <div class="history-time">
-                🕐 ${escapeHTML(item.time)}
-            </div>
-        `;
+            div.className =
+                "history-item";
 
-        container.appendChild(div);
 
-    });
+            div.innerHTML = `
+
+                <div class="history-command">
+                    🎤 ${escapeHTML(item.command)}
+                </div>
+
+                <div class="history-time">
+                    🕐 ${escapeHTML(item.time)}
+                </div>
+
+            `;
+
+
+            container.appendChild(
+                div
+            );
+
+        }
+    );
+
 }
 
 
@@ -953,13 +1811,18 @@ function clearHistory(){
 
     commandHistory = [];
 
+
     localStorage.removeItem(
         "voiceCommandHistory"
     );
 
+
     renderHistory();
 
-    speak("Command history cleared.");
+
+    speak(
+        "Command history cleared."
+    );
 
 }
 
@@ -971,16 +1834,26 @@ function clearHistory(){
 function addCustomCommand(){
 
     const commandInput =
-        document.getElementById("customCommand");
+        document.getElementById(
+            "customCommand"
+        );
+
 
     const urlInput =
-        document.getElementById("customURL");
+        document.getElementById(
+            "customURL"
+        );
+
 
     const command =
         commandInput.value.trim();
 
+
     const url =
-        normalizeURL(urlInput.value);
+        normalizeURL(
+            urlInput.value
+        );
+
 
     if(!command){
 
@@ -988,10 +1861,13 @@ function addCustomCommand(){
             "Please enter a custom command."
         );
 
+
         commandInput.focus();
 
         return;
+
     }
+
 
     if(!url){
 
@@ -999,21 +1875,31 @@ function addCustomCommand(){
             "Please enter a website address."
         );
 
+
         urlInput.focus();
 
         return;
+
     }
 
+
     const commandLower =
-        normalizeCommand(command);
+        normalizeCommand(
+            command
+        );
+
 
     const existing =
-        customCommands.find(function(item){
+        customCommands.find(
+            function(item){
 
-            return normalizeCommand(item.command)
-                === commandLower;
+                return normalizeCommand(
+                    item.command
+                ) === commandLower;
 
-        });
+            }
+        );
+
 
     if(existing){
 
@@ -1022,21 +1908,34 @@ function addCustomCommand(){
         );
 
         return;
+
     }
+
 
     customCommands.push({
 
-        command:commandLower,
-        displayCommand:command,
-        url:url
+        command:
+            commandLower,
+
+        displayCommand:
+            command,
+
+        url:
+            url
 
     });
+
 
     try{
 
         localStorage.setItem(
+
             "voiceCustomCommands",
-            JSON.stringify(customCommands)
+
+            JSON.stringify(
+                customCommands
+            )
+
         );
 
     }catch(error){
@@ -1046,70 +1945,101 @@ function addCustomCommand(){
         );
 
         return;
+
     }
 
-    commandInput.value = "";
-    urlInput.value = "";
+
+    commandInput.value =
+        "";
+
+    urlInput.value =
+        "";
+
 
     renderCustomCommands();
+
 
     speak(
         "Custom command saved successfully."
     );
+
 }
 
 
 function renderCustomCommands(){
 
     const container =
-        document.getElementById("customCommands");
+        document.getElementById(
+            "customCommands"
+        );
 
-    container.innerHTML = "";
 
-    if(customCommands.length === 0){
+    container.innerHTML =
+        "";
+
+
+    if(
+        customCommands.length ===
+        0
+    ){
 
         container.innerHTML =
             '<div class="empty">No custom commands added yet.</div>';
 
         return;
+
     }
 
-    customCommands.forEach(function(item,index){
 
-        const div =
-            document.createElement("div");
+    customCommands.forEach(
+        function(item,index){
 
-        div.className = "custom-item";
+            const div =
+                document.createElement(
+                    "div"
+                );
 
-        div.innerHTML = `
 
-            <div class="custom-name">
-                🎤 ${escapeHTML(item.displayCommand)}
-            </div>
+            div.className =
+                "custom-item";
 
-            <div class="custom-url">
-                🌐 ${escapeHTML(item.url)}
-            </div>
 
-            <div class="divider"></div>
+            div.innerHTML = `
 
-            <button
-                class="small"
-                onclick="testCustomCommand(${index})">
-                ▶️ Test
-            </button>
+                <div class="custom-name">
+                    🎤 ${escapeHTML(item.displayCommand)}
+                </div>
 
-            <button
-                class="small delete"
-                onclick="deleteCustomCommand(${index})">
-                🗑️ Delete
-            </button>
+                <div class="custom-url">
+                    🌐 ${escapeHTML(item.url)}
+                </div>
 
-        `;
+                <div class="divider"></div>
 
-        container.appendChild(div);
+                <button
+                    class="small"
+                    onclick="testCustomCommand(${index})"
+                >
+                    ▶️ Test
+                </button>
 
-    });
+                <button
+                    class="small delete"
+                    onclick="deleteCustomCommand(${index})"
+                >
+                    🗑️ Delete
+                </button>
+
+            `;
+
+
+            container.appendChild(
+                div
+            );
+
+        }
+    );
+
 }
 
 
@@ -1118,19 +2048,31 @@ function testCustomCommand(index){
     const item =
         customCommands[index];
 
+
     if(!item){
+
         return;
+
     }
 
+
     speak(
-        "Opening " + item.displayCommand
+        "Opening " +
+        item.displayCommand
     );
 
-    setTimeout(function(){
 
-        openWebsite(item.url);
+    setTimeout(
+        function(){
 
-    },500);
+            openWebsite(
+                item.url
+            );
+
+        },
+        500
+    );
+
 }
 
 
@@ -1139,30 +2081,48 @@ function deleteCustomCommand(index){
     const item =
         customCommands[index];
 
+
     if(!item){
+
         return;
+
     }
 
-    customCommands.splice(index,1);
+
+    customCommands.splice(
+        index,
+        1
+    );
+
 
     try{
 
         localStorage.setItem(
+
             "voiceCustomCommands",
-            JSON.stringify(customCommands)
+
+            JSON.stringify(
+                customCommands
+            )
+
         );
 
     }catch(error){
 
-        console.log(error);
+        console.log(
+            error
+        );
 
     }
 
+
     renderCustomCommands();
+
 
     speak(
         "Custom command deleted."
     );
+
 }
 
 
@@ -1173,15 +2133,34 @@ function deleteCustomCommand(index){
 function escapeHTML(text){
 
     return String(text)
-        .replace(/&/g,"&amp;")
-        .replace(/</g,"&lt;")
-        .replace(/>/g,"&gt;")
-        .replace(/"/g,"&quot;")
-        .replace(/'/g,"&#039;");
+
+        .replace(
+            /&/g,
+            "&amp;"
+        )
+
+        .replace(
+            /</g,
+            "&lt;"
+        )
+
+        .replace(
+            />/g,
+            "&gt;"
+        )
+
+        .replace(
+            /"/g,
+            "&quot;"
+        )
+
+        .replace(
+            /'/g,
+            "&#039;"
+        );
+
 }
-
-
-/* =========================================
+    /* =========================================
    QUICK COMMANDS
 ========================================= */
 
@@ -1251,6 +2230,7 @@ function runQuick(type){
         processCommand("refresh");
         return;
     }
+
 }
 
 
@@ -1260,19 +2240,27 @@ function runQuick(type){
 
 function clearText(){
 
-    document.getElementById("textBox").value = "";
+    document.getElementById(
+        "textBox"
+    ).value = "";
 
-    speak("Text cleared.");
+    speak(
+        "Text cleared."
+    );
+
 }
 
 
 async function copyText(){
 
     const textarea =
-        document.getElementById("textBox");
+        document.getElementById(
+            "textBox"
+        );
 
     const text =
         textarea.value;
+
 
     if(!text.trim()){
 
@@ -1281,7 +2269,9 @@ async function copyText(){
         );
 
         return;
+
     }
+
 
     try{
 
@@ -1290,19 +2280,25 @@ async function copyText(){
             navigator.clipboard.writeText
         ){
 
-            await navigator.clipboard.writeText(text);
+            await navigator.clipboard.writeText(
+                text
+            );
 
         }else{
 
             textarea.select();
 
-            document.execCommand("copy");
+            document.execCommand(
+                "copy"
+            );
 
         }
+
 
         speak(
             "Text copied successfully."
         );
+
 
     }catch(error){
 
@@ -1310,7 +2306,9 @@ async function copyText(){
 
             textarea.select();
 
-            document.execCommand("copy");
+            document.execCommand(
+                "copy"
+            );
 
             speak(
                 "Text copied successfully."
@@ -1321,15 +2319,21 @@ async function copyText(){
             speak(
                 "I could not copy the text."
             );
+
         }
+
     }
+
 }
 
 
 function showText(){
 
     const text =
-        document.getElementById("textBox").value;
+        document.getElementById(
+            "textBox"
+        ).value;
+
 
     if(!text.trim()){
 
@@ -1338,21 +2342,30 @@ function showText(){
         );
 
         return;
+
     }
 
-    document.getElementById("command").innerText =
+
+    document.getElementById(
+        "command"
+    ).innerText =
         text;
+
 
     speak(
         "Here is your text."
     );
+
 }
 
 
 function speakText(){
 
     const text =
-        document.getElementById("textBox").value.trim();
+        document.getElementById(
+            "textBox"
+        ).value.trim();
+
 
     if(!text){
 
@@ -1361,18 +2374,28 @@ function speakText(){
         );
 
         return;
+
     }
 
-    speak(text);
+
+    speak(
+        text
+    );
+
 }
-    /* =========================================
+
+
+/* =========================================
    CUSTOM COMMAND CHECK
 ========================================= */
 
 function checkCustomCommand(cmd){
 
     const normalized =
-        normalizeCommand(cmd);
+        normalizeCommand(
+            cmd
+        );
+
 
     for(
         let i = 0;
@@ -1383,8 +2406,12 @@ function checkCustomCommand(cmd){
         const item =
             customCommands[i];
 
+
         const savedCommand =
-            normalizeCommand(item.command);
+            normalizeCommand(
+                item.command
+            );
+
 
         if(
             normalized === savedCommand ||
@@ -1396,17 +2423,28 @@ function checkCustomCommand(cmd){
                 item.displayCommand
             );
 
-            setTimeout(function(){
 
-                openWebsite(item.url);
+            setTimeout(
+                function(){
 
-            },500);
+                    openWebsite(
+                        item.url
+                    );
+
+                },
+                500
+            );
+
 
             return true;
+
         }
+
     }
 
+
     return false;
+
 }
 
 
@@ -1418,11 +2456,29 @@ function youtubeSearch(cmd){
 
     let query =
         cmd
-        .replace("youtube par search karo","")
-        .replace("youtube par search","")
-        .replace("youtube search karo","")
-        .replace("youtube search","")
+
+        .replace(
+            "youtube par search karo",
+            ""
+        )
+
+        .replace(
+            "youtube par search",
+            ""
+        )
+
+        .replace(
+            "youtube search karo",
+            ""
+        )
+
+        .replace(
+            "youtube search",
+            ""
+        )
+
         .trim();
+
 
     if(!query){
 
@@ -1431,16 +2487,26 @@ function youtubeSearch(cmd){
         );
 
         return;
+
     }
 
+
     speak(
-        "Searching YouTube for " + query
+        "Searching YouTube for " +
+        query
     );
 
+
     openWebsite(
+
         "https://www.youtube.com/results?search_query=" +
-        encodeURIComponent(query)
+
+        encodeURIComponent(
+            query
+        )
+
     );
+
 }
 
 
@@ -1452,11 +2518,29 @@ function googleSearch(cmd){
 
     let query =
         cmd
-        .replace("google par search karo","")
-        .replace("google par search","")
-        .replace("google search karo","")
-        .replace("google search","")
+
+        .replace(
+            "google par search karo",
+            ""
+        )
+
+        .replace(
+            "google par search",
+            ""
+        )
+
+        .replace(
+            "google search karo",
+            ""
+        )
+
+        .replace(
+            "google search",
+            ""
+        )
+
         .trim();
+
 
     if(!query){
 
@@ -1465,16 +2549,26 @@ function googleSearch(cmd){
         );
 
         return;
+
     }
 
+
     speak(
-        "Searching Google for " + query
+        "Searching Google for " +
+        query
     );
 
+
     openWebsite(
+
         "https://www.google.com/search?q=" +
-        encodeURIComponent(query)
+
+        encodeURIComponent(
+            query
+        )
+
     );
+
 }
 
 
@@ -1485,7 +2579,10 @@ function googleSearch(cmd){
 function processCommand(command){
 
     const cmd =
-        normalizeCommand(command);
+        normalizeCommand(
+            command
+        );
+
 
     if(!cmd){
 
@@ -1494,23 +2591,35 @@ function processCommand(command){
         );
 
         return;
+
     }
 
 
     /* CUSTOM COMMANDS FIRST */
 
-    if(checkCustomCommand(cmd)){
+    if(
+        checkCustomCommand(
+            cmd
+        )
+    ){
+
         return;
+
     }
 
 
     /* HELLO */
 
     if(
+
         cmd.includes("hello") ||
+
         cmd === "hi" ||
+
         cmd.includes("salam") ||
+
         cmd.includes("assalam")
+
     ){
 
         speak(
@@ -1518,169 +2627,281 @@ function processCommand(command){
         );
 
         return;
+
     }
 
 
     /* YOUTUBE SEARCH */
 
     if(
-        cmd.includes("youtube par search") ||
-        cmd.includes("youtube search")
+
+        cmd.includes(
+            "youtube par search"
+        ) ||
+
+        cmd.includes(
+            "youtube search"
+        )
+
     ){
 
-        youtubeSearch(cmd);
+        youtubeSearch(
+            cmd
+        );
 
         return;
+
     }
 
 
     /* YOUTUBE */
 
     if(
-        cmd.includes("youtube kholo") ||
+
+        cmd.includes(
+            "youtube kholo"
+        ) ||
+
         cmd === "youtube" ||
-        cmd.includes("open youtube")
+
+        cmd.includes(
+            "open youtube"
+        )
+
     ){
 
         speak(
             "Opening YouTube."
         );
 
+
         openWebsite(
             "https://www.youtube.com"
         );
 
+
         return;
+
     }
 
 
     /* GOOGLE SEARCH */
 
     if(
-        cmd.includes("google par search") ||
-        cmd.includes("google search")
+
+        cmd.includes(
+            "google par search"
+        ) ||
+
+        cmd.includes(
+            "google search"
+        )
+
     ){
 
-        googleSearch(cmd);
+        googleSearch(
+            cmd
+        );
 
         return;
+
     }
 
 
     /* GOOGLE */
 
     if(
-        cmd.includes("google kholo") ||
+
+        cmd.includes(
+            "google kholo"
+        ) ||
+
         cmd === "google" ||
-        cmd.includes("open google")
+
+        cmd.includes(
+            "open google"
+        )
+
     ){
 
         speak(
             "Opening Google."
         );
 
+
         openWebsite(
             "https://www.google.com"
         );
 
+
         return;
+
     }
 
 
     /* WHATSAPP */
 
     if(
-        cmd.includes("whatsapp kholo") ||
-        cmd.includes("open whatsapp") ||
+
+        cmd.includes(
+            "whatsapp kholo"
+        ) ||
+
+        cmd.includes(
+            "open whatsapp"
+        ) ||
+
         cmd === "whatsapp"
+
     ){
 
         speak(
             "Opening WhatsApp Web."
         );
 
+
         openWebsite(
             "https://web.whatsapp.com"
         );
 
+
         return;
+
     }
 
 
     /* FACEBOOK */
 
     if(
-        cmd.includes("facebook kholo") ||
-        cmd.includes("open facebook") ||
+
+        cmd.includes(
+            "facebook kholo"
+        ) ||
+
+        cmd.includes(
+            "open facebook"
+        ) ||
+
         cmd === "facebook"
+
     ){
 
         speak(
             "Opening Facebook."
         );
 
+
         openWebsite(
             "https://www.facebook.com"
         );
 
+
         return;
+
     }
 
 
     /* INSTAGRAM */
 
     if(
-        cmd.includes("instagram kholo") ||
-        cmd.includes("open instagram") ||
+
+        cmd.includes(
+            "instagram kholo"
+        ) ||
+
+        cmd.includes(
+            "open instagram"
+        ) ||
+
         cmd === "instagram"
+
     ){
 
         speak(
             "Opening Instagram."
         );
 
+
         openWebsite(
             "https://www.instagram.com"
         );
 
+
         return;
+
     }
 
 
     /* TIKTOK */
 
     if(
-        cmd.includes("tiktok kholo") ||
+
+        cmd.includes(
+            "tiktok kholo"
+        ) ||
+
         cmd === "tiktok" ||
-        cmd.includes("open tiktok")
+
+        cmd.includes(
+            "open tiktok"
+        )
+
     ){
 
         speak(
             "Opening TikTok."
         );
 
+
         openWebsite(
             "https://www.tiktok.com"
         );
 
+
         return;
+
     }
 
 
     /* TEXT WRITE */
 
     if(
-        cmd.includes("text box mein") ||
-        cmd.includes("textbox mein")
+
+        cmd.includes(
+            "text box mein"
+        ) ||
+
+        cmd.includes(
+            "textbox mein"
+        )
+
     ){
 
         let text =
             cmd
-            .replace("text box mein","")
-            .replace("textbox mein","")
-            .replace("likho","")
-            .replace("write","")
+
+            .replace(
+                "text box mein",
+                ""
+            )
+
+            .replace(
+                "textbox mein",
+                ""
+            )
+
+            .replace(
+                "likho",
+                ""
+            )
+
+            .replace(
+                "write",
+                ""
+            )
+
             .trim();
+
 
         if(!text){
 
@@ -1689,251 +2910,433 @@ function processCommand(command){
             );
 
             return;
+
         }
 
-        document.getElementById("textBox").value =
+
+        document.getElementById(
+            "textBox"
+        ).value =
             text;
+
 
         speak(
             "Done. I wrote it in the text box."
         );
 
+
         return;
+
     }
 
 
     /* CLEAR TEXT */
 
     if(
-        cmd.includes("text clear") ||
-        cmd.includes("text hatao") ||
-        cmd.includes("text delete")
+
+        cmd.includes(
+            "text clear"
+        ) ||
+
+        cmd.includes(
+            "text hatao"
+        ) ||
+
+        cmd.includes(
+            "text delete"
+        )
+
     ){
 
         clearText();
 
         return;
+
     }
 
 
     /* COPY TEXT */
 
     if(
-        cmd.includes("text copy") ||
-        cmd.includes("copy karo")
+
+        cmd.includes(
+            "text copy"
+        ) ||
+
+        cmd.includes(
+            "copy karo"
+        )
+
     ){
 
         copyText();
 
         return;
+
     }
 
 
     /* READ TEXT */
 
     if(
-        cmd.includes("text parho") ||
-        cmd.includes("text read") ||
-        cmd.includes("read text")
+
+        cmd.includes(
+            "text parho"
+        ) ||
+
+        cmd.includes(
+            "text read"
+        ) ||
+
+        cmd.includes(
+            "read text"
+        )
+
     ){
 
         speakText();
 
         return;
+
     }
 
 
     /* SHOW TEXT */
 
     if(
-        cmd.includes("show text") ||
-        cmd.includes("text dikhao")
+
+        cmd.includes(
+            "show text"
+        ) ||
+
+        cmd.includes(
+            "text dikhao"
+        )
+
     ){
 
         showText();
 
         return;
+
     }
 
 
     /* DARK MODE */
 
     if(
-        cmd.includes("dark mode") ||
-        cmd.includes("dark karo")
+
+        cmd.includes(
+            "dark mode"
+        ) ||
+
+        cmd.includes(
+            "dark karo"
+        )
+
     ){
 
-        document.body.classList.remove("light");
+        document.body.classList.remove(
+            "light"
+        );
+
 
         localStorage.setItem(
             "voiceTheme",
             "dark"
         );
 
+
         speak(
             "Dark mode enabled."
         );
 
+
         return;
+
     }
 
 
     /* LIGHT MODE */
 
     if(
-        cmd.includes("light mode") ||
-        cmd.includes("light karo")
+
+        cmd.includes(
+            "light mode"
+        ) ||
+
+        cmd.includes(
+            "light karo"
+        )
+
     ){
 
-        document.body.classList.add("light");
+        document.body.classList.add(
+            "light"
+        );
+
 
         localStorage.setItem(
             "voiceTheme",
             "light"
         );
 
+
         speak(
             "Light mode enabled."
         );
 
+
         return;
+
     }
 
 
     /* BACK */
 
     if(
+
         cmd === "back" ||
-        cmd.includes("go back") ||
-        cmd.includes("peeche")
+
+        cmd.includes(
+            "go back"
+        ) ||
+
+        cmd.includes(
+            "peeche"
+        )
+
     ){
 
-        speak("Going back.");
+        speak(
+            "Going back."
+        );
 
-        setTimeout(function(){
 
-            history.back();
+        setTimeout(
+            function(){
 
-        },300);
+                history.back();
+
+            },
+            300
+        );
+
 
         return;
+
     }
 
 
     /* FORWARD */
 
     if(
+
         cmd === "forward" ||
-        cmd.includes("go forward") ||
-        cmd.includes("aagay")
+
+        cmd.includes(
+            "go forward"
+        ) ||
+
+        cmd.includes(
+            "aagay"
+        )
+
     ){
 
-        speak("Going forward.");
+        speak(
+            "Going forward."
+        );
 
-        setTimeout(function(){
 
-            history.forward();
+        setTimeout(
+            function(){
 
-        },300);
+                history.forward();
+
+            },
+            300
+        );
+
 
         return;
+
     }
 
 
     /* REFRESH */
 
     if(
+
         cmd === "refresh" ||
-        cmd.includes("page refresh") ||
-        cmd.includes("reload")
+
+        cmd.includes(
+            "page refresh"
+        ) ||
+
+        cmd.includes(
+            "reload"
+        )
+
     ){
 
-        speak("Refreshing the page.");
+        speak(
+            "Refreshing the page."
+        );
 
-        setTimeout(function(){
 
-            location.reload();
+        setTimeout(
+            function(){
 
-        },500);
+                location.reload();
+
+            },
+            500
+        );
+
 
         return;
+
     }
 
 
     /* TIME */
 
     if(
+
         cmd === "time" ||
-        cmd.includes("time batao") ||
-        cmd.includes("what time")
+
+        cmd.includes(
+            "time batao"
+        ) ||
+
+        cmd.includes(
+            "what time"
+        )
+
     ){
 
         const now =
             new Date();
 
+
         const time =
-            now.toLocaleTimeString([],{
-                hour:"numeric",
-                minute:"2-digit"
-            });
+            now.toLocaleTimeString(
+                [],
+                {
+                    hour:"numeric",
+                    minute:"2-digit"
+                }
+            );
+
 
         speak(
-            "The time is " + time
+            "The time is " +
+            time
         );
 
+
         return;
+
     }
 
 
     /* DATE */
 
     if(
+
         cmd === "date" ||
-        cmd.includes("date batao") ||
-        cmd.includes("today date")
+
+        cmd.includes(
+            "date batao"
+        ) ||
+
+        cmd.includes(
+            "today date"
+        )
+
     ){
 
         const now =
             new Date();
 
+
         const date =
-            now.toLocaleDateString([],{
-                weekday:"long",
-                year:"numeric",
-                month:"long",
-                day:"numeric"
-            });
+            now.toLocaleDateString(
+                [],
+                {
+                    weekday:"long",
+                    year:"numeric",
+                    month:"long",
+                    day:"numeric"
+                }
+            );
+
 
         speak(
-            "Today is " + date
+            "Today is " +
+            date
         );
 
+
         return;
+
     }
 
 
     /* AI FALLBACK */
 
-    askAI(command);
+    askAI(
+        command
+    );
 
-}
+    }
     /* =========================================
    AI ASSISTANT
 ========================================= */
 
-async function askAI(){
+async function askAI(commandFromVoice = ""){
 
     const input =
-        document.getElementById("aiQuestion");
+        document.getElementById(
+            "aiQuestion"
+        );
 
     const answer =
-        document.getElementById("aiAnswer");
+        document.getElementById(
+            "aiAnswer"
+        );
 
     const aiStatus =
-        document.getElementById("aiStatus");
+        document.getElementById(
+            "aiStatus"
+        );
 
-    const question =
+
+    let question =
         input.value.trim();
+
+
+    /*
+       Agar voice command se AI fallback
+       hua hai to voice command use karo.
+    */
+
+    if(
+        !question &&
+        commandFromVoice
+    ){
+
+        question =
+            String(
+                commandFromVoice
+            ).trim();
+
+        input.value =
+            question;
+
+    }
+
 
     if(!question){
 
@@ -1941,55 +3344,74 @@ async function askAI(){
             "Please type a question first.";
 
         return;
+
     }
+
 
     answer.innerText =
         "Thinking...";
 
+
     aiStatus.innerText =
         "Connecting to AI...";
+
 
     try{
 
         const response =
-            await fetch("/api/ask",{
+            await fetch(
+                "/api/ask",
+                {
 
-                method:"POST",
+                    method:"POST",
 
-                headers:{
-                    "Content-Type":"application/json"
-                },
+                    headers:{
+                        "Content-Type":
+                        "application/json"
+                    },
 
-                body:JSON.stringify({
-                    question:question
-                })
+                    body:
+                    JSON.stringify({
+                        question:
+                        question
+                    })
 
-            });
+                }
+            );
 
 
         const contentType =
-            response.headers.get("content-type") || "";
+            response.headers.get(
+                "content-type"
+            ) || "";
 
 
         /*
-           Prevent the old:
+           Prevent:
            Unexpected token '<'
-           JSON error.
+           JSON error
         */
 
-        if(!contentType.includes("application/json")){
+        if(
+            !contentType.includes(
+                "application/json"
+            )
+        ){
 
             const text =
                 await response.text();
+
 
             console.error(
                 "Non-JSON response:",
                 text
             );
 
+
             throw new Error(
                 "AI backend returned a non-JSON response. Check /api/ask."
             );
+
         }
 
 
@@ -2000,16 +3422,24 @@ async function askAI(){
         if(!response.ok){
 
             throw new Error(
+
                 data.error ||
+
                 "AI request failed."
+
             );
+
         }
 
 
         const finalAnswer =
+
             data.answer ||
+
             data.response ||
+
             data.text ||
+
             data.message;
 
 
@@ -2018,18 +3448,26 @@ async function askAI(){
             throw new Error(
                 "AI returned an empty response."
             );
+
         }
 
 
         answer.innerText =
             finalAnswer;
 
+
         aiStatus.innerText =
             "✓ AI response received";
+
+
+        /*
+           Voice response
+        */
 
         speak(
             finalAnswer
         );
+
 
     }catch(error){
 
@@ -2038,37 +3476,52 @@ async function askAI(){
             error
         );
 
+
         answer.innerText =
+
             "AI Assistant is not connected yet.\n\n" +
+
             "Backend error: " +
+
             error.message;
+
 
         aiStatus.innerText =
             "⚠️ Check your /api/ask backend.";
 
     }
+
 }
 
 
 /* =========================================
-   AI TEXT BOX ENTER SHORTCUT
+   AI ENTER SHORTCUT
 ========================================= */
 
-document.getElementById("aiQuestion")
-    .addEventListener("keydown",function(event){
+document
+    .getElementById(
+        "aiQuestion"
+    )
+    .addEventListener(
+        "keydown",
+        function(event){
 
-        if(
-            event.key === "Enter" &&
-            !event.shiftKey
-        ){
+            if(
 
-            event.preventDefault();
+                event.key === "Enter" &&
 
-            askAI();
+                !event.shiftKey
+
+            ){
+
+                event.preventDefault();
+
+                askAI();
+
+            }
 
         }
-
-    });
+    );
 
 
 /* =========================================
@@ -2076,10 +3529,16 @@ document.getElementById("aiQuestion")
 ========================================= */
 
 loadTheme();
+
 renderHistory();
+
 renderCustomCommands();
+
 
 </script>
 
+
 </body>
+
+
 </html>
