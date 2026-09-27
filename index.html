@@ -2620,12 +2620,13 @@ async function askAI() {
 
     answerBox.textContent = data.answer || "No answer received.";
 
-  } catch (error) {
-    console.error(error);
-    answerBox.textContent =
-      "❌ AI se connection nahi ho saka. Please try again.";
+  
+} catch (error) {
+  console.error(error);
+  answerBox.textContent =
+    "❌ Error: " + error.message;
   }
-}
+    
 </script>
 
 </body>
