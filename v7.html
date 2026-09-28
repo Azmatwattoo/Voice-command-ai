@@ -656,8 +656,16 @@ async function loginUser(){
 
         if(error){
 
+            console.error(
+                "SUPABASE LOGIN ERROR:",
+                error
+            );
+
             alert(
-                error.message
+                "Login Error:\n\n" +
+                error.message +
+                "\n\nCode: " +
+                (error.code || "N/A")
             );
 
             return;
@@ -681,10 +689,14 @@ async function loginUser(){
 
     catch(error){
 
-        console.error(error);
+        console.error(
+            "LOGIN CONNECTION ERROR:",
+            error
+        );
 
         alert(
-            "Login failed. Please try again."
+            "Connection Error:\n\n" +
+            error.message
         );
 
     }
