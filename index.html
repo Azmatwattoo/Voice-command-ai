@@ -1,197 +1,650 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
 
 <meta charset="UTF-8">
 
-<meta name="viewport"
-content="width=device-width, initial-scale=1.0">
+<meta
+  name="viewport"
+  content="width=device-width, initial-scale=1.0"
+>
 
-<title>AzDar AI — Smart AI Tools</title>
-
-<meta name="description"
-content="AzDar AI — Smart AI tools platform for chat, voice, images, prompts and documents.">
+<title>Voice Command AI V6</title>
 
 <style>
 
+/* =========================
+   BASIC RESET
+========================= */
+
 *{
-  box-sizing:border-box;
-  margin:0;
-  padding:0;
+    box-sizing:border-box;
+    margin:0;
+    padding:0;
 }
 
 body{
-  font-family:Arial,sans-serif;
-  background:
-  radial-gradient(
-    circle at top,
-    #172554 0%,
-    #070b14 45%,
-    #03050a 100%
-  );
-  color:white;
-  min-height:100vh;
+    font-family:Arial,sans-serif;
+    background:#070b14;
+    color:#ffffff;
+    min-height:100vh;
+    transition:0.3s;
 }
 
-.header{
-  padding:25px 15px;
-  text-align:center;
-  border-bottom:1px solid rgba(255,255,255,.1);
-  background:rgba(3,5,10,.35);
+body.light{
+    background:#f3f6fb;
+    color:#111827;
 }
 
-.logo-box{
-  width:90px;
-  height:90px;
-  margin:auto;
-  border-radius:25px;
-  background:linear-gradient(
-    135deg,
-    #2563eb,
-    #7c3aed
-  );
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  font-size:45px;
-  box-shadow:
-    0 0 35px rgba(59,130,246,.4);
-}
-
-.header h1{
-  margin-top:15px;
-  font-size:32px;
-  letter-spacing:.5px;
-}
-
-.header p{
-  margin-top:8px;
-  color:#aab4c5;
-  font-size:14px;
-}
-
-.badge{
-  display:inline-block;
-  margin-top:12px;
-  padding:7px 14px;
-  border-radius:30px;
-  background:rgba(37,99,235,.15);
-  border:1px solid rgba(96,165,250,.25);
-  color:#8ab4ff;
-  font-size:12px;
-}
+/* =========================
+   MAIN CONTAINER
+========================= */
 
 .container{
-  width:92%;
-  max-width:1100px;
-  margin:35px auto;
+    width:100%;
+    max-width:900px;
+    margin:auto;
+    padding:18px;
 }
 
-.hero{
-  text-align:center;
-  margin-bottom:35px;
+/* =========================
+   HEADER
+========================= */
+
+header{
+    text-align:center;
+    padding:28px 18px;
+    margin-bottom:18px;
+
+    border-radius:24px;
+
+    background:
+        linear-gradient(
+            135deg,
+            #111827,
+            #172554,
+            #1e1b4b
+        );
+
+    border:1px solid #293956;
+
+    box-shadow:
+        0 15px 40px rgba(0,0,0,0.35);
 }
 
-.hero h2{
-  font-size:28px;
-  margin-bottom:10px;
+header h1{
+    font-size:30px;
+    margin-bottom:8px;
 }
 
-.hero p{
-  color:#9ca8bb;
-  line-height:1.6;
-  max-width:650px;
-  margin:auto;
+header p{
+    color:#aab6ca;
+    font-size:15px;
+    margin-bottom:14px;
 }
 
-.tools{
-  display:grid;
-  grid-template-columns:
-  repeat(auto-fit,minmax(230px,1fr));
-  gap:18px;
-}
-  .card{
-  background:rgba(15,23,42,.82);
-  border:1px solid rgba(255,255,255,.08);
-  border-radius:22px;
-  padding:24px;
-  min-height:220px;
-  box-shadow:
-    0 12px 40px rgba(0,0,0,.25);
-  transition:.25s;
-}
+.version{
+    display:inline-block;
 
-.card:hover{
-  transform:translateY(-5px);
-  border-color:rgba(96,165,250,.5);
-  box-shadow:
-    0 15px 45px rgba(37,99,235,.15);
+    padding:8px 15px;
+
+    border-radius:30px;
+
+    background:#2563eb;
+
+    font-size:12px;
+
+    font-weight:bold;
+
+    letter-spacing:0.5px;
 }
 
-.icon{
-  font-size:38px;
-  margin-bottom:15px;
+/* =========================
+   CARD
+========================= */
+
+.card{
+    background:#0d1422;
+
+    border:1px solid #202d43;
+
+    border-radius:20px;
+
+    padding:20px;
+
+    margin-bottom:18px;
+
+    box-shadow:
+        0 10px 30px rgba(0,0,0,0.22);
 }
 
-.card h3{
-  font-size:20px;
-  margin-bottom:9px;
+body.light .card{
+    background:#ffffff;
+    border-color:#dce3ed;
 }
 
-.card p{
-  color:#9ca8bb;
-  font-size:14px;
-  line-height:1.55;
+.card h2{
+    font-size:20px;
+    margin-bottom:15px;
 }
 
-.card button{
-  width:100%;
-  margin-top:18px;
-  padding:12px;
-  border:0;
-  border-radius:13px;
-  background:
-    linear-gradient(
-      135deg,
-      #2563eb,
-      #4f46e5
-    );
-  color:white;
-  font-weight:bold;
-  cursor:pointer;
-  font-size:14px;
+/* =========================
+   MICROPHONE
+========================= */
+
+.mic-area{
+    text-align:center;
 }
 
-.card button:hover{
-  opacity:.9;
+.mic{
+    width:115px;
+    height:115px;
+
+    border-radius:50%;
+
+    border:none;
+
+    background:
+        linear-gradient(
+            135deg,
+            #2563eb,
+            #7c3aed
+        );
+
+    color:white;
+
+    font-size:44px;
+
+    cursor:pointer;
+
+    box-shadow:
+        0 0 35px rgba(37,99,235,0.45);
+
+    transition:0.2s;
 }
 
-.footer{
-  text-align:center;
-  padding:40px 15px;
-  color:#69758a;
-  font-size:13px;
-  line-height:1.8;
+.mic:hover{
+    transform:scale(1.05);
 }
 
-.footer strong{
-  color:#8ab4ff;
+.mic:active{
+    transform:scale(0.96);
 }
 
-@media(max-width:500px){
+.mic.listening{
+    animation:pulse 1s infinite;
+}
 
-  .header h1{
-    font-size:27px;
-  }
+@keyframes pulse{
 
-  .hero h2{
-    font-size:24px;
-  }
+    0%{
+        box-shadow:
+        0 0 0 0
+        rgba(124,58,237,0.7);
+    }
 
-  .container{
-    width:94%;
-  }
+    70%{
+        box-shadow:
+        0 0 0 28px
+        rgba(124,58,237,0);
+    }
+
+    100%{
+        box-shadow:
+        0 0 0 0
+        rgba(124,58,237,0);
+    }
+
+}
+
+/* =========================
+   STATUS
+========================= */
+
+.status{
+    margin-top:15px;
+
+    color:#60a5fa;
+
+    font-weight:bold;
+
+    line-height:1.5;
+}
+
+/* =========================
+   COMMAND BOX
+========================= */
+
+.command-box{
+
+    background:#070b14;
+
+    border-radius:14px;
+
+    padding:15px;
+
+    min-height:60px;
+
+    line-height:1.6;
+
+    color:#dbeafe;
+
+    word-break:break-word;
+
+}
+
+body.light .command-box{
+
+    background:#f1f5f9;
+
+    color:#1e293b;
+
+}
+
+/* =========================
+   ASSISTANT BOX
+========================= */
+
+.assistant-box{
+
+    margin-top:12px;
+
+    background:#101a2d;
+
+    border-radius:14px;
+
+    padding:15px;
+
+    min-height:60px;
+
+    line-height:1.6;
+
+    word-break:break-word;
+
+}
+
+body.light .assistant-box{
+
+    background:#eef2ff;
+
+}
+
+/* =========================
+   INPUTS
+========================= */
+
+textarea,
+input{
+
+    width:100%;
+
+    border:none;
+
+    outline:none;
+
+    border-radius:14px;
+
+    padding:14px;
+
+    background:#070b14;
+
+    color:white;
+
+    border:1px solid #293850;
+
+    font-size:15px;
+
+}
+
+textarea{
+
+    min-height:110px;
+
+    resize:vertical;
+
+    line-height:1.5;
+
+}
+
+body.light textarea,
+body.light input{
+
+    background:#f8fafc;
+
+    color:#111827;
+
+    border-color:#cbd5e1;
+
+}
+
+/* =========================
+   BUTTONS
+========================= */
+
+.btn{
+
+    border:none;
+
+    border-radius:12px;
+
+    padding:11px 15px;
+
+    margin:
+        5px
+        3px
+        0
+        0;
+
+    background:#2563eb;
+
+    color:white;
+
+    cursor:pointer;
+
+    font-weight:bold;
+
+    transition:0.2s;
+
+}
+
+.btn:hover{
+
+    opacity:0.88;
+
+    transform:translateY(-1px);
+
+}
+
+.btn.secondary{
+
+    background:#374151;
+
+}
+
+.btn.success{
+
+    background:#059669;
+
+}
+
+.btn.danger{
+
+    background:#dc2626;
+
+}
+
+.btn.purple{
+
+    background:#7c3aed;
+
+}
+
+/* =========================
+   QUICK COMMAND GRID
+========================= */
+
+.quick-grid{
+
+    display:grid;
+
+    grid-template-columns:
+        repeat(3,1fr);
+
+    gap:9px;
+
+}
+
+.quick-grid button{
+
+    border:none;
+
+    border-radius:12px;
+
+    padding:13px 7px;
+
+    background:#172338;
+
+    color:white;
+
+    cursor:pointer;
+
+    font-weight:bold;
+
+    transition:0.2s;
+
+}
+
+.quick-grid button:hover{
+
+    background:#243654;
+
+    transform:translateY(-1px);
+
+}
+
+body.light .quick-grid button{
+
+    background:#e8eef7;
+
+    color:#111827;
+
+}
+
+/* =========================
+   AI AREA
+========================= */
+
+.ai-answer{
+
+    margin-top:15px;
+
+    padding:15px;
+
+    border-radius:14px;
+
+    background:#070b14;
+
+    line-height:1.7;
+
+    min-height:60px;
+
+    white-space:pre-wrap;
+
+    word-break:break-word;
+
+}
+
+body.light .ai-answer{
+
+    background:#f1f5f9;
+
+}
+
+.ai-status{
+
+    margin-top:10px;
+
+    font-size:13px;
+
+    color:#94a3b8;
+
+}
+
+/* =========================
+   BADGE
+========================= */
+
+.badge{
+
+    display:inline-block;
+
+    margin-top:10px;
+
+    padding:6px 10px;
+
+    border-radius:20px;
+
+    background:#172554;
+
+    color:#93c5fd;
+
+    font-size:12px;
+
+}
+
+/* =========================
+   LIST ITEMS
+========================= */
+
+.history-item,
+.custom-item{
+
+    background:#101a2d;
+
+    padding:12px;
+
+    border-radius:12px;
+
+    margin-top:8px;
+
+    line-height:1.5;
+
+    word-break:break-word;
+
+}
+
+body.light .history-item,
+body.light .custom-item{
+
+    background:#eef2f7;
+
+}
+
+.small{
+
+    font-size:12px;
+
+    color:#94a3b8;
+
+}
+
+/* =========================
+   COMMAND LIST
+========================= */
+
+.command-list{
+
+    line-height:1.9;
+
+    color:#cbd5e1;
+
+}
+
+body.light .command-list{
+
+    color:#334155;
+
+}
+
+/* =========================
+   FOOTER
+========================= */
+
+footer{
+
+    text-align:center;
+
+    padding:20px;
+
+    color:#64748b;
+
+    font-size:13px;
+
+}
+
+/* =========================
+   THEME BUTTON
+========================= */
+
+.theme-btn{
+
+    position:fixed;
+
+    right:15px;
+
+    top:15px;
+
+    z-index:100;
+
+    border:none;
+
+    border-radius:50%;
+
+    width:45px;
+
+    height:45px;
+
+    cursor:pointer;
+
+    background:#1e293b;
+
+    color:white;
+
+    font-size:20px;
+
+    box-shadow:
+        0 5px 15px rgba(0,0,0,0.25);
+
+}
+
+body.light .theme-btn{
+
+    background:#e2e8f0;
+
+    color:#111827;
+
+}
+
+/* =========================
+   MOBILE
+========================= */
+
+@media(max-width:600px){
+
+    .container{
+
+        padding:12px;
+
+    }
+
+    header{
+
+        padding:24px 14px;
+
+    }
+
+    header h1{
+
+        font-size:25px;
+
+    }
+
+    .quick-grid{
+
+        grid-template-columns:
+            repeat(2,1fr);
+
+    }
+
+    .mic{
+
+        width:100px;
+
+        height:100px;
+
+        font-size:38px;
+
+    }
 
 }
 
@@ -201,236 +654,799 @@ body{
 
 <body>
 
-<header class="header">
+<!-- =========================
+     THEME BUTTON
+========================= -->
 
-  <div class="logo-box">
-    🤖
-  </div>
+<button
+    class="theme-btn"
+    id="themeButton"
+    onclick="toggleTheme()"
+>
+    🌙
+</button>
 
-  <h1>
-    AzDar AI
-  </h1>
 
-  <p>
-    Smarter Tools • Better Tomorrow
-  </p>
+<div class="container">
 
-  <div class="badge">
-    AI PLATFORM V7
-  </div>
 
-</header>
-<main class="container">
+<!-- =========================
+     HEADER
+========================= -->
 
-  <section class="hero">
+<header>
 
-    <h2>
-      Your AI Tools, All in One Place
-    </h2>
+    <h1>
+        🎙️ Voice Command AI
+    </h1>
 
     <p>
-      Welcome to AzDar AI — a modern AI platform
-      designed for intelligent conversations,
-      voice commands, image creation, prompts
-      and document tools.
+        Your Personal Smart Voice Assistant
     </p>
 
-  </section>
+    <span class="version">
+        VERSION 6 • SMART AI
+    </span>
+
+</header>
 
 
-  <section class="tools">
+<!-- =========================
+     MICROPHONE CARD
+========================= -->
+
+<div class="card mic-area">
+
+    <button
+        class="mic"
+        id="micButton"
+        onclick="startListening()"
+    >
+        🎤
+    </button>
+
+    <div
+        class="status"
+        id="status"
+    >
+        Tap the microphone and speak
+    </div>
+
+    <span
+        class="badge"
+        id="supportBadge"
+    >
+        Checking voice support...
+    </span>
+
+</div>
 
 
-    <div class="card">
+<!-- =========================
+     COMMAND CARD
+========================= -->
 
-      <div class="icon">🤖</div>
+<div class="card">
 
-      <h3>
-        AI Assistant
-      </h3>
+    <h2>
+        🗣️ Your Command
+    </h2>
 
-      <p>
-        Ask questions and get intelligent
-        AI-powered answers.
-      </p>
+    <div
+        class="command-box"
+        id="command"
+    >
+        Your voice command will appear here...
+    </div>
 
-      <button
-      onclick="openTool('ai-assistant.html')">
-        Open AI Assistant
-      </button>
+    <div
+        class="assistant-box"
+        id="assistant"
+    >
+        Assistant response will appear here...
+    </div>
+
+</div>
+
+
+<!-- =========================
+     AI ASSISTANT CARD
+========================= -->
+
+<div class="card">
+
+    <h2>
+        🤖 AI Assistant
+    </h2>
+
+    <textarea
+        id="aiQuestion"
+        placeholder="Ask anything..."
+    ></textarea>
+
+    <button
+        class="btn purple"
+        onclick="askAI()"
+    >
+        ✨ Ask AI
+    </button>
+
+    <button
+        class="btn secondary"
+        onclick="clearAI()"
+    >
+        Clear
+    </button>
+
+    <div
+        class="ai-answer"
+        id="aiAnswer"
+    >
+        AI answer will appear here...
+    </div>
+
+    <div
+        class="ai-status"
+        id="aiStatus"
+    >
+        AI Assistant ready
+    </div>
+
+</div>
+
+
+<!-- =========================
+     QUICK COMMANDS
+========================= -->
+
+<div class="card">
+
+    <h2>
+        ⚡ Quick Commands
+    </h2>
+
+    <div class="quick-grid">
+
+        <button onclick="runQuick('youtube')">
+            ▶️ YouTube
+        </button>
+
+        <button onclick="runQuick('google')">
+            🔎 Google
+        </button>
+
+        <button onclick="runQuick('whatsapp')">
+            💬 WhatsApp
+        </button>
+
+        <button onclick="runQuick('facebook')">
+            📘 Facebook
+        </button>
+
+        <button onclick="runQuick('instagram')">
+            📸 Instagram
+        </button>
+
+        <button onclick="runQuick('tiktok')">
+            🎵 TikTok
+        </button>
+
+        <button onclick="runQuick('time')">
+            🕐 Time
+        </button>
+
+        <button onclick="runQuick('date')">
+            📅 Date
+        </button>
+
+        <button onclick="runQuick('dark')">
+            🌙 Dark
+        </button>
+
+        <button onclick="runQuick('light')">
+            ☀️ Light
+        </button>
+
+        <button onclick="runQuick('back')">
+            ◀️ Back
+        </button>
+
+        <button onclick="runQuick('forward')">
+            ▶️ Forward
+        </button>
+
+        <button onclick="runQuick('refresh')">
+            🔄 Refresh
+        </button>
 
     </div>
 
+</div>
+<!-- =========================
+     TEXT TOOLS
+========================= -->
 
-    <div class="card">
+<div class="card">
 
-      <div class="icon">🎤</div>
+    <h2>📝 Smart Text Tools</h2>
 
-      <h3>
-        Voice Command
-      </h3>
+    <textarea
+        id="textBox"
+        placeholder="Write or paste your text here..."
+    ></textarea>
 
-      <p>
-        Use your voice to interact with
-        AzDar AI.
-      </p>
+    <button
+        class="btn"
+        onclick="clearText()"
+    >
+        🗑️ Clear
+    </button>
 
-      <button
-      onclick="openTool('voice-command.html')">
-        Open Voice Command
-      </button>
+    <button
+        class="btn success"
+        onclick="copyText()"
+    >
+        📋 Copy
+    </button>
+
+    <button
+        class="btn"
+        onclick="showText()"
+    >
+        👁️ Show
+    </button>
+
+    <button
+        class="btn purple"
+        onclick="speakText()"
+    >
+        🔊 Read
+    </button>
+
+</div>
+
+
+<!-- =========================
+     CUSTOM COMMANDS
+========================= -->
+
+<div class="card">
+
+    <h2>⚙️ Custom Commands</h2>
+
+    <input
+        type="text"
+        id="customCommand"
+        placeholder="Command name e.g. Open my website"
+    >
+
+    <br><br>
+
+    <input
+        type="url"
+        id="customURL"
+        placeholder="Website URL e.g. https://example.com"
+    >
+
+    <button
+        class="btn success"
+        onclick="addCustomCommand()"
+    >
+        ➕ Add Command
+    </button>
+
+    <div
+        id="customCommands"
+        style="margin-top:15px;"
+    >
+    </div>
+
+</div>
+
+
+<!-- =========================
+     COMMAND HISTORY
+========================= -->
+
+<div class="card">
+
+    <h2>📜 Command History</h2>
+
+    <button
+        class="btn danger"
+        onclick="clearHistory()"
+    >
+        🗑️ Clear History
+    </button>
+
+    <div
+        id="historyList"
+        style="margin-top:10px;"
+    >
+    </div>
+
+</div>
+
+
+<!-- =========================
+     BASIC COMMANDS
+========================= -->
+
+<div class="card">
+
+    <h2>💡 Voice Commands</h2>
+
+    <div class="command-list">
+
+        <p>🎤 <b>"Open YouTube"</b></p>
+
+        <p>🔎 <b>"Search Google cats"</b></p>
+
+        <p>▶️ <b>"Search YouTube music"</b></p>
+
+        <p>💬 <b>"Open WhatsApp"</b></p>
+
+        <p>📘 <b>"Open Facebook"</b></p>
+
+        <p>📸 <b>"Open Instagram"</b></p>
+
+        <p>🎵 <b>"Open TikTok"</b></p>
+
+        <p>📝 <b>"Write hello world"</b></p>
+
+        <p>📋 <b>"Copy text"</b></p>
+
+        <p>🔊 <b>"Read text"</b></p>
+
+        <p>🗑️ <b>"Clear text"</b></p>
+
+        <p>🌙 <b>"Dark mode"</b></p>
+
+        <p>☀️ <b>"Light mode"</b></p>
+
+        <p>🕐 <b>"What time is it"</b></p>
+
+        <p>📅 <b>"What's today's date"</b></p>
+
+        <p>◀️ <b>"Go back"</b></p>
+
+        <p>▶️ <b>"Go forward"</b></p>
+
+        <p>🔄 <b>"Refresh page"</b></p>
+
+        <p>🤖 <b>"Ask AI..."</b></p>
 
     </div>
 
-
-    <div class="card">
-
-      <div class="icon">🖼️</div>
-
-      <h3>
-        AI Image Generator
-      </h3>
-
-      <p>
-        Turn your ideas and descriptions
-        into AI-generated images.
-      </p>
-
-      <button
-      onclick="openTool('image-generator.html')">
-        Open Image Generator
-      </button>
-
-    </div>
-        <div class="card">
-
-      <div class="icon">✍️</div>
-
-      <h3>
-        Prompt Generator
-      </h3>
-
-      <p>
-        Create useful prompts for different
-        AI tools and tasks.
-      </p>
-
-      <button
-      onclick="openTool('prompt-generator.html')">
-        Open Prompt Generator
-      </button>
-
-    </div>
+</div>
 
 
-    <div class="card">
+<!-- =========================
+     FOOTER
+========================= -->
 
-      <div class="icon">📄</div>
+<footer>
 
-      <h3>
-        Text / PDF Tool
-      </h3>
+    Voice Command AI V6
 
-      <p>
-        Work with text and PDF documents
-        using smart tools.
-      </p>
+    <br>
 
-      <button
-      onclick="openTool('text-pdf.html')">
-        Open Text / PDF
-      </button>
-
-    </div>
-
-
-    <div class="card">
-
-      <div class="icon">👤</div>
-
-      <h3>
-        Profile
-      </h3>
-
-      <p>
-        Manage your AzDar AI account
-        and personal information.
-      </p>
-
-      <button
-      onclick="openTool('profile.html')">
-        Open Profile
-      </button>
-
-    </div>
-
-
-    <div class="card">
-
-      <div class="icon">🕘</div>
-
-      <h3>
-        Chat History
-      </h3>
-
-      <p>
-        Access your previous AI conversations
-        and activity.
-      </p>
-
-      <button
-      onclick="openTool('history.html')">
-        Open History
-      </button>
-
-    </div>
-        <div class="card">
-
-      <div class="icon">⚙️</div>
-
-      <h3>
-        Settings
-      </h3>
-
-      <p>
-        Manage your AzDar AI platform
-        preferences.
-      </p>
-
-      <button
-      onclick="openTool('settings.html')">
-        Open Settings
-      </button>
-
-    </div>
-
-
-  </section>
-
-</main>
-
-
-<footer class="footer">
-
-  <strong>AzDar AI</strong><br>
-
-  Smarter Tools • Better Tomorrow<br>
-
-  Created by Azmat Ali<br>
-
-  © 2026 AzDar AI
+    Smart • Fast • Voice Powered
 
 </footer>
 
 
+</div>
+
+
+<!-- =========================
+     JAVASCRIPT START
+========================= -->
+
 <script>
 
-function openTool(page){
+/* =========================
+   STORAGE
+========================= */
 
-  window.location.href = page;
+let customCommands =
+    JSON.parse(
+        localStorage.getItem("customCommands") || "[]"
+    );
+
+let commandHistory =
+    JSON.parse(
+        localStorage.getItem("commandHistory") || "[]"
+    );
+
+
+/* =========================
+   THEME LOAD
+========================= */
+
+function loadTheme(){
+
+    const savedTheme =
+        localStorage.getItem("theme");
+
+    if(savedTheme === "light"){
+
+        document.body.classList.add("light");
+
+        document.getElementById("themeButton")
+            .innerText = "🌙";
+
+    }else{
+
+        document.body.classList.remove("light");
+
+        document.getElementById("themeButton")
+            .innerText = "☀️";
+
+    }
 
 }
 
-</script>
-</body>
-</html>
+
+/* =========================
+   TOGGLE THEME
+========================= */
+
+function toggleTheme(){
+
+    document.body.classList.toggle("light");
+
+    const isLight =
+        document.body.classList.contains("light");
+
+    localStorage.setItem(
+        "theme",
+        isLight ? "light" : "dark"
+    );
+
+    document.getElementById("themeButton")
+        .innerText =
+        isLight ? "🌙" : "☀️";
+
+}
+
+
+/* =========================
+   SPEECH RECOGNITION
+========================= */
+
+const SpeechRecognition =
+    window.SpeechRecognition ||
+    window.webkitSpeechRecognition;
+
+let recognition = null;
+
+let isListening = false;
+
+
+if(SpeechRecognition){
+
+    recognition =
+        new SpeechRecognition();
+
+    recognition.lang = "en-US";
+
+    recognition.continuous = false;
+
+    recognition.interimResults = false;
+
+    recognition.maxAlternatives = 3;
+
+
+    recognition.onstart = function(){
+
+        isListening = true;
+
+        const mic =
+            document.getElementById("micButton");
+
+        mic.classList.add("listening");
+
+        document.getElementById("status")
+            .innerText =
+            "🎙️ Listening... Speak now";
+
+    };
+
+
+    recognition.onend = function(){
+
+        isListening = false;
+
+        document.getElementById("micButton")
+            .classList.remove("listening");
+
+        document.getElementById("status")
+            .innerText =
+            "Tap the microphone and speak";
+
+    };
+
+
+    recognition.onerror = function(event){
+
+        isListening = false;
+
+        document.getElementById("micButton")
+            .classList.remove("listening");
+
+        document.getElementById("status")
+            .innerText =
+            "⚠️ Voice error: " +
+            event.error;
+
+    };
+
+
+    recognition.onresult = function(event){
+
+        const result =
+            event.results[
+                event.results.length - 1
+            ];
+
+        let text =
+            result[0].transcript.trim();
+
+        document.getElementById("command")
+            .innerText = text;
+
+        addHistory(text);
+
+        processCommand(text);
+
+    };
+
+
+    document.getElementById("supportBadge")
+        .innerText =
+        "✓ Voice Recognition Supported";
+
+}else{
+
+    document.getElementById("supportBadge")
+        .innerText =
+        "⚠️ Voice Recognition Not Supported";
+
+}
+
+
+/* =========================
+   START LISTENING
+========================= */
+
+function startListening(){
+
+    if(!recognition){
+
+        alert(
+            "Voice recognition is not supported in this browser. Try Chrome."
+        );
+
+        return;
+
+    }
+
+    if(isListening){
+
+        recognition.stop();
+
+        return;
+
+    }
+
+    try{
+
+        recognition.start();
+
+    }catch(error){
+
+        console.log(error);
+
+    }
+
+}
+
+
+/* =========================
+   SPEAK
+========================= */
+
+function speak(text){
+
+    if(!("speechSynthesis" in window)){
+
+        return;
+
+    }
+
+    window.speechSynthesis.cancel();
+
+    const message =
+        new SpeechSynthesisUtterance(
+            String(text)
+        );
+
+    message.lang = "en-US";
+
+    message.rate = 1;
+
+    message.pitch = 1;
+
+    window.speechSynthesis.speak(message);
+
+}
+
+
+/* =========================
+   NORMALIZE COMMAND
+========================= */
+
+function normalizeCommand(text){
+
+    return String(text || "")
+        .toLowerCase()
+        .trim()
+        .replace(/\s+/g," ");
+
+}
+
+
+/* =========================
+   NORMALIZE URL
+========================= */
+
+function normalizeURL(url){
+
+    let value =
+        String(url || "").trim();
+
+    if(!value){
+
+        return "";
+
+    }
+
+    if(
+        !value.startsWith("http://") &&
+        !value.startsWith("https://")
+    ){
+
+        value =
+            "https://" + value;
+
+    }
+
+    return value;
+
+}
+
+
+/* =========================
+   OPEN WEBSITE
+========================= */
+
+function openWebsite(url){
+
+    const finalURL =
+        normalizeURL(url);
+
+    if(!finalURL){
+
+        return;
+
+    }
+
+    window.open(
+        finalURL,
+        "_blank"
+    );
+
+}
+   /* =========================
+   HISTORY FUNCTIONS
+========================= */
+
+function addHistory(command){
+
+    if(!command) return;
+
+    commandHistory.unshift({
+        text: String(command),
+        time: new Date().toLocaleString()
+    });
+
+    /* Keep latest 30 commands */
+
+    commandHistory =
+        commandHistory.slice(0,30);
+
+    localStorage.setItem(
+        "commandHistory",
+        JSON.stringify(commandHistory)
+    );
+
+    renderHistory();
+
+}
+
+
+/* =========================
+   RENDER HISTORY
+========================= */
+
+function renderHistory(){
+
+    const box =
+        document.getElementById("historyList");
+
+    if(!box) return;
+
+    if(commandHistory.length === 0){
+
+        box.innerHTML =
+            '<div class="small">No commands yet.</div>';
+
+        return;
+
+    }
+
+    box.innerHTML =
+        commandHistory.map(
+            function(item){
+
+                return `
+                    <div class="history-item">
+
+                        <b>🎤 ${escapeHTML(item.text)}</b>
+
+                        <div class="small">
+                            ${escapeHTML(item.time)}
+                        </div>
+
+                    </div>
+                `;
+
+            }
+        ).join("");
+
+}
+
+
+/* =========================
+   CLEAR HISTORY
+========================= */
+
+function clearHistory(){
+
+    commandHistory = [];
+
+    localStorage.removeItem(
+        "commandHistory"
+    );
+
+    renderHistory();
+
+    document.getElementById("assistant")
+        .innerText =
+        "Command history cleared.";
+
+    speak("Command history cleared.");
+
+}
+
+
+/* =========================
+   CUSTOM COMMAND
+========================= */
+
+function addCustomCommand(){
+
+    const commandInput =
+        document.getElementById(
+      
