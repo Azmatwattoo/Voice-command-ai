@@ -353,7 +353,41 @@ textarea:focus{
     color:#94a3b8;
     font-size:12px;
 }
+.quick-grid{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:10px;
+    margin-top:15px;
+}
 
+.quick-grid button{
+    padding:13px 8px;
+    border:none;
+    border-radius:12px;
+    background:#111827;
+    color:white;
+    border:1px solid #1e293b;
+    font-size:14px;
+    cursor:pointer;
+    transition:.2s;
+}
+
+.quick-grid button:hover{
+    transform:translateY(-2px);
+    border-color:#3b82f6;
+}
+
+#voiceStatus{
+    color:#94a3b8;
+    font-size:14px;
+}
+
+@media(max-width:600px){
+    .quick-grid{
+        grid-template-columns:repeat(2,1fr);
+    }
+}
+    
 /* FOOTER */
 
 footer{
@@ -499,149 +533,170 @@ footer{
     </div>
 
 </div>
+</div>
 
 
-<!-- AI ASSISTANT -->
+<div class="feature">
 
-<div class="card">
+    <div class="feature-icon">
+        ⚙️
+    </div>
 
-    <h2>
-        ✨ Ask AzDar AI
-    </h2>
+    <div class="feature-title">
+        Commands
+    </div>
 
-    <textarea
-        id="question"
-        placeholder="Ask anything..."
-    ></textarea>
-
-    <button
-        class="btn"
-        onclick="askAI()"
-    >
-        ✨ Ask AI
-    </button>
-
-    <div
-        class="answer"
-        id="answer"
-    >
-        AI answer will appear here...
+    <div class="feature-text">
+        Custom Commands
     </div>
 
 </div>
 
 
-<!-- FEATURES -->
+<div class="feature">
 
-<div class="card">
+    <div class="feature-icon">
+        📜
+    </div>
 
-    <h2>
-        ⚡ V7 Features
-    </h2>
+    <div class="feature-title">
+        History
+    </div>
 
-    <div class="features">
+    <div class="feature-text">
+        Command History
+    </div>
 
-        <div class="feature">
+</div>
 
-            <div class="feature-icon">
-                🤖
-            </div>
-
-            <div class="feature-title">
-                Smart AI
-            </div>
-
-            <div class="feature-text">
-                AI Assistant
-            </div>
-
-        </div>
+</div>
 
 
-        <div class="feature">
+<!-- =========================
+     V7 QUICK COMMANDS
+========================= -->
 
-            <div class="feature-icon">
-                🎤
-            </div>
+<div class="card" style="margin-top:20px;">
 
-            <div class="feature-title">
-                Voice
-            </div>
+    <h2>⚡ Quick Commands</h2>
 
-            <div class="feature-text">
-                Voice Commands
-            </div>
+    <div class="quick-grid">
 
-        </div>
+        <button onclick="openGoogle()">🌐 Google</button>
 
+        <button onclick="openYouTube()">▶️ YouTube</button>
 
-        <div class="feature">
+        <button onclick="openWhatsApp()">💬 WhatsApp</button>
 
-            <div class="feature-icon">
-                🔎
-            </div>
+        <button onclick="openFacebook()">📘 Facebook</button>
 
-            <div class="feature-title">
-                Search
-            </div>
+        <button onclick="openInstagram()">📸 Instagram</button>
 
-            <div class="feature-text">
-                Smart Search
-            </div>
+        <button onclick="openTikTok()">🎵 TikTok</button>
 
-        </div>
+        <button onclick="showTime()">🕐 Time</button>
 
+        <button onclick="showDate()">📅 Date</button>
 
-        <div class="feature">
+        <button onclick="toggleDark()">🌙 Dark</button>
 
-            <div class="feature-icon">
-                🌐
-            </div>
+        <button onclick="toggleLight()">☀️ Light</button>
 
-            <div class="feature-title">
-                Web
-            </div>
+        <button onclick="goBack()">↩️ Back</button>
 
-            <div class="feature-text">
-                Web Tools
-            </div>
+        <button onclick="refreshPage()">🔄 Refresh</button>
 
-        </div>
+    </div>
+
+</div>
 
 
-        <div class="feature">
+<!-- =========================
+     V7 VOICE ASSISTANT
+========================= -->
 
-            <div class="feature-icon">
-                ⚙️
-            </div>
+<div class="card" style="margin-top:20px;">
 
-            <div class="feature-title">
-                Commands
-            </div>
+    <h2>🎤 Voice Assistant</h2>
 
-            <div class="feature-text">
-                Custom Commands
-            </div>
+    <p id="voiceStatus">
+        Tap the button and speak your command.
+    </p>
 
-        </div>
+    <button
+        onclick="startVoice()"
+        style="
+        width:100%;
+        padding:15px;
+        margin-top:10px;
+        border:none;
+        border-radius:14px;
+        background:#ffffff;
+        color:#111111;
+        font-size:17px;
+        font-weight:bold;
+        cursor:pointer;
+        "
+    >
+        🎤 Start Voice Assistant
+    </button>
+
+</div>
 
 
-        <div class="feature">
+<!-- =========================
+     V7 COMMAND HISTORY
+========================= -->
 
-            <div class="feature-icon">
-                📜
-            </div>
+<div class="card" style="margin-top:20px;">
 
-            <div class="feature-title">
-                History
-            </div>
+    <h2>🕘 Command History</h2>
 
-            <div class="feature-text">
-                Command History
-            </div>
+    <button
+        onclick="showHistory()"
+        style="
+        width:100%;
+        padding:14px;
+        margin-top:10px;
+        border:none;
+        border-radius:12px;
+        background:#222222;
+        color:white;
+        font-size:16px;
+        cursor:pointer;
+        "
+    >
+        📜 Show History
+    </button>
 
-        </div>
+    <button
+        onclick="clearHistory()"
+        style="
+        width:100%;
+        padding:14px;
+        margin-top:10px;
+        border:none;
+        border-radius:12px;
+        background:#444444;
+        color:white;
+        font-size:16px;
+        cursor:pointer;
+        "
+    >
+        🗑️ Clear History
+    </button>
 
+    <div
+        id="historyBox"
+        style="
+        margin-top:15px;
+        padding:15px;
+        border-radius:14px;
+        background:rgba(255,255,255,0.06);
+        min-height:50px;
+        "
+    >
+        No history yet.
     </div>
 
 </div>
@@ -656,6 +711,7 @@ footer{
 </footer>
 
 </div>
+
 <script>
 
 /* =========================
