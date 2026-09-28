@@ -612,14 +612,82 @@ async function registerUser(){
 
 
 /* =========================
-   LOGIN
+   REAL LOGIN
 ========================= */
 
-function loginUser(){
+async function loginUser(){
 
-    alert(
-        "Login system will be connected in the next step."
-    );
+    const email =
+        document
+        .getElementById("loginEmail")
+        .value
+        .trim();
+
+    const password =
+        document
+        .getElementById("loginPassword")
+        .value;
+
+
+    if(!email || !password){
+
+        alert(
+            "Please enter email and password."
+        );
+
+        return;
+    }
+
+
+    try{
+
+        const {
+            data,
+            error
+        } =
+        await supabaseClient.auth.signInWithPassword({
+
+            email: email,
+
+            password: password
+
+        });
+
+
+        if(error){
+
+            alert(
+                error.message
+            );
+
+            return;
+        }
+
+
+        if(data.user){
+
+            alert(
+                "Login successful! Welcome to AzDar AI."
+            );
+
+            console.log(
+                "Logged in user:",
+                data.user
+            );
+
+        }
+
+    }
+
+    catch(error){
+
+        console.error(error);
+
+        alert(
+            "Login failed. Please try again."
+        );
+
+    }
 
 }
 
