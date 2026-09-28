@@ -204,6 +204,34 @@ footer{
 <body>
 
 <div class="container">
+    <div class="card">
+
+    <h2>🔐 Account</h2>
+
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+
+        <button
+            class="btn"
+            onclick="showRegister()"
+        >
+            📝 Register
+        </button>
+
+        <button
+            class="btn"
+            onclick="showLogin()"
+        >
+            🔑 Login
+        </button>
+
+    </div>
+
+    <div
+        id="authBox"
+        style="margin-top:18px;"
+    ></div>
+
+    </div>
 
 <header>
 
@@ -309,7 +337,175 @@ footer{
 
 
 <script>
+function showRegister(){
 
+    document.getElementById("authBox").innerHTML = `
+
+        <div class="card">
+
+            <div class="logo">
+
+                <div class="logo-icon">✦</div>
+
+                <div>
+                    <div class="logo-name">
+                        AzDar <span>AI</span>
+                    </div>
+
+                    <div class="creator">
+                        Created by Azmat Ali
+                    </div>
+                </div>
+
+            </div>
+
+            <h2 style="margin-top:20px;">
+                📝 Create Account
+            </h2>
+
+            <input
+                id="registerName"
+                type="text"
+                placeholder="Your Name"
+                style="
+                    width:100%;
+                    padding:14px;
+                    margin-top:12px;
+                    border-radius:12px;
+                    border:1px solid #334155;
+                    background:#050816;
+                    color:white;
+                "
+            >
+
+            <input
+                id="registerEmail"
+                type="email"
+                placeholder="Email Address"
+                style="
+                    width:100%;
+                    padding:14px;
+                    margin-top:12px;
+                    border-radius:12px;
+                    border:1px solid #334155;
+                    background:#050816;
+                    color:white;
+                "
+            >
+
+            <input
+                id="registerPassword"
+                type="password"
+                placeholder="Password"
+                style="
+                    width:100%;
+                    padding:14px;
+                    margin-top:12px;
+                    border-radius:12px;
+                    border:1px solid #334155;
+                    background:#050816;
+                    color:white;
+                "
+            >
+
+            <button
+                class="btn"
+                onclick="registerUser()"
+            >
+                Create Account
+            </button>
+
+        </div>
+
+    `;
+}
+
+
+function showLogin(){
+
+    document.getElementById("authBox").innerHTML = `
+
+        <div class="card">
+
+            <div class="logo">
+
+                <div class="logo-icon">✦</div>
+
+                <div>
+                    <div class="logo-name">
+                        AzDar <span>AI</span>
+                    </div>
+
+                    <div class="creator">
+                        Created by Azmat Ali
+                    </div>
+                </div>
+
+            </div>
+
+            <h2 style="margin-top:20px;">
+                🔑 Login
+            </h2>
+
+            <input
+                id="loginEmail"
+                type="email"
+                placeholder="Email Address"
+                style="
+                    width:100%;
+                    padding:14px;
+                    margin-top:12px;
+                    border-radius:12px;
+                    border:1px solid #334155;
+                    background:#050816;
+                    color:white;
+                "
+            >
+
+            <input
+                id="loginPassword"
+                type="password"
+                placeholder="Password"
+                style="
+                    width:100%;
+                    padding:14px;
+                    margin-top:12px;
+                    border-radius:12px;
+                    border:1px solid #334155;
+                    background:#050816;
+                    color:white;
+                "
+            >
+
+            <button
+                class="btn"
+                onclick="loginUser()"
+            >
+                Login
+            </button>
+
+        </div>
+
+    `;
+}
+
+
+function registerUser(){
+
+    alert(
+        "Registration system will be connected in the next step."
+    );
+
+}
+
+
+function loginUser(){
+
+    alert(
+        "Login system will be connected in the next step."
+    );
+
+}
 async function askAI(){
 
     const question =
