@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
 
 <meta charset="UTF-8">
@@ -12,46 +13,21 @@
 <title>AzDar AI V7</title>
 
 <style>
-.logo{
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    gap:14px;
-}
 
-.logo-icon{
-    width:58px;
-    height:58px;
-    border-radius:18px;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    font-size:30px;
-    font-weight:bold;
-    background:linear-gradient(135deg,#2563eb,#7c3aed);
-    box-shadow:0 0 30px rgba(59,130,246,.35);
-}
+/* =========================
+   RESET
+========================= */
 
-.logo-name{
-    font-size:38px;
-    font-weight:800;
-    letter-spacing:.5px;
-}
-
-.logo-name span{
-    color:#60a5fa;
-}
-
-.creator{
-    margin-top:4px;
-    color:#94a3b8;
-    font-size:13px;
-}
 *{
     box-sizing:border-box;
     margin:0;
     padding:0;
 }
+
+
+/* =========================
+   BODY
+========================= */
 
 body{
     font-family:Arial,sans-serif;
@@ -60,12 +36,22 @@ body{
     min-height:100vh;
 }
 
+
+/* =========================
+   CONTAINER
+========================= */
+
 .container{
     width:100%;
     max-width:1000px;
     margin:auto;
     padding:20px;
 }
+
+
+/* =========================
+   HEADER
+========================= */
 
 header{
     text-align:center;
@@ -87,32 +73,92 @@ header{
         0 20px 50px rgba(0,0,0,.35);
 }
 
+
+/* =========================
+   LOGO
+========================= */
+
 .logo{
-    font-size:38px;
-    font-weight:bold;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:14px;
     margin-bottom:8px;
 }
 
-.creator{
-    color:#94a3b8;
-    font-size:14px;
+.logo-icon{
+    width:58px;
+    height:58px;
+    border-radius:18px;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    font-size:30px;
+    font-weight:bold;
+
+    background:
+        linear-gradient(
+            135deg,
+            #2563eb,
+            #7c3aed
+        );
+
+    box-shadow:
+        0 0 30px rgba(59,130,246,.35);
 }
+
+.logo-name{
+    font-size:38px;
+    font-weight:800;
+    letter-spacing:.5px;
+}
+
+.logo-name span{
+    color:#60a5fa;
+}
+
+.creator{
+    margin-top:4px;
+    color:#94a3b8;
+    font-size:13px;
+}
+
+
+/* =========================
+   BADGE
+========================= */
 
 .badge{
     display:inline-block;
+
     margin-top:15px;
+
     padding:8px 16px;
+
     border-radius:30px;
+
     background:#2563eb;
+
     font-size:12px;
     font-weight:bold;
 }
 
+
+/* =========================
+   CARD
+========================= */
+
 .card{
     background:#0b1220;
+
     border:1px solid #1e293b;
+
     border-radius:20px;
+
     padding:22px;
+
     margin-bottom:20px;
 }
 
@@ -120,27 +166,78 @@ header{
     margin-bottom:15px;
 }
 
+
+/* =========================
+   TEXTAREA
+========================= */
+
 textarea{
     width:100%;
+
     min-height:130px;
+
     padding:15px;
+
     border-radius:14px;
+
     border:1px solid #334155;
+
     background:#050816;
+
     color:white;
+
     resize:vertical;
+
     outline:none;
+
     font-size:15px;
 }
 
+
+/* =========================
+   INPUTS
+========================= */
+
+.auth-input{
+    width:100%;
+
+    padding:14px;
+
+    margin-top:12px;
+
+    border-radius:12px;
+
+    border:1px solid #334155;
+
+    background:#050816;
+
+    color:white;
+
+    outline:none;
+
+    font-size:15px;
+}
+
+
+/* =========================
+   BUTTON
+========================= */
+
 .btn{
     border:none;
+
     border-radius:12px;
+
     padding:12px 18px;
+
     margin-top:12px;
+
     background:#2563eb;
+
     color:white;
+
     font-weight:bold;
+
     cursor:pointer;
 }
 
@@ -148,38 +245,74 @@ textarea{
     opacity:.85;
 }
 
+
+/* =========================
+   ANSWER
+========================= */
+
 .answer{
     margin-top:15px;
+
     padding:15px;
+
     min-height:70px;
+
     border-radius:14px;
+
     background:#050816;
+
     border:1px solid #1e293b;
+
     line-height:1.6;
+
     white-space:pre-wrap;
 }
 
+
+/* =========================
+   FEATURES
+========================= */
+
 .features{
     display:grid;
+
     grid-template-columns:
         repeat(3,1fr);
+
     gap:12px;
 }
 
 .feature{
     padding:18px;
+
     text-align:center;
+
     border-radius:15px;
+
     background:#111827;
+
     border:1px solid #1e293b;
 }
 
+
+/* =========================
+   FOOTER
+========================= */
+
 footer{
     text-align:center;
+
     padding:25px;
+
     color:#64748b;
+
     font-size:13px;
 }
+
+
+/* =========================
+   MOBILE
+========================= */
 
 @media(max-width:600px){
 
@@ -187,28 +320,66 @@ footer{
         padding:12px;
     }
 
-    .logo{
+    .logo-name{
         font-size:30px;
+    }
+
+    .logo-icon{
+        width:50px;
+        height:50px;
+        font-size:25px;
     }
 
     .features{
         grid-template-columns:
             repeat(2,1fr);
     }
+
+}
+
+
+/* =========================
+   ACCOUNT BUTTONS
+========================= */
+
+.account-buttons{
+    display:grid;
+
+    grid-template-columns:
+        1fr 1fr;
+
+    gap:12px;
+}
+
+
+/* =========================
+   AUTH BOX
+========================= */
+
+#authBox{
+    margin-top:18px;
 }
 
 </style>
 
 </head>
 
+
 <body>
 
+
 <div class="container">
-    <div class="card">
+
+
+<!-- =========================
+     ACCOUNT
+========================= -->
+
+<div class="card">
 
     <h2>🔐 Account</h2>
 
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+    <div class="account-buttons">
 
         <button
             class="btn"
@@ -226,28 +397,37 @@ footer{
 
     </div>
 
-    <div
-        id="authBox"
-        style="margin-top:18px;"
-    ></div>
+    <div id="authBox"></div>
 
-    </div>
+</div>
+
+
+<!-- =========================
+     HEADER
+========================= -->
 
 <header>
 
     <div class="logo">
-    <div class="logo-icon">✦</div>
 
-    <div>
-        <div class="logo-name">
-            AzDar <span>AI</span>
+        <div class="logo-icon">
+            ✦
         </div>
 
-        <div class="creator">
-            Created by Azmat Ali
+        <div>
+
+            <div class="logo-name">
+                AzDar <span>AI</span>
+            </div>
+
+            <div class="creator">
+                Created by Azmat Ali
+            </div>
+
         </div>
+
     </div>
-    </div>
+
 
     <span class="badge">
         VERSION 7 • SMART AI
@@ -256,9 +436,15 @@ footer{
 </header>
 
 
+<!-- =========================
+     AI ASSISTANT
+========================= -->
+
 <div class="card">
 
-    <h2>✨ Ask AzDar AI</h2>
+    <h2>
+        ✨ Ask AzDar AI
+    </h2>
 
     <textarea
         id="question"
@@ -282,9 +468,15 @@ footer{
 </div>
 
 
+<!-- =========================
+     FEATURES
+========================= -->
+
 <div class="card">
 
-    <h2>⚡ V7 Features</h2>
+    <h2>
+        ⚡ V7 Features
+    </h2>
 
     <div class="features">
 
@@ -323,6 +515,10 @@ footer{
 </div>
 
 
+<!-- =========================
+     FOOTER
+========================= -->
+
 <footer>
 
     AzDar AI V7
@@ -333,10 +529,17 @@ footer{
 
 </footer>
 
+
 </div>
 
 
 <script>
+
+
+/* =========================
+   REGISTER UI
+========================= */
+
 function showRegister(){
 
     document.getElementById("authBox").innerHTML = `
@@ -345,9 +548,12 @@ function showRegister(){
 
             <div class="logo">
 
-                <div class="logo-icon">✦</div>
+                <div class="logo-icon">
+                    ✦
+                </div>
 
                 <div>
+
                     <div class="logo-name">
                         AzDar <span>AI</span>
                     </div>
@@ -355,58 +561,40 @@ function showRegister(){
                     <div class="creator">
                         Created by Azmat Ali
                     </div>
+
                 </div>
 
             </div>
+
 
             <h2 style="margin-top:20px;">
                 📝 Create Account
             </h2>
 
+
             <input
                 id="registerName"
+                class="auth-input"
                 type="text"
                 placeholder="Your Name"
-                style="
-                    width:100%;
-                    padding:14px;
-                    margin-top:12px;
-                    border-radius:12px;
-                    border:1px solid #334155;
-                    background:#050816;
-                    color:white;
-                "
             >
+
 
             <input
                 id="registerEmail"
+                class="auth-input"
                 type="email"
                 placeholder="Email Address"
-                style="
-                    width:100%;
-                    padding:14px;
-                    margin-top:12px;
-                    border-radius:12px;
-                    border:1px solid #334155;
-                    background:#050816;
-                    color:white;
-                "
             >
+
 
             <input
                 id="registerPassword"
+                class="auth-input"
                 type="password"
                 placeholder="Password"
-                style="
-                    width:100%;
-                    padding:14px;
-                    margin-top:12px;
-                    border-radius:12px;
-                    border:1px solid #334155;
-                    background:#050816;
-                    color:white;
-                "
             >
+
 
             <button
                 class="btn"
@@ -418,8 +606,13 @@ function showRegister(){
         </div>
 
     `;
+
 }
 
+
+/* =========================
+   LOGIN UI
+========================= */
 
 function showLogin(){
 
@@ -429,9 +622,12 @@ function showLogin(){
 
             <div class="logo">
 
-                <div class="logo-icon">✦</div>
+                <div class="logo-icon">
+                    ✦
+                </div>
 
                 <div>
+
                     <div class="logo-name">
                         AzDar <span>AI</span>
                     </div>
@@ -439,43 +635,32 @@ function showLogin(){
                     <div class="creator">
                         Created by Azmat Ali
                     </div>
+
                 </div>
 
             </div>
+
 
             <h2 style="margin-top:20px;">
                 🔑 Login
             </h2>
 
+
             <input
                 id="loginEmail"
+                class="auth-input"
                 type="email"
                 placeholder="Email Address"
-                style="
-                    width:100%;
-                    padding:14px;
-                    margin-top:12px;
-                    border-radius:12px;
-                    border:1px solid #334155;
-                    background:#050816;
-                    color:white;
-                "
             >
+
 
             <input
                 id="loginPassword"
+                class="auth-input"
                 type="password"
                 placeholder="Password"
-                style="
-                    width:100%;
-                    padding:14px;
-                    margin-top:12px;
-                    border-radius:12px;
-                    border:1px solid #334155;
-                    background:#050816;
-                    color:white;
-                "
             >
+
 
             <button
                 class="btn"
@@ -487,8 +672,13 @@ function showLogin(){
         </div>
 
     `;
+
 }
 
+
+/* =========================
+   REGISTER FUNCTION
+========================= */
 
 function registerUser(){
 
@@ -499,6 +689,10 @@ function registerUser(){
 }
 
 
+/* =========================
+   LOGIN FUNCTION
+========================= */
+
 function loginUser(){
 
     alert(
@@ -506,17 +700,25 @@ function loginUser(){
     );
 
 }
+
+
+/* =========================
+   AI ASSISTANT
+========================= */
+
 async function askAI(){
 
     const question =
-        document.getElementById(
-            "question"
-        ).value.trim();
+        document
+        .getElementById("question")
+        .value
+        .trim();
+
 
     const answer =
-        document.getElementById(
-            "answer"
-        );
+        document
+        .getElementById("answer");
+
 
     if(!question){
 
@@ -526,8 +728,10 @@ async function askAI(){
         return;
     }
 
+
     answer.innerText =
         "Thinking...";
+
 
     try{
 
@@ -549,8 +753,30 @@ async function askAI(){
                 }
             );
 
+
+        const contentType =
+            response.headers
+            .get("content-type");
+
+
+        if(
+            !response.ok ||
+            !contentType ||
+            !contentType.includes(
+                "application/json"
+            )
+        ){
+
+            throw new Error(
+                "Server returned an invalid response."
+            );
+
+        }
+
+
         const data =
             await response.json();
+
 
         answer.innerText =
             data.answer ||
@@ -558,19 +784,28 @@ async function askAI(){
             data.message ||
             "No answer received.";
 
-    }catch(error){
+    }
+
+
+    catch(error){
 
         console.error(error);
 
         answer.innerText =
             "AI connection error.";
+
     }
+
 }
 
 
-document.getElementById(
-    "question"
-).addEventListener(
+/* =========================
+   ENTER KEY
+========================= */
+
+document
+.getElementById("question")
+.addEventListener(
     "keydown",
     function(event){
 
@@ -582,11 +817,16 @@ document.getElementById(
             event.preventDefault();
 
             askAI();
+
         }
+
     }
 );
 
+
 </script>
 
+
 </body>
+
 </html>
