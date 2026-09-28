@@ -491,6 +491,21 @@ function showLogin(){
                 Login
             </button>
 
+            <button
+                onclick="forgotPassword()"
+                style="
+                    margin-top:10px;
+                    background:none;
+                    border:none;
+                    color:#60a5fa;
+                    cursor:pointer;
+                    font-size:14px;
+                    width:100%;
+                "
+            >
+                Forgot Password?
+            </button>
+
         </div>
 
     `;
@@ -693,6 +708,80 @@ async function loginUser(){
             "LOGIN CONNECTION ERROR:",
             error
         );
+
+        alert(
+            "Connection Error:\n\n" +
+            error.message
+        );
+
+    }
+
+}
+
+
+/* =========================
+   FORGOT PASSWORD
+========================= */
+
+async function forgotPassword(){
+
+    const email =
+        document
+        .getElementById("loginEmail")
+        .value
+        .trim();
+
+
+    if(!email){
+
+        alert(
+            "Please enter your email address first."
+        );
+
+        return;
+    }
+
+
+    try{
+
+        const {
+            error
+        } =
+        await supabaseClient.auth.resetPasswordForEmail(
+            email,
+            {
+                redirectTo:
+                    "https://azmatwattoo.github.io/Voice-command-ai/v7.html"
+            }
+        );
+
+
+        if(error){
+
+            console.error(
+                "PASSWORD RESET ERROR:",
+                error
+            );
+
+            alert(
+                "Password Reset Error:\n\n" +
+                error.message
+            );
+
+            return;
+        }
+
+
+        alert(
+            "Password reset email sent!\n\n" +
+            "Please check your email and open the reset link."
+        );
+
+    }
+
+    catch(error){
+
+        console.error(error);
 
         alert(
             "Connection Error:\n\n" +
