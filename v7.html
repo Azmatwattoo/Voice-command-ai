@@ -1,21 +1,11 @@
-<!DOCTYPE html>
-<html lang="en">
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta
+name="viewport"
+content="width=device-width, initial-scale=1.0"
 
-<head>
+«»
 
-<meta charset="UTF-8">
-
-<meta
-    name="viewport"
-    content="width=device-width, initial-scale=1.0"
->
-
-<title>AzDar AI V7</title>
-
-<script
-src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-
-<style>
+<title>AzDar AI V7</title><script
+src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script><style>
 
 /* =========================
    RESET
@@ -363,180 +353,147 @@ footer{
     margin-top:18px;
 }
 
-</style>
-
-</head>
-
-
-<body>
-
-
-<div class="container">
-
-
-<!-- =========================
+</style></head><body><div class="container"><!-- =========================
      ACCOUNT
-========================= -->
+========================= --><div class="card"><h2>🔐 Account</h2>
 
-<div class="card">
-
-    <h2>🔐 Account</h2>
-
-    <div class="account-buttons">
-
-        <button
-            class="btn"
-            onclick="showRegister()"
-        >
-            📝 Register
-        </button>
-
-        <button
-            class="btn"
-            onclick="showLogin()"
-        >
-            🔑 Login
-        </button>
-
-    </div>
-
-    <div id="authBox"></div>
-
-</div>
-
-
-<!-- =========================
-     HEADER
-========================= -->
-
-<header>
-
-    <div class="logo">
-
-        <div class="logo-icon">
-            ✦
-        </div>
-
-        <div>
-
-            <div class="logo-name">
-                AzDar <span>AI</span>
-            </div>
-
-            <div class="creator">
-                Created by Azmat Ali
-            </div>
-
-        </div>
-
-    </div>
-
-
-    <span class="badge">
-        VERSION 7 • SMART AI
-    </span>
-
-</header>
-
-
-<!-- =========================
-     AI ASSISTANT
-========================= -->
-
-<div class="card">
-
-    <h2>
-        ✨ Ask AzDar AI
-    </h2>
-
-    <textarea
-        id="question"
-        placeholder="Ask anything..."
-    ></textarea>
+<div class="account-buttons">
 
     <button
         class="btn"
-        onclick="askAI()"
+        onclick="showRegister()"
     >
-        ✨ Ask AI
+        📝 Register
     </button>
 
-    <div
-        class="answer"
-        id="answer"
+    <button
+        class="btn"
+        onclick="showLogin()"
     >
-        AI answer will appear here...
+        🔑 Login
+    </button>
+
+</div>
+
+<div id="authBox"></div>
+
+</div><!-- =========================
+     HEADER
+========================= --><header><div class="logo">
+
+    <div class="logo-icon">
+        ✦
+    </div>
+
+    <div>
+
+        <div class="logo-name">
+            AzDar <span>AI</span>
+        </div>
+
+        <div class="creator">
+            Created by Azmat Ali
+        </div>
+
     </div>
 
 </div>
 
 
-<!-- =========================
+<span class="badge">
+    VERSION 7 • SMART AI
+</span>
+
+</header><!-- =========================
+     AI ASSISTANT
+========================= --><div class="card"><h2>
+    ✨ Ask AzDar AI
+</h2>
+
+<textarea
+    id="question"
+    placeholder="Ask anything..."
+></textarea>
+
+<button
+    class="btn"
+    onclick="askAI()"
+>
+    ✨ Ask AI
+</button>
+
+<div
+    class="answer"
+    id="answer"
+>
+    AI answer will appear here...
+</div>
+
+</div><!-- =========================
      FEATURES
-========================= -->
+========================= --><div class="card"><h2>
+    ⚡ V7 Features
+</h2>
 
-<div class="card">
+<div class="features">
 
-    <h2>
-        ⚡ V7 Features
-    </h2>
+    <div class="feature">
+        🤖<br>
+        Smart AI
+    </div>
 
-    <div class="features">
+    <div class="feature">
+        🎤<br>
+        Voice
+    </div>
 
-        <div class="feature">
-            🤖<br>
-            Smart AI
-        </div>
+    <div class="feature">
+        🔎<br>
+        Search
+    </div>
 
-        <div class="feature">
-            🎤<br>
-            Voice
-        </div>
+    <div class="feature">
+        🌐<br>
+        Web
+    </div>
 
-        <div class="feature">
-            🔎<br>
-            Search
-        </div>
+    <div class="feature">
+        ⚙️<br>
+        Commands
+    </div>
 
-        <div class="feature">
-            🌐<br>
-            Web
-        </div>
-
-        <div class="feature">
-            ⚙️<br>
-            Commands
-        </div>
-
-        <div class="feature">
-            📜<br>
-            History
-        </div>
-
+    <div class="feature">
+        📜<br>
+        History
     </div>
 
 </div>
 
-
-<!-- =========================
+</div><!-- =========================
      FOOTER
-========================= -->
+========================= --><footer>AzDar AI V7
 
-<footer>
+<br>
 
-    AzDar AI V7
+Created by Azmat Ali
 
-    <br>
+</footer></div><script>
 
-    Created by Azmat Ali
+/* =========================
+   SUPABASE
+========================= */
 
-</footer>
+const SUPABASE_URL =
+    "https://pqqhswvtrxktzrcrrnka.supabase.co";
 
+const SUPABASE_KEY =
+    "sb_publishable_9XSVISR_xvcPX_xP4MIFzQ_-HIHvSXo";
 
-</div>
-
-
-<script>
+const supabaseClient =
+    window.supabase.createClient(
+        SUPABASE_URL,
+        SUPABASE_KEY
+    );
 
 
 /* =========================
@@ -680,14 +637,101 @@ function showLogin(){
 
 
 /* =========================
-   REGISTER FUNCTION
+   REAL REGISTER
 ========================= */
 
-function registerUser(){
+async function registerUser(){
 
-    alert(
-        "Registration system will be connected in the next step."
-    );
+    const name =
+        document
+        .getElementById("registerName")
+        .value
+        .trim();
+
+
+    const email =
+        document
+        .getElementById("registerEmail")
+        .value
+        .trim();
+
+
+    const password =
+        document
+        .getElementById("registerPassword")
+        .value;
+
+
+    if(!name || !email || !password){
+
+        alert(
+            "Please fill all fields."
+        );
+
+        return;
+    }
+
+
+    if(password.length < 6){
+
+        alert(
+            "Password must be at least 6 characters."
+        );
+
+        return;
+    }
+
+
+    try{
+
+        const {
+            data,
+            error
+        } =
+        await supabaseClient.auth.signUp({
+
+            email:email,
+
+            password:password,
+
+            options:{
+                data:{
+                    name:name
+                }
+            }
+
+        });
+
+
+        if(error){
+
+            alert(
+                error.message
+            );
+
+            return;
+        }
+
+
+        if(data.user){
+
+            alert(
+                "Account created successfully!"
+            );
+
+        }
+
+    }
+
+    catch(error){
+
+        console.error(error);
+
+        alert(
+            "Registration failed. Please try again."
+        );
+
+    }
 
 }
 
@@ -828,8 +872,7 @@ document
 
 
 </script>
-
-
+    
 </body>
-
+    
 </html>
