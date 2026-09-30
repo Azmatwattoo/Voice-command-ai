@@ -1,328 +1,397 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
 
 <meta charset="UTF-8">
 
-<meta name="viewport"
-content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>AzDar AI V7</title>
+<title>AzDar AI</title>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 <style>
 
 *{
-    box-sizing:border-box;
-    margin:0;
-    padding:0;
+box-sizing:border-box;
+margin:0;
+padding:0;
+}
+
+:root{
+--bg:#030712;
+--card:#0b1120;
+--card2:#111827;
+--border:#1e293b;
+--border2:#334155;
+--text:#ffffff;
+--muted:#94a3b8;
+--primary:#2563eb;
+--primary2:#60a5fa;
 }
 
 body{
-    font-family:Arial,sans-serif;
-    background:#030712;
-    color:white;
-    min-height:100vh;
-    transition:.3s;
+font-family:Arial,sans-serif;
+background:
+radial-gradient(circle at top,#172554 0%,#030712 45%);
+color:var(--text);
+min-height:100vh;
+transition:.3s;
+}
+
+body.light{
+background:#eef2ff;
+color:#111827;
 }
 
 .container{
-    width:100%;
-    max-width:900px;
-    margin:auto;
-    padding:15px;
+width:100%;
+max-width:950px;
+margin:auto;
+padding:14px;
 }
 
 header{
-    text-align:center;
-    padding:35px 15px;
+text-align:center;
+padding:30px 10px 20px;
 }
 
 .logo{
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    gap:12px;
+display:flex;
+justify-content:center;
+align-items:center;
+gap:12px;
 }
 
 .logo-icon{
-    width:58px;
-    height:58px;
-    border-radius:16px;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    background:#111827;
-    border:1px solid #334155;
-    font-size:30px;
+width:62px;
+height:62px;
+border-radius:18px;
+display:flex;
+align-items:center;
+justify-content:center;
+background:linear-gradient(135deg,#1d4ed8,#7c3aed);
+border:1px solid #60a5fa;
+font-size:31px;
+box-shadow:0 0 25px rgba(59,130,246,.3);
 }
 
 .logo-name{
-    font-size:34px;
-    font-weight:bold;
+font-size:36px;
+font-weight:800;
+letter-spacing:-1px;
 }
 
 .logo-name span{
-    color:#60a5fa;
+color:#60a5fa;
 }
 
 .creator{
-    margin-top:5px;
-    color:#94a3b8;
-    font-size:13px;
+margin-top:5px;
+color:var(--muted);
+font-size:13px;
+}
+
+.tagline{
+margin-top:12px;
+color:var(--muted);
+font-size:15px;
+}
+
+.version-badge{
+display:inline-block;
+margin-top:10px;
+padding:6px 12px;
+border-radius:20px;
+background:#172554;
+border:1px solid #1d4ed8;
+color:#93c5fd;
+font-size:12px;
+font-weight:bold;
 }
 
 .card{
-    background:#0b1120;
-    border:1px solid #1e293b;
-    border-radius:20px;
-    padding:20px;
-    margin-top:20px;
-    box-shadow:0 10px 30px rgba(0,0,0,.2);
+background:rgba(11,17,32,.94);
+border:1px solid var(--border);
+border-radius:22px;
+padding:20px;
+margin-top:18px;
+box-shadow:0 15px 40px rgba(0,0,0,.25);
+backdrop-filter:blur(10px);
 }
 
 h2{
-    margin-bottom:12px;
+margin-bottom:10px;
+font-size:21px;
 }
 
 p{
-    color:#94a3b8;
-    line-height:1.5;
+color:var(--muted);
+line-height:1.5;
+}
+
+.section-label{
+font-size:11px;
+text-transform:uppercase;
+letter-spacing:1.2px;
+color:#60a5fa;
+margin-bottom:8px;
+font-weight:bold;
 }
 
 button{
-    cursor:pointer;
+cursor:pointer;
+-webkit-tap-highlight-color:transparent;
 }
 
 .btn{
-    width:100%;
-    padding:14px;
-    margin-top:10px;
-    border:0;
-    border-radius:13px;
-    background:#2563eb;
-    color:white;
-    font-size:16px;
-    font-weight:bold;
+width:100%;
+padding:14px;
+margin-top:10px;
+border:0;
+border-radius:14px;
+background:linear-gradient(135deg,#2563eb,#3b82f6);
+color:white;
+font-size:16px;
+font-weight:bold;
+transition:.2s;
 }
 
 .btn:hover{
-    opacity:.9;
+opacity:.93;
+transform:translateY(-1px);
 }
 
-.auth-input{
-    width:100%;
-    padding:14px;
-    margin-top:10px;
-    border-radius:12px;
-    border:1px solid #334155;
-    background:#050816;
-    color:white;
-    outline:none;
-    font-size:15px;
-}
-
-.auth-input:focus{
-    border-color:#3b82f6;
+.btn:active{
+transform:scale(.98);
 }
 
 .account-buttons{
-    display:grid;
-    grid-template-columns:1fr 1fr;
-    gap:10px;
-    margin-top:15px;
+display:grid;
+grid-template-columns:1fr 1fr;
+gap:10px;
+margin-top:15px;
 }
 
 .account-buttons button{
-    padding:13px;
-    border:1px solid #334155;
-    border-radius:12px;
-    background:#111827;
-    color:white;
-    font-size:15px;
+padding:14px;
+border:1px solid var(--border2);
+border-radius:14px;
+background:var(--card2);
+color:white;
+font-size:15px;
+font-weight:bold;
+}
+
+.auth-input,
+.custom-input{
+width:100%;
+padding:14px;
+margin-top:10px;
+border-radius:13px;
+border:1px solid var(--border2);
+background:#050816;
+color:white;
+outline:none;
+font-size:15px;
+}
+
+.auth-input:focus,
+.custom-input:focus{
+border-color:var(--primary2);
+box-shadow:0 0 0 2px rgba(59,130,246,.12);
 }
 
 .dashboard{
-    display:none;
+display:none;
 }
 
 .dashboard.active{
-    display:block;
+display:block;
 }
 
 .user-box{
-    padding:14px;
-    border-radius:13px;
-    background:#111827;
-    border:1px solid #1e293b;
-    margin-top:12px;
+padding:15px;
+border-radius:14px;
+background:var(--card2);
+border:1px solid var(--border);
+margin-top:12px;
 }
 
 textarea{
-    width:100%;
-    min-height:130px;
-    padding:15px;
-    margin-top:10px;
-    border-radius:15px;
-    border:1px solid #334155;
-    background:#050816;
-    color:white;
-    resize:vertical;
-    outline:none;
-    font-size:15px;
+width:100%;
+min-height:145px;
+padding:15px;
+margin-top:10px;
+border-radius:16px;
+border:1px solid var(--border2);
+background:#050816;
+color:white;
+resize:vertical;
+outline:none;
+font-size:15px;
+line-height:1.5;
 }
 
 textarea:focus{
-    border-color:#3b82f6;
+border-color:var(--primary2);
 }
 
 .answer{
-    margin-top:15px;
-    padding:16px;
-    min-height:80px;
-    border-radius:15px;
-    background:#050816;
-    border:1px solid #1e293b;
-    line-height:1.6;
-    white-space:pre-wrap;
-    overflow-wrap:anywhere;
+margin-top:15px;
+padding:16px;
+min-height:90px;
+border-radius:16px;
+background:#050816;
+border:1px solid var(--border);
+line-height:1.6;
+white-space:pre-wrap;
+overflow-wrap:anywhere;
 }
 
 .answer-buttons{
-    display:grid;
-    grid-template-columns:repeat(3,1fr);
-    gap:10px;
-    margin-top:10px;
+display:grid;
+grid-template-columns:repeat(3,1fr);
+gap:10px;
+margin-top:10px;
 }
 
-.answer-buttons button{
-    padding:12px 6px;
-    border:1px solid #334155;
-    border-radius:12px;
-    background:#111827;
-    color:white;
+.answer-buttons button,
+.quick-grid button{
+padding:12px 7px;
+border:1px solid var(--border2);
+border-radius:13px;
+background:var(--card2);
+color:white;
+font-size:14px;
+transition:.2s;
 }
 
-.features{
-    display:grid;
-    grid-template-columns:repeat(3,1fr);
-    gap:12px;
-}
-
-.feature{
-    padding:20px 12px;
-    text-align:center;
-    border-radius:16px;
-    background:#111827;
-    border:1px solid #1e293b;
-}
-
-.feature-icon{
-    font-size:28px;
-    margin-bottom:7px;
-}
-
-.feature-title{
-    font-weight:bold;
-}
-
-.feature-text{
-    margin-top:5px;
-    color:#94a3b8;
-    font-size:12px;
+.answer-buttons button:hover,
+.quick-grid button:hover{
+border-color:var(--primary2);
+transform:translateY(-2px);
 }
 
 .quick-grid{
-    display:grid;
-    grid-template-columns:repeat(3,1fr);
-    gap:10px;
-    margin-top:15px;
+display:grid;
+grid-template-columns:repeat(3,1fr);
+gap:10px;
+margin-top:15px;
 }
 
-.quick-grid button{
-    padding:13px 8px;
-    border:1px solid #1e293b;
-    border-radius:12px;
-    background:#111827;
-    color:white;
-    font-size:14px;
+.features{
+display:grid;
+grid-template-columns:repeat(3,1fr);
+gap:12px;
 }
 
-.quick-grid button:hover{
-    border-color:#3b82f6;
-    transform:translateY(-2px);
+.feature{
+padding:20px 12px;
+text-align:center;
+border-radius:17px;
+background:var(--card2);
+border:1px solid var(--border);
+}
+
+.feature-icon{
+font-size:28px;
+margin-bottom:7px;
+}
+
+.feature-title{
+font-weight:bold;
+}
+
+.feature-text{
+margin-top:5px;
+color:var(--muted);
+font-size:12px;
 }
 
 #voiceStatus{
-    color:#94a3b8;
-    font-size:14px;
-    margin-top:5px;
+color:var(--muted);
+font-size:14px;
+margin-top:5px;
 }
 
 .custom-row{
-    display:grid;
-    grid-template-columns:1fr 1fr;
-    gap:10px;
-}
-
-.custom-input{
-    width:100%;
-    padding:13px;
-    border-radius:12px;
-    border:1px solid #334155;
-    background:#050816;
-    color:white;
-    outline:none;
+display:grid;
+grid-template-columns:1fr 1fr;
+gap:10px;
 }
 
 .history-item{
-    padding:12px;
-    margin-bottom:8px;
-    border-radius:12px;
-    background:#111827;
-    border:1px solid #1e293b;
+padding:12px;
+margin-bottom:8px;
+border-radius:13px;
+background:var(--card2);
+border:1px solid var(--border);
 }
 
 .history-time{
-    color:#64748b;
-    font-size:12px;
-    margin-top:5px;
+color:#64748b;
+font-size:12px;
+margin-top:5px;
+}
+
+.status-box{
+margin-top:10px;
+padding:12px;
+border-radius:13px;
+background:#050816;
+border:1px solid var(--border);
+color:#94a3b8;
+font-size:13px;
 }
 
 footer{
-    text-align:center;
-    padding:30px 10px;
-    color:#64748b;
-    font-size:13px;
+text-align:center;
+padding:35px 10px;
+color:#64748b;
+font-size:13px;
 }
 
 @media(max-width:600px){
 
-    .container{
-        padding:12px;
-    }
+.container{
+padding:10px;
+}
 
-    .logo-name{
-        font-size:29px;
-    }
+header{
+padding-top:22px;
+}
 
-    .features{
-        grid-template-columns:repeat(2,1fr);
-    }
+.logo-name{
+font-size:29px;
+}
 
-    .quick-grid{
-        grid-template-columns:repeat(2,1fr);
-    }
+.logo-icon{
+width:54px;
+height:54px;
+font-size:27px;
+}
 
-    .answer-buttons{
-        grid-template-columns:1fr;
-    }
+.features{
+grid-template-columns:repeat(2,1fr);
+}
 
-    .custom-row{
-        grid-template-columns:1fr;
-    }
+.quick-grid{
+grid-template-columns:repeat(2,1fr);
+}
+
+.answer-buttons{
+grid-template-columns:1fr;
+}
+
+.custom-row{
+grid-template-columns:1fr;
+}
+
+.card{
+padding:16px;
+border-radius:18px;
+}
 
 }
 
@@ -356,25 +425,29 @@ Created by Azmat Ali
 
 </div>
 
-<p style="margin-top:12px;">
+<div class="tagline">
 Smart Voice & AI Assistant
-</p>
+</div>
+
+<div class="version-badge">
+⚡ V8
+</div>
 
 </header>
 
-
-<!-- ACCOUNT -->
-
 <div id="authBox" class="card">
 
-<h2>🔐 Account</h2>
+<div class="section-label">
+Account
+</div>
+
+<h2>🔐 Welcome to AzDar AI</h2>
 
 <p>
-Create an account or login to AzDar AI.
+Create an account or login to access your AI dashboard.
 </p>
 
-<div class="account-buttons"
-id="accountButtons">
+<div class="account-buttons">
 
 <button onclick="showRegister()">
 📝 Register
@@ -388,112 +461,317 @@ id="accountButtons">
 
 </div>
 
+<div id="dashboard" class="dashboard">
 
-<!-- DASHBOARD -->
+    <div class="card" id="registerBox" style="display:none;">
 
-<div id="dashboard"
-class="dashboard">
+<div class="section-label">
+Create Account
+</div>
+
+<h2>📝 Register</h2>
+
+<p>
+Create your AzDar AI account to continue.
+</p>
+
+<input
+type="text"
+id="registerName"
+class="auth-input"
+placeholder="Your Name"
+autocomplete="name"
+>
+
+<input
+type="email"
+id="registerEmail"
+class="auth-input"
+placeholder="Email Address"
+autocomplete="email"
+>
+
+<input
+type="password"
+id="registerPassword"
+class="auth-input"
+placeholder="Password (minimum 6 characters)"
+autocomplete="new-password"
+>
+
+<button class="btn" onclick="registerUser()">
+Create Account
+</button>
+
+<button
+class="btn"
+style="background:#111827;border:1px solid #334155;"
+onclick="showLogin()"
+>
+Already have an account? Login
+</button>
+
+<div id="registerStatus" class="status-box"></div>
+
+</div>
+
+
+<div class="card" id="loginBox" style="display:none;">
+
+<div class="section-label">
+Login
+</div>
+
+<h2>🔑 Login to AzDar AI</h2>
+
+<p>
+Login to open your personal AI dashboard.
+</p>
+
+<input
+type="email"
+id="loginEmail"
+class="auth-input"
+placeholder="Email Address"
+autocomplete="email"
+>
+
+<input
+type="password"
+id="loginPassword"
+class="auth-input"
+placeholder="Password"
+autocomplete="current-password"
+>
+
+<button class="btn" onclick="loginUser()">
+Login
+</button>
+
+<button
+class="btn"
+style="background:#111827;border:1px solid #334155;"
+onclick="forgotPassword()"
+>
+Forgot Password?
+</button>
+
+<button
+class="btn"
+style="background:#111827;border:1px solid #334155;"
+onclick="showRegister()"
+>
+Create New Account
+</button>
+
+<div id="loginStatus" class="status-box"></div>
+
+</div>
+
+
+<div id="mainDashboard">
+
 
 <div class="card">
+
+<div class="section-label">
+My Account
+</div>
 
 <h2>👤 My Account</h2>
 
 <div class="user-box">
 
-<div id="userName">
-User
+<div>
+<strong>Name:</strong>
+<span id="userName">Loading...</span>
 </div>
 
-<div id="userEmail"
-style="color:#94a3b8;margin-top:5px;">
+<div style="margin-top:7px;">
+<strong>Email:</strong>
+<span id="userEmail">Loading...</span>
 </div>
 
 </div>
 
 <button
 class="btn"
-onclick="logoutUser()">
-
+style="background:#7f1d1d;"
+onclick="logoutUser()"
+>
 🚪 Logout
-
 </button>
 
 </div>
 
 
-<!-- AI -->
-
 <div class="card">
+
+<div class="section-label">
+Smart AI
+</div>
 
 <h2>✨ Ask AzDar AI</h2>
 
 <p>
-Ask anything and get an AI response.
+Ask anything and get an AI-powered response.
 </p>
 
 <textarea
 id="question"
-placeholder="Type your question here...">
-</textarea>
-
-<button
-class="btn"
-onclick="askAI()">
-
-🤖 Ask AI
-
-</button>
-
-<div
-id="answer"
-class="answer">
-
-AI answer will appear here...
-
-</div>
+placeholder="Type your question here..."
+></textarea>
 
 <div class="answer-buttons">
+
+<button onclick="askAI()" id="askButton">
+✨ Ask AI
+</button>
 
 <button onclick="clearAI()">
 🗑️ Clear
 </button>
 
-<button onclick="copyAnswer()">
+<button onclick="copyQuestion()">
 📋 Copy
 </button>
 
+</div>
+
+<div
+id="aiStatus"
+class="status-box"
+>
+AI Assistant ready.
+</div>
+
+<div
+id="answer"
+class="answer"
+>
+Your AI answer will appear here.
+</div>
+
+<div class="answer-buttons">
+
+<button onclick="copyAnswer()">
+📋 Copy Answer
+</button>
+
 <button onclick="readAnswer()">
-🔊 Read
+🔊 Read Answer
+</button>
+
+<button onclick="stopReading()">
+⏹️ Stop Reading
 </button>
 
 </div>
 
 <button
 class="btn"
-onclick="stopReading()"
-style="background:#374151;">
-
-⏹️ Stop Reading
-
+style="background:#111827;border:1px solid #334155;"
+onclick="showAnswer()"
+>
+👁️ Show Answer
 </button>
 
 </div>
 
 
-<!-- QUICK COMMANDS -->
-
 <div class="card">
 
-<h2>⚡ Quick Commands</h2>
+<div class="section-label">
+AI Tools
+</div>
+
+<h2>⚡ Quick AI Tools</h2>
+
+<p>
+Use these shortcuts for faster access.
+</p>
 
 <div class="quick-grid">
+
+<button onclick="showTime()">
+🕐 Time
+</button>
+
+<button onclick="showDate()">
+📅 Date
+</button>
+
+<button onclick="openGoogle()">
+🔎 Google
+</button>
 
 <button onclick="openYouTube()">
 ▶️ YouTube
 </button>
 
+<button onclick="openWhatsApp()">
+💬 WhatsApp
+</button>
+
+<button onclick="openFacebook()">
+📘 Facebook
+</button>
+
+</div>
+
+</div>
+
+
+<div class="card">
+
+<div class="section-label">
+Voice Assistant
+</div>
+
+<h2>🎙️ Smart Voice Assistant</h2>
+
+<p>
+Speak English or Roman Urdu commands.
+</p>
+
+<div id="voiceStatus">
+Voice Assistant is ready.
+</div>
+
+<button
+class="btn"
+onclick="startVoice()"
+>
+🎙️ Start Voice Assistant
+</button>
+
+<button
+class="btn"
+style="background:#7f1d1d;"
+onclick="stopVoice()"
+>
+⏹️ Stop Voice Assistant
+</button>
+
+</div>
+
+
+<div class="card">
+
+<div class="section-label">
+Voice Commands
+</div>
+
+<h2>🚀 Quick Commands</h2>
+
+<div class="quick-grid">
+
 <button onclick="openGoogle()">
 🔎 Google
+</button>
+
+<button onclick="openYouTube()">
+▶️ YouTube
 </button>
 
 <button onclick="openWhatsApp()">
@@ -505,7 +783,7 @@ style="background:#374151;">
 </button>
 
 <button onclick="openInstagram()">
-📷 Instagram
+📸 Instagram
 </button>
 
 <button onclick="openTikTok()">
@@ -529,7 +807,7 @@ style="background:#374151;">
 </button>
 
 <button onclick="goBack()">
-↩️ Back
+⬅️ Back
 </button>
 
 <button onclick="refreshPage()">
@@ -539,113 +817,100 @@ style="background:#374151;">
 </div>
 
 </div>
-    
-<!-- VOICE -->
-
 <div class="card">
 
-<h2>🎤 Voice Assistant</h2>
-
-<p id="voiceStatus">
-Tap the button and speak your command.
-</p>
-
-<button
-class="btn"
-onclick="startVoice()">
-
-🎤 Start Voice Assistant
-
-</button>
-
+<div class="section-label">
+Custom Commands
 </div>
-<!-- CUSTOM COMMANDS -->
 
-<div class="card">
-
-<h2>⚙️ Custom Commands</h2>
+<h2>🛠️ My Custom Commands</h2>
 
 <p>
-Create your own voice command.
+Create your own voice command and connect it with any website.
 </p>
 
-<div class="custom-row">
-
 <input
+type="text"
 id="customCommand"
 class="custom-input"
-type="text"
-placeholder="Example: TikTok kholo">
+placeholder="Example: TikTok kholo"
+>
 
 <input
+type="url"
 id="customURL"
 class="custom-input"
-type="url"
-placeholder="Website URL">
-
-</div>
+placeholder="https://example.com"
+>
 
 <button
 class="btn"
-onclick="addCustomCommand()">
-
+onclick="addCustomCommand()"
+>
 ➕ Add Custom Command
-
 </button>
+
+<div
+id="customCommandStatus"
+class="status-box"
+>
+No custom command selected.
+</div>
 
 <div
 id="customCommandList"
-style="margin-top:15px;">
-
-No custom commands yet.
-
+style="margin-top:15px;"
+>
 </div>
 
 </div>
 
-
-<!-- COMMAND HISTORY -->
 
 <div class="card">
+
+<div class="section-label">
+Command History
+</div>
 
 <h2>🕘 Command History</h2>
 
-<button
-class="btn"
-onclick="showHistory()">
+<p>
+Your recent voice and AI commands are saved on this device.
+</p>
 
-📜 Show History
+<div class="answer-buttons">
 
+<button onclick="showHistory()">
+👁️ Show History
 </button>
 
-<button
-class="btn"
-onclick="clearHistory()"
-style="background:#374151;">
-
+<button onclick="clearHistory()">
 🗑️ Clear History
-
 </button>
+
+</div>
 
 <div
 id="historyBox"
-class="answer">
-
+class="answer"
+style="display:none;"
+>
 No history yet.
-
 </div>
 
 </div>
 
-
-<!-- TEXT COMMANDS -->
 
 <div class="card">
 
-<h2>📝 Text Box Controls</h2>
+<div class="section-label">
+Text Box Controls
+</div>
+
+<h2>📝 Text Tools</h2>
 
 <p>
-Use these controls with your text.
+Use these controls with your AI question.
 </p>
 
 <div class="quick-grid">
@@ -671,43 +936,55 @@ Use these controls with your text.
 </div>
 
 
-<!-- NAVIGATION -->
-
 <div class="card">
 
-<h2>🧭 Navigation</h2>
+<div class="section-label">
+Navigation
+</div>
+
+<h2>🧭 Browser Controls</h2>
 
 <div class="quick-grid">
 
 <button onclick="goBack()">
-↩️ Back
+⬅️ Back
 </button>
 
 <button onclick="goForward()">
-↪️ Forward
+➡️ Forward
 </button>
 
 <button onclick="refreshPage()">
 🔄 Refresh
 </button>
 
-</div>
+<button onclick="toggleDark()">
+🌙 Dark Mode
+</button>
+
+<button onclick="toggleLight()">
+☀️ Light Mode
+</button>
 
 </div>
 
+</div>
 
-<!-- FEATURES -->
 
 <div class="card">
 
-<h2>🚀 V7 Features</h2>
+<div class="section-label">
+AzDar AI V8
+</div>
+
+<h2>🚀 AI Platform Features</h2>
 
 <div class="features">
 
 <div class="feature">
 
 <div class="feature-icon">
-🤖
+✨
 </div>
 
 <div class="feature-title">
@@ -715,7 +992,7 @@ Smart AI
 </div>
 
 <div class="feature-text">
-AI Assistant
+AI question & answer
 </div>
 
 </div>
@@ -724,7 +1001,7 @@ AI Assistant
 <div class="feature">
 
 <div class="feature-icon">
-🎤
+🎙️
 </div>
 
 <div class="feature-title">
@@ -732,7 +1009,7 @@ Voice
 </div>
 
 <div class="feature-text">
-Voice Commands
+Voice command control
 </div>
 
 </div>
@@ -749,7 +1026,7 @@ Search
 </div>
 
 <div class="feature-text">
-Google & YouTube
+Google & YouTube search
 </div>
 
 </div>
@@ -758,24 +1035,7 @@ Google & YouTube
 <div class="feature">
 
 <div class="feature-icon">
-🌐
-</div>
-
-<div class="feature-title">
-Web
-</div>
-
-<div class="feature-text">
-Quick Websites
-</div>
-
-</div>
-
-
-<div class="feature">
-
-<div class="feature-icon">
-⚙️
+⚡
 </div>
 
 <div class="feature-title">
@@ -783,7 +1043,7 @@ Commands
 </div>
 
 <div class="feature-text">
-Custom Commands
+Custom commands
 </div>
 
 </div>
@@ -792,7 +1052,7 @@ Custom Commands
 <div class="feature">
 
 <div class="feature-icon">
-📜
+🕘
 </div>
 
 <div class="feature-title">
@@ -800,7 +1060,24 @@ History
 </div>
 
 <div class="feature-text">
-Command History
+Command history
+</div>
+
+</div>
+
+
+<div class="feature">
+
+<div class="feature-icon">
+🌙
+</div>
+
+<div class="feature-title">
+Themes
+</div>
+
+<div class="feature-text">
+Dark & light mode
 </div>
 
 </div>
@@ -809,26 +1086,27 @@ Command History
 
 </div>
 
+</div>
 
 <footer>
 
-AzDar AI V7
+<div>
+AzDar AI V8
+</div>
 
-<br>
-
+<div style="margin-top:6px;">
 Created by Azmat Ali
+</div>
+
+<div style="margin-top:6px;">
+Smart • Secure • Mobile Friendly
+</div>
 
 </footer>
 
 </div>
 
-
 <script>
-
-
-/* =========================
-   SUPABASE CONNECTION
-========================= */
 
 const SUPABASE_URL =
 "https://pqqhswvtrxktzrcrrnka.supabase.co";
@@ -842,224 +1120,113 @@ SUPABASE_URL,
 SUPABASE_KEY
 );
 
+const SITE_URL =
+"https://azmatwattoo.github.io/Voice-command-ai/";
 
-/* =========================
-   REGISTER UI
-========================= */
+const AI_API_URL =
+"https://voice-command-ai-five.vercel.app/api/ask";
+
+const authBox =
+document.getElementById("authBox");
+
+const dashboard =
+document.getElementById("dashboard");
+
+const mainDashboard =
+document.getElementById("mainDashboard");
+
+const registerBox =
+document.getElementById("registerBox");
+
+const loginBox =
+document.getElementById("loginBox");
+
+const questionElement =
+document.getElementById("question");
+
+const answerElement =
+document.getElementById("answer");
+
+const aiStatus =
+document.getElementById("aiStatus");
+
+const askButton =
+document.getElementById("askButton");
 
 function showRegister(){
 
-document.getElementById("authBox").innerHTML = `
-
-<div class="card">
-
-<div class="logo">
-
-<div class="logo-icon">
-✦
-</div>
-
-<div>
-
-<div class="logo-name">
-AzDar <span>AI</span>
-</div>
-
-<div class="creator">
-Created by Azmat Ali
-</div>
-
-</div>
-
-</div>
-
-<h2 style="margin-top:20px;">
-📝 Create Account
-</h2>
-
-<input
-id="registerName"
-class="auth-input"
-type="text"
-placeholder="Your Name"
->
-
-<input
-id="registerEmail"
-class="auth-input"
-type="email"
-placeholder="Email Address"
->
-
-<input
-id="registerPassword"
-class="auth-input"
-type="password"
-placeholder="Password"
->
-
-<button
-class="btn"
-onclick="registerUser()">
-
-Create Account
-
-</button>
-
-<button
-class="btn"
-onclick="showLogin()"
-style="background:#374151;">
-
-Already have an account? Login
-
-</button>
-
-</div>
-
-`;
+registerBox.style.display = "block";
+loginBox.style.display = "none";
+authBox.style.display = "none";
 
 }
-
-
-/* =========================
-   LOGIN UI
-========================= */
 
 function showLogin(){
 
-document.getElementById("authBox").innerHTML = `
-
-<div class="card">
-
-<div class="logo">
-
-<div class="logo-icon">
-✦
-</div>
-
-<div>
-
-<div class="logo-name">
-AzDar <span>AI</span>
-</div>
-
-<div class="creator">
-Created by Azmat Ali
-</div>
-
-</div>
-
-</div>
-
-<h2 style="margin-top:20px;">
-🔑 Login
-</h2>
-
-<input
-id="loginEmail"
-class="auth-input"
-type="email"
-placeholder="Email Address"
->
-
-<input
-id="loginPassword"
-class="auth-input"
-type="password"
-placeholder="Password"
->
-
-<button
-class="btn"
-onclick="loginUser()">
-
-Login
-
-</button>
-
-<button
-onclick="forgotPassword()"
-style="
-margin-top:10px;
-background:none;
-border:none;
-color:#60a5fa;
-cursor:pointer;
-font-size:14px;
-width:100%;
-">
-
-Forgot Password?
-
-</button>
-
-<button
-class="btn"
-onclick="showRegister()"
-style="background:#374151;">
-
-Create New Account
-
-</button>
-
-</div>
-
-`;
+loginBox.style.display = "block";
+registerBox.style.display = "none";
+authBox.style.display = "none";
 
 }
 
+function showAuth(){
 
-/* =========================
-   REGISTER USER
-========================= */
+authBox.style.display = "block";
+registerBox.style.display = "none";
+loginBox.style.display = "none";
+dashboard.classList.remove("active");
 
-async function registerUser(){
+}
+
+function setStatus(element,message){
+
+if(element){
+element.textContent = message;
+}
+
+}
+    async function registerUser(){
 
 const name =
-document
-.getElementById("registerName")
-.value
-.trim();
+document.getElementById("registerName").value.trim();
 
 const email =
-document
-.getElementById("registerEmail")
-.value
-.trim();
+document.getElementById("registerEmail").value.trim();
 
 const password =
-document
-.getElementById("registerPassword")
-.value;
+document.getElementById("registerPassword").value;
 
+const status =
+document.getElementById("registerStatus");
 
 if(!name || !email || !password){
 
-alert("Please fill all fields.");
+setStatus(
+status,
+"Please fill all fields."
+);
 
 return;
-
 }
-
 
 if(password.length < 6){
 
-alert(
+setStatus(
+status,
 "Password must be at least 6 characters."
 );
 
 return;
-
 }
 
+setStatus(
+status,
+"Creating your account..."
+);
 
 try{
 
-const {
-data,
-error
-} =
+const {data,error} =
 await supabaseClient.auth.signUp({
 
 email:email,
@@ -1071,95 +1238,72 @@ data:{
 name:name
 },
 
-emailRedirectTo:
-"https://azmatwattoo.github.io/Voice-command-ai/v7.html"
+emailRedirectTo:SITE_URL
 
 }
 
 });
 
-
 if(error){
 
-alert(error.message);
+setStatus(
+status,
+error.message
+);
 
 return;
-
 }
-
 
 if(data.user){
 
-if(data.session){
-
-showDashboard(
-data.user
-);
-
-alert(
-"Account created successfully!"
-);
-
-}else{
-
-alert(
-"Account created successfully! Please check your email to confirm your account."
+setStatus(
+status,
+"Account created successfully. Please check your email if verification is required."
 );
 
 }
 
-}
+}catch(error){
 
-}
-
-catch(error){
-
-console.error(error);
-
-alert(
-"Registration failed. Please try again."
+setStatus(
+status,
+"Registration failed: " + error.message
 );
 
 }
 
 }
 
-
-/* =========================
-   LOGIN USER
-========================= */
 
 async function loginUser(){
 
 const email =
-document
-.getElementById("loginEmail")
-.value
-.trim();
+document.getElementById("loginEmail").value.trim();
 
 const password =
-document
-.getElementById("loginPassword")
-.value;
+document.getElementById("loginPassword").value;
 
+const status =
+document.getElementById("loginStatus");
 
 if(!email || !password){
 
-alert(
+setStatus(
+status,
 "Please enter email and password."
 );
 
 return;
-
 }
 
+setStatus(
+status,
+"Logging in..."
+);
 
 try{
 
-const {
-data,
-error
-} =
+const {data,error} =
 await supabaseClient.auth.signInWithPassword({
 
 email:email,
@@ -1168,15 +1312,15 @@ password:password
 
 });
 
-
 if(error){
 
-alert(error.message);
+setStatus(
+status,
+error.message
+);
 
 return;
-
 }
-
 
 if(data.user){
 
@@ -1184,263 +1328,198 @@ showDashboard(
 data.user
 );
 
-alert(
-"Login successful!"
+}
+
+}catch(error){
+
+setStatus(
+status,
+"Login failed: " + error.message
 );
 
 }
 
 }
 
-catch(error){
-
-console.error(error);
-
-alert(
-"Login failed. Please try again."
-);
-
-}
-
-}
-
-
-/* =========================
-   DASHBOARD
-========================= */
-
-function showDashboard(user){
-
-const dashboard =
-document.getElementById(
-"dashboard"
-);
-
-const authBox =
-document.getElementById(
-"authBox"
-);
-
-if(authBox){
-
-authBox.style.display =
-"none";
-
-}
-
-if(dashboard){
-
-dashboard.classList.add(
-"active"
-);
-
-}
-
-const userName =
-document.getElementById(
-"userName"
-);
-
-const userEmail =
-document.getElementById(
-"userEmail"
-);
-
-if(userName){
-
-userName.innerText =
-user.user_metadata?.name ||
-"AzDar AI User";
-
-}
-
-if(userEmail){
-
-userEmail.innerText =
-user.email ||
-"";
-
-}
-
-loadCustomCommands();
-
-}
-    /* =========================
-   LOGOUT
-========================= */
-
-async function logoutUser(){
-
-try{
-
-const {error} =
-await supabaseClient.auth.signOut();
-
-if(error){
-
-alert(error.message);
-
-return;
-
-}
-
-document.getElementById(
-"dashboard"
-).classList.remove("active");
-
-document.getElementById(
-"authBox"
-).style.display = "block";
-
-document.getElementById(
-"authBox"
-).innerHTML = `
-
-<h2>🔐 Account</h2>
-
-<p>
-Create an account or login to AzDar AI.
-</p>
-
-<div class="account-buttons">
-
-<button onclick="showRegister()">
-📝 Register
-</button>
-
-<button onclick="showLogin()">
-🔑 Login
-</button>
-
-</div>
-
-`;
-
-alert("You have been logged out.");
-
-}
-
-catch(error){
-
-console.error(error);
-
-alert("Logout failed.");
-
-}
-
-}
-
-
-/* =========================
-   FORGOT PASSWORD
-========================= */
 
 async function forgotPassword(){
 
 const email =
-prompt(
-"Enter your registered email address:"
-);
+document.getElementById("loginEmail").value.trim();
+
+const status =
+document.getElementById("loginStatus");
 
 if(!email){
 
-return;
+setStatus(
+status,
+"Enter your email first."
+);
 
+return;
 }
+
+setStatus(
+status,
+"Sending password reset email..."
+);
 
 try{
 
 const {error} =
 await supabaseClient.auth.resetPasswordForEmail(
-email.trim(),
+email,
 {
-redirectTo:
-"https://azmatwattoo.github.io/Voice-command-ai/v7.html"
+redirectTo:SITE_URL
 }
 );
 
 if(error){
 
-alert(error.message);
+setStatus(
+status,
+error.message
+);
 
 return;
-
 }
 
-alert(
-"Password reset link has been sent to your email."
+setStatus(
+status,
+"Password reset email sent. Check your inbox."
+);
+
+}catch(error){
+
+setStatus(
+status,
+"Reset failed: " + error.message
 );
 
 }
 
-catch(error){
+}
 
-console.error(error);
 
-alert(
-"Password reset failed. Please try again."
+function showDashboard(user){
+
+authBox.style.display =
+"none";
+
+registerBox.style.display =
+"none";
+
+loginBox.style.display =
+"none";
+
+dashboard.classList.add(
+"active"
 );
 
-}
+if(mainDashboard){
+
+mainDashboard.style.display =
+"block";
 
 }
 
+const name =
+user.user_metadata &&
+user.user_metadata.name
+?
+user.user_metadata.name
+:
+"AzDar AI User";
 
-/* =========================
-   CHECK LOGIN STATE
-========================= */
+const email =
+user.email || "Not available";
+
+document.getElementById(
+"userName"
+).textContent = name;
+
+document.getElementById(
+"userEmail"
+).textContent = email;
+
+loadCustomCommands();
+
+showHistory();
+
+}
+
+
+async function logoutUser(){
+
+try{
+
+await supabaseClient.auth.signOut();
+
+}catch(error){
+
+console.log(error);
+
+}
+
+showAuth();
+
+document.getElementById(
+"loginEmail"
+).value = "";
+
+document.getElementById(
+"loginPassword"
+).value = "";
+
+}
+
 
 async function checkLoginState(){
 
 try{
 
-const {
-data,
-error
-} =
+const {data,error} =
 await supabaseClient.auth.getSession();
 
 if(error){
 
-console.error(
-"SESSION ERROR:",
-error
-);
+console.log(error);
+
+showAuth();
 
 return;
-
 }
 
-if(data.session){
+if(data.session &&
+data.session.user){
 
 showDashboard(
 data.session.user
 );
 
+}else{
+
+showAuth();
+
+}
+
+}catch(error){
+
+console.log(error);
+
+showAuth();
+
 }
 
 }
 
-catch(error){
-
-console.error(
-"SESSION CHECK ERROR:",
-error
-);
-
-}
-
-}
-
-
-/* =========================
-   AUTH STATE LISTENER
-========================= */
 
 supabaseClient.auth.onAuthStateChange(
-function(event,session){
+(event,session)=>{
 
-if(session){
+if(session &&
+session.user){
 
 showDashboard(
 session.user
@@ -1448,51 +1527,47 @@ session.user
 
 }else{
 
-const dashboard =
-document.getElementById(
-"dashboard"
-);
-
-if(dashboard){
-
-dashboard.classList.remove(
-"active"
-);
-
-}
+showAuth();
 
 }
 
 }
 );
 
-
-/* =========================
-   HISTORY SAVE
-========================= */
 
 function saveHistory(text){
 
-const history =
+if(!text){
+return;
+}
+
+let history = [];
+
+try{
+
+history =
 JSON.parse(
 localStorage.getItem(
 "azdarAIHistory"
-) || "[]"
-);
+)
+) || [];
+
+}catch(error){
+
+history = [];
+
+}
 
 history.unshift({
 
-text:String(text),
+text:text,
 
 time:new Date().toLocaleString()
 
 });
 
-if(history.length > 50){
-
-history.splice(50);
-
-}
+history =
+history.slice(0,50);
 
 localStorage.setItem(
 "azdarAIHistory",
@@ -1502,48 +1577,50 @@ JSON.stringify(history)
 }
 
 
-/* =========================
-   SHOW HISTORY
-========================= */
-
 function showHistory(){
 
-const history =
-JSON.parse(
-localStorage.getItem(
-"azdarAIHistory"
-) || "[]"
-);
-
-const historyBox =
+const box =
 document.getElementById(
 "historyBox"
 );
 
-if(!historyBox){
+let history = [];
 
-return;
+try{
+
+history =
+JSON.parse(
+localStorage.getItem(
+"azdarAIHistory"
+)
+) || [];
+
+}catch(error){
+
+history = [];
 
 }
+
+box.style.display =
+"block";
 
 if(history.length === 0){
 
-historyBox.innerHTML =
-"No history yet.";
+box.innerHTML =
+"No command history yet.";
 
 return;
 
 }
 
-historyBox.innerHTML =
+box.innerHTML =
 history.map(
-function(item){
-
-return `
+(item,index)=>`
 
 <div class="history-item">
 
 <div>
+<strong>${index + 1}.</strong>
 ${escapeHTML(item.text)}
 </div>
 
@@ -1553,17 +1630,11 @@ ${escapeHTML(item.time)}
 
 </div>
 
-`;
-
-}
+`
 ).join("");
 
 }
 
-
-/* =========================
-   CLEAR HISTORY
-========================= */
 
 function clearHistory(){
 
@@ -1571,84 +1642,67 @@ localStorage.removeItem(
 "azdarAIHistory"
 );
 
-showHistory();
+const box =
+document.getElementById(
+"historyBox"
+);
+
+box.style.display =
+"block";
+
+box.innerHTML =
+"History cleared.";
 
 }
 
-
-/* =========================
-   SECURITY HELPER
-========================= */
 
 function escapeHTML(text){
 
 return String(text)
-
 .replace(/&/g,"&amp;")
-
 .replace(/</g,"&lt;")
-
 .replace(/>/g,"&gt;")
-
 .replace(/"/g,"&quot;")
-
 .replace(/'/g,"&#039;");
 
-}
-
-
-/* =========================
-   AI ASSISTANT
-========================= */
-
+    }
 async function askAI(){
-
-const questionElement =
-document.getElementById(
-"question"
-);
-
-const answer =
-document.getElementById(
-"answer"
-);
-
-if(!questionElement || !answer){
-
-return;
-
-}
 
 const question =
 questionElement.value.trim();
 
 if(!question){
 
-answer.innerText =
-"Please type a question first.";
+aiStatus.textContent =
+"Please enter a question first.";
 
 return;
 
 }
 
-answer.innerText =
-"🤖 AzDar AI is thinking...";
+if(askButton){
+askButton.disabled = true;
+askButton.textContent = "⏳ Thinking...";
+}
 
-saveHistory(
-"AI: " + question
-);
+aiStatus.textContent =
+"AI Assistant is processing your question...";
+
+answerElement.textContent =
+"Thinking...";
+
+saveHistory(question);
 
 try{
 
 const response =
 await fetch(
-"https://voice-command-ai-five.vercel.app/api/ask",
+AI_API_URL,
 {
 method:"POST",
 
 headers:{
-"Content-Type":
-"application/json"
+"Content-Type":"application/json"
 },
 
 body:JSON.stringify({
@@ -1658,115 +1712,320 @@ question:question
 }
 );
 
+const contentType =
+response.headers.get(
+"content-type"
+) || "";
 
-/* RESPONSE TEXT */
-
-const raw =
+const rawText =
 await response.text();
+
+if(!response.ok){
+
+throw new Error(
+"Backend error: " +
+response.status +
+" " +
+response.statusText
+);
+
+}
+
+if(!contentType.includes(
+"application/json"
+)){
+
+throw new Error(
+"Backend returned an invalid response."
+);
+
+}
 
 let data;
 
 try{
 
 data =
-JSON.parse(raw);
+JSON.parse(rawText);
 
-}
+}catch(error){
 
-catch(parseError){
-
-console.error(
-"INVALID JSON:",
-raw
+throw new Error(
+"Invalid JSON response from backend."
 );
 
-answer.innerText =
-"⚠️ AI server returned an invalid response.";
-
-return;
-
 }
 
-
-if(!response.ok){
-
-answer.innerText =
-data.error ||
-data.message ||
-"AI request failed.";
-
-return;
-
-}
-
-
-const aiText =
-data.answer ||
-data.reply ||
-data.response ||
-data.output ||
+const aiAnswer =
+data.answer ??
+data.reply ??
+data.response ??
+data.output ??
 data.text;
 
+if(!aiAnswer){
 
-if(aiText){
-
-answer.innerText =
-aiText;
-
-saveHistory(
-"AI Answer: " + aiText
+throw new Error(
+"AI response was empty."
 );
+
+}
+
+answerElement.textContent =
+String(aiAnswer);
+
+aiStatus.textContent =
+"✅ AI Assistant connected successfully.";
+
+}catch(error){
+
+console.error(error);
+
+answerElement.textContent =
+"Sorry, AI Assistant could not respond right now.";
+
+aiStatus.textContent =
+"❌ " + error.message;
+
+}finally{
+
+if(askButton){
+
+askButton.disabled = false;
+askButton.textContent = "✨ Ask AI";
+
+}
+
+}
+
+}
+
+
+function showAnswer(){
+
+if(!answerElement.textContent.trim()){
+
+return;
+
+}
+
+answerElement.style.display =
+"block";
+
+answerElement.scrollIntoView({
+behavior:"smooth",
+block:"center"
+});
+
+}
+
+
+function copyQuestion(){
+
+const text =
+questionElement.value.trim();
+
+if(!text){
+
+aiStatus.textContent =
+"Nothing to copy.";
+
+return;
+
+}
+
+navigator.clipboard.writeText(text)
+.then(()=>{
+
+aiStatus.textContent =
+"✅ Question copied.";
+
+})
+.catch(()=>{
+
+aiStatus.textContent =
+"❌ Copy failed.";
+
+});
+
+}
+
+
+function copyAnswer(){
+
+const text =
+answerElement.textContent.trim();
+
+if(
+!text ||
+text === "Your AI answer will appear here."
+){
+
+aiStatus.textContent =
+"Nothing to copy.";
+
+return;
+
+}
+
+navigator.clipboard.writeText(text)
+.then(()=>{
+
+aiStatus.textContent =
+"✅ AI answer copied.";
+
+})
+.catch(()=>{
+
+aiStatus.textContent =
+"❌ Copy failed.";
+
+});
+
+}
+
+
+function readQuestion(){
+
+const text =
+questionElement.value.trim();
+
+if(!text){
+
+aiStatus.textContent =
+"Nothing to read.";
+
+return;
+
+}
+
+if(
+"speechSynthesis" in window
+){
+
+speechSynthesis.cancel();
+
+const speech =
+new SpeechSynthesisUtterance(text);
+
+speech.lang =
+"en-US";
+
+speech.rate =
+0.95;
+
+speech.pitch =
+1;
+
+speechSynthesis.speak(
+speech
+);
+
+aiStatus.textContent =
+"🔊 Reading your text...";
 
 }else{
 
-answer.innerText =
-"⚠️ AI server returned no answer.";
-
-}
-
-}
-
-catch(error){
-
-console.error(
-"AI ERROR:",
-error
-);
-
-answer.innerText =
-"⚠️ AI connection failed. Please check the backend.";
+aiStatus.textContent =
+"Speech is not supported on this browser.";
 
 }
 
 }
 
 
-/* =========================
-   CTRL + ENTER
-========================= */
+function readAnswer(){
 
-document.addEventListener(
-"keydown",
-function(event){
+const text =
+answerElement.textContent.trim();
 
 if(
-event.key === "Enter" &&
-event.ctrlKey
+!text ||
+text === "Your AI answer will appear here."
 ){
 
-event.preventDefault();
+aiStatus.textContent =
+"Nothing to read.";
 
-askAI();
+return;
 
 }
 
-}
+if(
+"speechSynthesis" in window
+){
+
+speechSynthesis.cancel();
+
+const speech =
+new SpeechSynthesisUtterance(text);
+
+speech.lang =
+"en-US";
+
+speech.rate =
+0.95;
+
+speech.pitch =
+1;
+
+speechSynthesis.speak(
+speech
 );
 
+aiStatus.textContent =
+"🔊 Reading AI answer...";
 
-/* =========================
-   QUICK CONTROLS
-========================= */
+}else{
+
+aiStatus.textContent =
+"Speech is not supported on this browser.";
+
+}
+
+}
+
+
+function stopReading(){
+
+if(
+"speechSynthesis" in window
+){
+
+speechSynthesis.cancel();
+
+aiStatus.textContent =
+"⏹️ Reading stopped.";
+
+}
+
+}
+
+
+function clearAI(){
+
+questionElement.value = "";
+
+answerElement.textContent =
+"Your AI answer will appear here.";
+
+aiStatus.textContent =
+"AI Assistant ready.";
+
+}
+
+
+function showQuestion(){
+
+questionElement.focus();
+
+questionElement.scrollIntoView({
+behavior:"smooth",
+block:"center"
+});
+
+}
+
 
 function openGoogle(){
 
@@ -1830,17 +2089,17 @@ window.open(
 
 function showTime(){
 
-const message =
-"🕐 Current time: " +
+const time =
 new Date().toLocaleTimeString();
 
-document.getElementById(
-"answer"
-).innerText =
-message;
+questionElement.value =
+"What time is it?";
+
+answerElement.textContent =
+"🕐 Current time: " + time;
 
 saveHistory(
-"Command: Time"
+"Show time"
 );
 
 }
@@ -1848,17 +2107,25 @@ saveHistory(
 
 function showDate(){
 
-const message =
-"📅 Today is: " +
-new Date().toLocaleDateString();
+const date =
+new Date().toLocaleDateString(
+undefined,
+{
+weekday:"long",
+year:"numeric",
+month:"long",
+day:"numeric"
+}
+);
 
-document.getElementById(
-"answer"
-).innerText =
-message;
+questionElement.value =
+"What is today's date?";
+
+answerElement.textContent =
+"📅 Today is " + date;
 
 saveHistory(
-"Command: Date"
+"Show date"
 );
 
 }
@@ -1866,19 +2133,13 @@ saveHistory(
 
 function toggleDark(){
 
-document.body.style.background =
-"#03050c";
-
-document.body.style.color =
-"#ffffff";
+document.body.classList.remove(
+"light"
+);
 
 localStorage.setItem(
 "azdarTheme",
 "dark"
-);
-
-saveHistory(
-"Command: Dark Mode"
 );
 
 }
@@ -1886,54 +2147,95 @@ saveHistory(
 
 function toggleLight(){
 
-document.body.style.background =
-"#eef2ff";
-
-document.body.style.color =
-"#111827";
+document.body.classList.add(
+"light"
+);
 
 localStorage.setItem(
 "azdarTheme",
 "light"
 );
 
-saveHistory(
-"Command: Light Mode"
+}
+
+
+function loadTheme(){
+
+const theme =
+localStorage.getItem(
+"azdarTheme"
 );
+
+if(theme === "light"){
+
+document.body.classList.add(
+"light"
+);
+
+}else{
+
+document.body.classList.remove(
+"light"
+);
+
+}
 
 }
 
 
 function goBack(){
 
-history.back();
+window.history.back();
 
 }
 
 
 function goForward(){
 
-history.forward();
+window.history.forward();
 
 }
 
 
 function refreshPage(){
 
-location.reload();
+window.location.reload();
 
-    }
-    /* =========================
-   CUSTOM COMMANDS
-========================= */
+}
 
-function getCustomCommands(){
+
+questionElement.addEventListener(
+"keydown",
+function(event){
+
+if(
+event.ctrlKey &&
+event.key === "Enter"
+){
+
+event.preventDefault();
+
+askAI();
+
+}
+
+}
+);
+    function getCustomCommands(){
+
+try{
 
 return JSON.parse(
 localStorage.getItem(
 "azdarCustomCommands"
-) || "[]"
-);
+)
+) || [];
+
+}catch(error){
+
+return [];
+
+}
 
 }
 
@@ -1948,10 +2250,6 @@ JSON.stringify(commands)
 }
 
 
-/* =========================
-   ADD CUSTOM COMMAND
-========================= */
-
 function addCustomCommand(){
 
 const commandInput =
@@ -1964,47 +2262,54 @@ document.getElementById(
 "customURL"
 );
 
-if(!commandInput || !urlInput){
-
-return;
-
-}
+const status =
+document.getElementById(
+"customCommandStatus"
+);
 
 const command =
-commandInput.value.trim();
+commandInput.value
+.trim()
+.toLowerCase();
 
 const url =
 urlInput.value.trim();
 
-
 if(!command || !url){
 
-alert(
-"Please enter command and website URL."
-);
+status.textContent =
+"Please enter both command and URL.";
 
 return;
 
 }
-
 
 if(
 !url.startsWith("http://") &&
 !url.startsWith("https://")
 ){
 
-alert(
-"URL must start with http:// or https://"
-);
+status.textContent =
+"URL must start with http:// or https://";
 
 return;
 
 }
 
-
-const commands =
+let commands =
 getCustomCommands();
 
+const existing =
+commands.findIndex(
+item =>
+item.command.toLowerCase() === command
+);
+
+if(existing !== -1){
+
+commands[existing].url = url;
+
+}else{
 
 commands.push({
 
@@ -2014,27 +2319,22 @@ url:url
 
 });
 
+}
 
 saveCustomCommands(
 commands
 );
 
 commandInput.value = "";
-
 urlInput.value = "";
+
+status.textContent =
+"✅ Custom command saved.";
 
 loadCustomCommands();
 
-alert(
-"Custom command added successfully!"
-);
-
 }
 
-
-/* =========================
-   LOAD CUSTOM COMMANDS
-========================= */
 
 function loadCustomCommands(){
 
@@ -2044,142 +2344,130 @@ document.getElementById(
 );
 
 if(!list){
-
 return;
-
 }
 
 const commands =
 getCustomCommands();
 
-
 if(commands.length === 0){
 
 list.innerHTML =
-"No custom commands yet.";
+`
+<div class="status-box">
+No custom commands yet.
+</div>
+`;
 
 return;
 
 }
 
-
 list.innerHTML =
 commands.map(
-function(item,index){
-
-return `
+(item,index)=>`
 
 <div
-style="
-padding:12px;
-margin-top:8px;
-border-radius:12px;
-background:#111827;
-border:1px solid #1e293b;
-">
+class="history-item"
+>
 
 <div>
+<strong>
 🎤 ${escapeHTML(item.command)}
+</strong>
 </div>
 
 <div
 style="
+margin-top:6px;
 font-size:12px;
 color:#64748b;
-margin-top:5px;
 word-break:break-all;
-">
-
+"
+>
 ${escapeHTML(item.url)}
-
 </div>
 
 <div
-style="
-display:grid;
-grid-template-columns:1fr 1fr;
-gap:8px;
-margin-top:10px;
-">
+class="quick-grid"
+style="margin-top:10px;"
+>
 
 <button
 onclick="testCustomCommand(${index})"
-style="
-padding:10px;
-border:1px solid #334155;
-border-radius:10px;
-background:#2563eb;
-color:white;
-">
-
+>
 ▶️ Test
-
 </button>
 
 <button
 onclick="deleteCustomCommand(${index})"
-style="
-padding:10px;
-border:1px solid #334155;
-border-radius:10px;
-background:#374151;
-color:white;
-">
-
+>
 🗑️ Delete
-
 </button>
 
 </div>
 
 </div>
 
-`;
-
-}
+`
 ).join("");
 
 }
 
-
-/* =========================
-   TEST CUSTOM COMMAND
-========================= */
 
 function testCustomCommand(index){
 
 const commands =
 getCustomCommands();
 
-const item =
-commands[index];
-
-if(!item){
+if(
+!commands[index]
+){
 
 return;
 
 }
+
+const item =
+commands[index];
+
+saveHistory(
+"Test custom command: " +
+item.command
+);
 
 window.open(
 item.url,
 "_blank"
 );
 
-saveHistory(
-"Custom: " + item.command
+const status =
+document.getElementById(
+"customCommandStatus"
 );
+
+status.textContent =
+"🚀 Opened: " +
+item.command;
 
 }
 
 
-/* =========================
-   DELETE CUSTOM COMMAND
-========================= */
-
 function deleteCustomCommand(index){
 
-const commands =
+let commands =
 getCustomCommands();
+
+if(
+!commands[index]
+){
+
+return;
+
+}
+
+const name =
+commands[index].command;
 
 commands.splice(
 index,
@@ -2192,423 +2480,462 @@ commands
 
 loadCustomCommands();
 
+const status =
+document.getElementById(
+"customCommandStatus"
+);
+
+status.textContent =
+"🗑️ Deleted: " + name;
+
 }
 
 
-/* =========================
-   MATCH CUSTOM COMMAND
-========================= */
-
-function runCustomCommand(command){
+function findCustomCommand(text){
 
 const commands =
 getCustomCommands();
 
 const normalized =
-command
-.toLowerCase()
-.trim();
+text
+.trim()
+.toLowerCase();
 
+return commands.find(
+item => {
 
-for(
-const item of commands
-){
-
-const savedCommand =
+const command =
 item.command
-.toLowerCase()
-.trim();
+.trim()
+.toLowerCase();
 
-if(
-normalized === savedCommand ||
-normalized.includes(savedCommand)
-){
+return (
+normalized === command ||
+normalized.includes(command)
+);
+
+}
+);
+
+}
+
+
+function runCustomCommand(text){
+
+const item =
+findCustomCommand(text);
+
+if(!item){
+
+return false;
+
+}
+
+saveHistory(
+"Custom command: " +
+text
+);
+
+const status =
+document.getElementById(
+"customCommandStatus"
+);
+
+status.textContent =
+"🚀 Running: " +
+item.command;
 
 window.open(
 item.url,
 "_blank"
 );
 
-saveHistory(
-"Custom: " + command
-);
-
 return true;
 
 }
 
-}
 
-return false;
+function searchGoogle(query){
 
-}
+const cleanQuery =
+query.trim();
 
+if(!cleanQuery){
 
-/* =========================
-   COPY QUESTION
-========================= */
-
-async function copyQuestion(){
-
-const question =
-document.getElementById(
-"question"
-);
-
-if(!question){
+openGoogle();
 
 return;
 
 }
 
-const text =
-question.value.trim();
-
-if(!text){
-
-alert(
-"Text box is empty."
+saveHistory(
+"Google search: " +
+cleanQuery
 );
+
+window.open(
+"https://www.google.com/search?q=" +
+encodeURIComponent(cleanQuery),
+"_blank"
+);
+
+}
+
+
+function searchYouTube(query){
+
+const cleanQuery =
+query.trim();
+
+if(!cleanQuery){
+
+openYouTube();
 
 return;
 
 }
 
-try{
-
-await navigator.clipboard.writeText(
-text
+saveHistory(
+"YouTube search: " +
+cleanQuery
 );
 
-alert(
-"Text copied!"
-);
-
-}
-
-catch(error){
-
-alert(
-"Copy failed."
+window.open(
+"https://www.youtube.com/results?search_query=" +
+encodeURIComponent(cleanQuery),
+"_blank"
 );
 
 }
 
-}
 
+function normalizeVoiceText(text){
 
-/* =========================
-   READ QUESTION
-========================= */
-
-function readQuestion(){
-
-const question =
-document.getElementById(
-"question"
-);
-
-if(!question){
-
-return;
+return text
+.toLowerCase()
+.trim()
+.replace(/[.,!?]/g,"")
+.replace(/\s+/g," ");
 
 }
 
-const text =
-question.value.trim();
 
-if(!text){
+function handleVoiceCommand(text){
+
+const command =
+normalizeVoiceText(text);
+
+if(!command){
 
 return;
 
 }
 
 if(
-"speechSynthesis" in window
+runCustomCommand(command)
 ){
 
-window.speechSynthesis.cancel();
-
-const speech =
-new SpeechSynthesisUtterance(
-text
-);
-
-speech.rate =
-0.95;
-
-speech.pitch =
-1;
-
-window.speechSynthesis.speak(
-speech
-);
+return;
 
 }
-
-}
-
-
-/* =========================
-   SHOW QUESTION
-========================= */
-
-function showQuestion(){
-
-const question =
-document.getElementById(
-"question"
-);
-
-const answer =
-document.getElementById(
-"answer"
-);
 
 if(
-!question ||
-!answer
+command === "youtube" ||
+command === "youtube kholo" ||
+command === "open youtube" ||
+command.includes("youtube kholo")
 ){
 
+openYouTube();
 return;
 
 }
 
-const text =
-question.value.trim();
 
-if(!text){
+if(
+command === "google" ||
+command === "google kholo" ||
+command === "open google" ||
+command.includes("google kholo")
+){
 
-answer.innerText =
-"Text box is empty.";
+openGoogle();
+return;
+
+}
+
+
+if(
+command === "whatsapp" ||
+command === "whatsapp kholo" ||
+command === "open whatsapp"
+){
+
+openWhatsApp();
+return;
+
+}
+
+
+if(
+command === "facebook" ||
+command === "facebook kholo" ||
+command === "open facebook"
+){
+
+openFacebook();
+return;
+
+}
+
+
+if(
+command === "instagram" ||
+command === "instagram kholo" ||
+command === "open instagram"
+){
+
+openInstagram();
+return;
+
+}
+
+
+if(
+command === "tiktok" ||
+command === "tiktok kholo" ||
+command === "open tiktok"
+){
+
+openTikTok();
+return;
+
+}
+
+
+if(
+command === "time" ||
+command.includes("time batao") ||
+command.includes("what time")
+){
+
+showTime();
+return;
+
+}
+
+
+if(
+command === "date" ||
+command.includes("date batao") ||
+command.includes("today date") ||
+command.includes("what is today's date")
+){
+
+showDate();
+return;
+
+}
+
+
+if(
+command.includes("dark mode") ||
+command.includes("dark theme") ||
+command === "dark"
+){
+
+toggleDark();
+return;
+
+}
+
+
+if(
+command.includes("light mode") ||
+command.includes("light theme") ||
+command === "light"
+){
+
+toggleLight();
+return;
+
+}
+
+
+if(
+command === "back" ||
+command === "go back"
+){
+
+goBack();
+return;
+
+}
+
+
+if(
+command === "forward" ||
+command === "go forward"
+){
+
+goForward();
+return;
+
+}
+
+
+if(
+command === "refresh" ||
+command === "page refresh"
+){
+
+refreshPage();
+return;
+
+}
+
+
+if(
+command === "clear text" ||
+command === "text clear" ||
+command === "clear textbox" ||
+command === "textbox clear"
+){
+
+clearAI();
+return;
+
+}
+
+
+if(
+command.startsWith("google search ")
+){
+
+const query =
+command
+.replace(
+"google search ",
+""
+)
+.trim();
+
+searchGoogle(
+query
+);
 
 return;
 
 }
 
-answer.innerText =
-"📝 Your Text:\n\n" +
+
+if(
+command.startsWith("search google ")
+){
+
+const query =
+command
+.replace(
+"search google ",
+""
+)
+.trim();
+
+searchGoogle(
+query
+);
+
+return;
+
+}
+
+
+if(
+command.startsWith("youtube search ")
+){
+
+const query =
+command
+.replace(
+"youtube search ",
+""
+)
+.trim();
+
+searchYouTube(
+query
+);
+
+return;
+
+}
+
+
+if(
+command.startsWith("search youtube ")
+){
+
+const query =
+command
+.replace(
+"search youtube ",
+""
+)
+.trim();
+
+searchYouTube(
+query
+);
+
+return;
+
+}
+
+
+questionElement.value =
 text;
 
-}
+aiStatus.textContent =
+"🎙️ Sending your voice command to AI...";
 
-
-/* =========================
-   CLEAR AI
-========================= */
-
-function clearAI(){
-
-const question =
-document.getElementById(
-"question"
-);
-
-const answer =
-document.getElementById(
-"answer"
-);
-
-if(question){
-
-question.value =
-"";
+askAI();
 
 }
-
-if(answer){
-
-answer.innerText =
-"AI answer will appear here...";
-
-}
-
-}
-
-
-/* =========================
-   COPY AI ANSWER
-========================= */
-
-async function copyAnswer(){
-
-const answer =
-document.getElementById(
-"answer"
-);
-
-if(!answer){
-
-return;
-
-}
-
-const text =
-answer.innerText.trim();
-
-if(
-!text ||
-text ===
-"AI answer will appear here..."
-){
-
-alert(
-"There is no AI answer to copy."
-);
-
-return;
-
-}
-
-try{
-
-await navigator.clipboard.writeText(
-text
-);
-
-alert(
-"AI answer copied!"
-);
-
-}
-
-catch(error){
-
-alert(
-"Copy failed."
-);
-
-}
-
-}
-
-
-/* =========================
-   READ AI ANSWER
-========================= */
-
-function readAnswer(){
-
-const answer =
-document.getElementById(
-"answer"
-);
-
-if(!answer){
-
-return;
-
-}
-
-const text =
-answer.innerText.trim();
-
-if(
-!text ||
-text ===
-"AI answer will appear here..."
-){
-
-return;
-
-}
-
-if(
-"speechSynthesis" in window
-){
-
-window.speechSynthesis.cancel();
-
-const speech =
-new SpeechSynthesisUtterance(
-text
-);
-
-speech.rate =
-0.95;
-
-speech.pitch =
-1;
-
-window.speechSynthesis.speak(
-speech
-);
-
-}
-
-}
-
-
-/* =========================
-   STOP READING
-========================= */
-
-function stopReading(){
-
-if(
-"speechSynthesis" in window
-){
-
-window.speechSynthesis.cancel();
-
-}
-
-}
-
-
-/* =========================
-   START VOICE
-========================= */
-
-let recognition = null;
+    let recognition = null;
 
 let isListening = false;
-
-
-function startVoice(){
-
-const voiceStatus =
-document.getElementById(
-"voiceStatus"
-);
-
-
-if(
-!("SpeechRecognition" in window) &&
-!("webkitSpeechRecognition" in window)
-){
-
-if(voiceStatus){
-
-voiceStatus.innerText =
-"❌ Voice recognition is not supported in this browser.";
-
-}
-
-alert(
-"Voice recognition is not supported. Try Google Chrome."
-);
-
-return;
-
-}
-
-
-if(isListening){
-
-return;
-
-}
-
 
 const SpeechRecognition =
 window.SpeechRecognition ||
 window.webkitSpeechRecognition;
 
 
+function startVoice(){
+
+if(!SpeechRecognition){
+
+document.getElementById(
+"voiceStatus"
+).textContent =
+"❌ Voice recognition is not supported in this browser.";
+
+return;
+
+}
+
+if(isListening){
+
+document.getElementById(
+"voiceStatus"
+).textContent =
+"🎙️ Voice Assistant is already listening.";
+
+return;
+
+}
+
 recognition =
 new SpeechRecognition();
-
 
 recognition.lang =
 "en-US";
@@ -2620,50 +2947,78 @@ recognition.interimResults =
 false;
 
 recognition.maxAlternatives =
-1;
+3;
 
+
+recognition.onstart =
+function(){
 
 isListening = true;
 
+document.getElementById(
+"voiceStatus"
+).textContent =
+"🎙️ Listening... Speak now.";
 
-if(voiceStatus){
-
-voiceStatus.innerText =
-"🎤 Listening... Speak now.";
-
-}
+};
 
 
 recognition.onresult =
 function(event){
 
-const text =
-event.results[0][0].transcript;
+let text = "";
 
-if(voiceStatus){
+if(
+event.results &&
+event.results[0]
+){
 
-voiceStatus.innerText =
-"✅ Heard: " + text;
+for(
+let i = 0;
+i < event.results[0].length;
+i++
+){
+
+const transcript =
+event.results[0][i].transcript;
+
+if(transcript){
+
+text = transcript;
+
+break;
 
 }
 
-saveHistory(
-"Voice: " + text
-);
+}
 
+}
 
-/* CUSTOM COMMAND FIRST */
+text =
+text.trim();
 
-if(
-runCustomCommand(text)
-){
+if(!text){
+
+document.getElementById(
+"voiceStatus"
+).textContent =
+"⚠️ I couldn't understand your voice.";
 
 return;
 
 }
 
+document.getElementById(
+"voiceStatus"
+).textContent =
+"✅ Heard: " + text;
 
-/* NORMAL COMMANDS */
+questionElement.value =
+text;
+
+saveHistory(
+"Voice: " + text
+);
 
 handleVoiceCommand(
 text
@@ -2675,20 +3030,51 @@ text
 recognition.onerror =
 function(event){
 
-console.error(
-"VOICE ERROR:",
-event.error
-);
-
 isListening = false;
 
-if(voiceStatus){
+let message =
+"Voice error.";
 
-voiceStatus.innerText =
-"⚠️ Voice error: " +
+if(
+event.error === "not-allowed"
+){
+
+message =
+"❌ Microphone permission denied.";
+
+}else if(
+event.error === "no-speech"
+){
+
+message =
+"⚠️ No speech detected. Try again.";
+
+}else if(
+event.error === "audio-capture"
+){
+
+message =
+"❌ Microphone not available.";
+
+}else if(
+event.error === "network"
+){
+
+message =
+"❌ Voice recognition network error.";
+
+}else{
+
+message =
+"❌ Voice error: " +
 event.error;
 
 }
+
+document.getElementById(
+"voiceStatus"
+).textContent =
+message;
 
 };
 
@@ -2698,407 +3084,301 @@ function(){
 
 isListening = false;
 
-if(voiceStatus){
+const status =
+document.getElementById(
+"voiceStatus"
+);
 
-voiceStatus.innerText =
-"🎤 Voice Ready";
+if(
+status.textContent.includes(
+"Listening"
+)
+){
+
+status.textContent =
+"🎙️ Voice Assistant stopped.";
 
 }
 
 };
 
-
 try{
 
 recognition.start();
 
-}
-
-catch(error){
+}catch(error){
 
 isListening = false;
 
-console.error(error);
-
-if(voiceStatus){
-
-voiceStatus.innerText =
-"⚠️ Could not start voice.";
-
-}
-
-}
-
-}
-
-
-/* =========================
-   VOICE COMMAND HANDLER
-========================= */
-
-function handleVoiceCommand(command){
-
-const cmd =
-command
-.toLowerCase()
-.trim();
-
-
-/* YOUTUBE */
-
-if(
-cmd.includes("youtube kholo") ||
-cmd.includes("open youtube") ||
-cmd === "youtube"
-){
-
-openYouTube();
-
-return;
-
-}
-
-
-/* GOOGLE */
-
-if(
-cmd.includes("google kholo") ||
-cmd.includes("open google") ||
-cmd === "google"
-){
-
-openGoogle();
-
-return;
-
-}
-
-
-/* WHATSAPP */
-
-if(
-cmd.includes("whatsapp kholo") ||
-cmd.includes("open whatsapp")
-){
-
-openWhatsApp();
-
-return;
-
-}
-
-
-/* FACEBOOK */
-
-if(
-cmd.includes("facebook kholo") ||
-cmd.includes("open facebook")
-){
-
-openFacebook();
-
-return;
-
-}
-
-
-/* INSTAGRAM */
-
-if(
-cmd.includes("instagram kholo") ||
-cmd.includes("open instagram")
-){
-
-openInstagram();
-
-return;
-
-}
-
-
-/* TIKTOK */
-
-if(
-cmd.includes("tiktok kholo") ||
-cmd.includes("open tiktok")
-){
-
-openTikTok();
-
-return;
-
-}
-
-
-/* TIME */
-
-if(
-cmd.includes("time batao") ||
-cmd.includes("what time") ||
-cmd === "time"
-){
-
-showTime();
-
-return;
-
-}
-
-
-/* DATE */
-
-if(
-cmd.includes("date batao") ||
-cmd.includes("today date") ||
-cmd === "date"
-){
-
-showDate();
-
-return;
-
-    }
-    /* =========================
-   DARK MODE
-========================= */
-
-if(
-cmd.includes("dark mode") ||
-cmd.includes("dark theme") ||
-cmd === "dark"
-){
-
-toggleDark();
-
-return;
-
-}
-
-
-/* =========================
-   LIGHT MODE
-========================= */
-
-if(
-cmd.includes("light mode") ||
-cmd.includes("light theme") ||
-cmd === "light"
-){
-
-toggleLight();
-
-return;
-
-}
-
-
-/* =========================
-   CLEAR TEXT
-========================= */
-
-if(
-cmd.includes("clear text") ||
-cmd.includes("text clear") ||
-cmd.includes("textbox clear")
-){
-
-clearAI();
-
-saveHistory(
-"Command: Clear Text"
-);
-
-return;
-
-}
-
-
-/* =========================
-   SEARCH GOOGLE
-========================= */
-
-if(
-cmd.startsWith("google search ") ||
-cmd.startsWith("search google ")
-){
-
-let searchText =
-cmd
-.replace(
-"google search ",
-""
-)
-.replace(
-"search google ",
-""
-)
-.trim();
-
-if(searchText){
-
-window.open(
-"https://www.google.com/search?q=" +
-encodeURIComponent(searchText),
-"_blank"
-);
-
-saveHistory(
-"Google Search: " +
-searchText
-);
-
-}
-
-return;
-
-}
-
-
-/* =========================
-   SEARCH YOUTUBE
-========================= */
-
-if(
-cmd.startsWith("youtube search ") ||
-cmd.startsWith("search youtube ")
-){
-
-let searchText =
-cmd
-.replace(
-"youtube search ",
-""
-)
-.replace(
-"search youtube ",
-""
-)
-.trim();
-
-if(searchText){
-
-window.open(
-"https://www.youtube.com/results?search_query=" +
-encodeURIComponent(searchText),
-"_blank"
-);
-
-saveHistory(
-"YouTube Search: " +
-searchText
-);
-
-}
-
-return;
-
-}
-
-
-/* =========================
-   BACK
-========================= */
-
-if(
-cmd === "back" ||
-cmd.includes("go back")
-){
-
-goBack();
-
-return;
-
-}
-
-
-/* =========================
-   FORWARD
-========================= */
-
-if(
-cmd === "forward" ||
-cmd.includes("go forward")
-){
-
-goForward();
-
-return;
-
-}
-
-
-/* =========================
-   REFRESH
-========================= */
-
-if(
-cmd === "refresh" ||
-cmd.includes("page refresh")
-){
-
-refreshPage();
-
-return;
-
-}
-
-
-/* =========================
-   OTHERWISE ASK AI
-========================= */
-
-const question =
 document.getElementById(
-"question"
-);
+"voiceStatus"
+).textContent =
+"❌ Could not start microphone.";
 
-if(question){
+}
 
-question.value =
+}
+
+
+function stopVoice(){
+
+if(
+recognition &&
+isListening
+){
+
+try{
+
+recognition.stop();
+
+}catch(error){
+
+console.log(error);
+
+}
+
+}
+
+isListening = false;
+
+document.getElementById(
+"voiceStatus"
+).textContent =
+"⏹️ Voice Assistant stopped.";
+
+}
+
+
+function voiceCommandDemo(command){
+
+questionElement.value =
 command;
 
-askAI();
-
-}
-
-}
-
-
-/* =========================
-   LOAD SAVED THEME
-========================= */
-
-function loadTheme(){
-
-const theme =
-localStorage.getItem(
-"azdarTheme"
+saveHistory(
+"Voice demo: " + command
 );
 
-if(theme === "light"){
+handleVoiceCommand(
+command
+);
 
-document.body.style.background =
-"#eef2ff";
+}
 
-document.body.style.color =
-"#111827";
 
-}else{
+function speakStatus(text){
 
-document.body.style.background =
-"#03050c";
+if(
+!"speechSynthesis" in window
+){
 
-document.body.style.color =
-"#ffffff";
+return;
+
+}
+
+speechSynthesis.cancel();
+
+const speech =
+new SpeechSynthesisUtterance(
+text
+);
+
+speech.lang =
+"en-US";
+
+speech.rate =
+0.95;
+
+speech.pitch =
+1;
+
+speechSynthesis.speak(
+speech
+);
+
+}
+
+
+window.addEventListener(
+"beforeunload",
+function(){
+
+if(
+recognition &&
+isListening
+){
+
+try{
+
+recognition.stop();
+
+}catch(error){
+
+}
+
+}
+
+if(
+"speechSynthesis" in window
+){
+
+speechSynthesis.cancel();
+
+}
+
+}
+);
+
+
+document.addEventListener(
+"visibilitychange",
+function(){
+
+if(
+document.hidden &&
+recognition &&
+isListening
+){
+
+try{
+
+recognition.stop();
+
+}catch(error){
+
+}
+
+}
+
+}
+);
+
+
+function setupCustomCommandEnter(){
+
+const commandInput =
+document.getElementById(
+"customCommand"
+);
+
+const urlInput =
+document.getElementById(
+"customURL"
+);
+
+if(commandInput){
+
+commandInput.addEventListener(
+"keydown",
+function(event){
+
+if(
+event.key === "Enter"
+){
+
+event.preventDefault();
+
+urlInput.focus();
+
+}
+
+}
+);
+
+}
+
+if(urlInput){
+
+urlInput.addEventListener(
+"keydown",
+function(event){
+
+if(
+event.key === "Enter"
+){
+
+event.preventDefault();
+
+addCustomCommand();
+
+}
+
+}
+);
 
 }
 
 }
 
 
-/* =========================
-   START V7
-========================= */
+function setupAuthEnter(){
+
+const loginPassword =
+document.getElementById(
+"loginPassword"
+);
+
+const registerPassword =
+document.getElementById(
+"registerPassword"
+);
+
+if(loginPassword){
+
+loginPassword.addEventListener(
+"keydown",
+function(event){
+
+if(
+event.key === "Enter"
+){
+
+event.preventDefault();
+
+loginUser();
+
+}
+
+}
+);
+
+}
+
+if(registerPassword){
+
+registerPassword.addEventListener(
+"keydown",
+function(event){
+
+if(
+event.key === "Enter"
+){
+
+event.preventDefault();
+
+registerUser();
+
+}
+
+}
+);
+
+}
+
+}
+
+
+function setInitialAIState(){
+
+answerElement.textContent =
+"Your AI answer will appear here.";
+
+aiStatus.textContent =
+"AI Assistant ready.";
+
+}
+
+
+function initializeAzDarAI(){
 
 loadTheme();
 
@@ -3106,7 +3386,18 @@ loadCustomCommands();
 
 showHistory();
 
+setupCustomCommandEnter();
+
+setupAuthEnter();
+
+setInitialAIState();
+
 checkLoginState();
+
+}
+
+
+initializeAzDarAI();
 
 </script>
 
