@@ -1,3406 +1,1914 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-
 <meta charset="UTF-8">
-
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<title>AzDar AI</title>
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<meta name="theme-color" content="#050816">
+<meta name="description" content="AzDar AI - AI Workspace and Tools Platform">
+<title>AzDar AI V15</title>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 <style>
-
-*{
-box-sizing:border-box;
-margin:0;
-padding:0;
-}
-
+*{box-sizing:border-box}
 :root{
---bg:#030712;
---card:#0b1120;
---card2:#111827;
---border:#1e293b;
---border2:#334155;
---text:#ffffff;
---muted:#94a3b8;
---primary:#2563eb;
---primary2:#60a5fa;
+ --bg:#030712;
+ --bg2:#07101f;
+ --card:#0b1220;
+ --card2:#111b2d;
+ --border:#1e293b;
+ --text:#f8fafc;
+ --muted:#94a3b8;
+ --blue:#2563eb;
+ --blue2:#60a5fa;
+ --green:#22c55e;
+ --red:#ef4444;
+ --purple:#7c3aed;
 }
-
 body{
-font-family:Arial,sans-serif;
-background:
-radial-gradient(circle at top,#172554 0%,#030712 45%);
-color:var(--text);
-min-height:100vh;
-transition:.3s;
+ margin:0;
+ font-family:Arial,Helvetica,sans-serif;
+ color:var(--text);
+ background:radial-gradient(circle at top,#122653 0,#030712 42%,#020617 100%);
+ min-height:100vh;
 }
-
-body.light{
-background:#eef2ff;
-color:#111827;
-}
-
-.container{
-width:100%;
-max-width:950px;
-margin:auto;
-padding:14px;
-}
-
-header{
-text-align:center;
-padding:30px 10px 20px;
-}
-
-.logo{
-display:flex;
-justify-content:center;
-align-items:center;
-gap:12px;
-}
-
-.logo-icon{
-width:62px;
-height:62px;
-border-radius:18px;
-display:flex;
-align-items:center;
-justify-content:center;
-background:linear-gradient(135deg,#1d4ed8,#7c3aed);
-border:1px solid #60a5fa;
-font-size:31px;
-box-shadow:0 0 25px rgba(59,130,246,.3);
-}
-
-.logo-name{
-font-size:36px;
-font-weight:800;
-letter-spacing:-1px;
-}
-
-.logo-name span{
-color:#60a5fa;
-}
-
-.creator{
-margin-top:5px;
-color:var(--muted);
-font-size:13px;
-}
-
-.tagline{
-margin-top:12px;
-color:var(--muted);
-font-size:15px;
-}
-
-.version-badge{
-display:inline-block;
-margin-top:10px;
-padding:6px 12px;
-border-radius:20px;
-background:#172554;
-border:1px solid #1d4ed8;
-color:#93c5fd;
-font-size:12px;
-font-weight:bold;
-}
-
-.card{
-background:rgba(11,17,32,.94);
-border:1px solid var(--border);
-border-radius:22px;
-padding:20px;
-margin-top:18px;
-box-shadow:0 15px 40px rgba(0,0,0,.25);
-backdrop-filter:blur(10px);
-}
-
-h2{
-margin-bottom:10px;
-font-size:21px;
-}
-
-p{
-color:var(--muted);
-line-height:1.5;
-}
-
-.section-label{
-font-size:11px;
-text-transform:uppercase;
-letter-spacing:1.2px;
-color:#60a5fa;
-margin-bottom:8px;
-font-weight:bold;
-}
-
+button,input,textarea,select{font:inherit}
 button{
-cursor:pointer;
--webkit-tap-highlight-color:transparent;
+ border:0;
+ border-radius:12px;
+ padding:12px 15px;
+ background:var(--blue);
+ color:white;
+ font-weight:700;
+ cursor:pointer;
+ transition:.2s;
 }
-
-.btn{
-width:100%;
-padding:14px;
-margin-top:10px;
-border:0;
-border-radius:14px;
-background:linear-gradient(135deg,#2563eb,#3b82f6);
-color:white;
-font-size:16px;
-font-weight:bold;
-transition:.2s;
+button:hover{opacity:.9;transform:translateY(-1px)}
+button.secondary{background:#172033}
+button.green{background:#15803d}
+button.red{background:#991b1b}
+input,textarea,select{
+ width:100%;
+ padding:13px;
+ color:var(--text);
+ background:#07101d;
+ border:1px solid var(--border);
+ border-radius:12px;
+ outline:none;
 }
-
-.btn:hover{
-opacity:.93;
-transform:translateY(-1px);
-}
-
-.btn:active{
-transform:scale(.98);
-}
-
-.account-buttons{
-display:grid;
-grid-template-columns:1fr 1fr;
-gap:10px;
-margin-top:15px;
-}
-
-.account-buttons button{
-padding:14px;
-border:1px solid var(--border2);
-border-radius:14px;
-background:var(--card2);
-color:white;
-font-size:15px;
-font-weight:bold;
-}
-
-.auth-input,
-.custom-input{
-width:100%;
-padding:14px;
-margin-top:10px;
-border-radius:13px;
-border:1px solid var(--border2);
-background:#050816;
-color:white;
-outline:none;
-font-size:15px;
-}
-
-.auth-input:focus,
-.custom-input:focus{
-border-color:var(--primary2);
-box-shadow:0 0 0 2px rgba(59,130,246,.12);
-}
-
-.dashboard{
-display:none;
-}
-
-.dashboard.active{
-display:block;
-}
-
-.user-box{
-padding:15px;
-border-radius:14px;
-background:var(--card2);
-border:1px solid var(--border);
-margin-top:12px;
-}
-
-textarea{
-width:100%;
-min-height:145px;
-padding:15px;
-margin-top:10px;
-border-radius:16px;
-border:1px solid var(--border2);
-background:#050816;
-color:white;
-resize:vertical;
-outline:none;
-font-size:15px;
-line-height:1.5;
-}
-
-textarea:focus{
-border-color:var(--primary2);
-}
-
-.answer{
-margin-top:15px;
-padding:16px;
-min-height:90px;
-border-radius:16px;
-background:#050816;
-border:1px solid var(--border);
-line-height:1.6;
-white-space:pre-wrap;
-overflow-wrap:anywhere;
-}
-
-.answer-buttons{
-display:grid;
-grid-template-columns:repeat(3,1fr);
-gap:10px;
-margin-top:10px;
-}
-
-.answer-buttons button,
-.quick-grid button{
-padding:12px 7px;
-border:1px solid var(--border2);
-border-radius:13px;
-background:var(--card2);
-color:white;
-font-size:14px;
-transition:.2s;
-}
-
-.answer-buttons button:hover,
-.quick-grid button:hover{
-border-color:var(--primary2);
-transform:translateY(-2px);
-}
-
-.quick-grid{
-display:grid;
-grid-template-columns:repeat(3,1fr);
-gap:10px;
-margin-top:15px;
-}
-
-.features{
-display:grid;
-grid-template-columns:repeat(3,1fr);
-gap:12px;
-}
-
-.feature{
-padding:20px 12px;
-text-align:center;
-border-radius:17px;
-background:var(--card2);
-border:1px solid var(--border);
-}
-
-.feature-icon{
-font-size:28px;
-margin-bottom:7px;
-}
-
-.feature-title{
-font-weight:bold;
-}
-
-.feature-text{
-margin-top:5px;
-color:var(--muted);
-font-size:12px;
-}
-
-#voiceStatus{
-color:var(--muted);
-font-size:14px;
-margin-top:5px;
-}
-
-.custom-row{
-display:grid;
-grid-template-columns:1fr 1fr;
-gap:10px;
-}
-
-.history-item{
-padding:12px;
-margin-bottom:8px;
-border-radius:13px;
-background:var(--card2);
-border:1px solid var(--border);
-}
-
-.history-time{
-color:#64748b;
-font-size:12px;
-margin-top:5px;
-}
-
-.status-box{
-margin-top:10px;
-padding:12px;
-border-radius:13px;
-background:#050816;
-border:1px solid var(--border);
-color:#94a3b8;
-font-size:13px;
-}
-
-footer{
-text-align:center;
-padding:35px 10px;
-color:#64748b;
-font-size:13px;
-}
-
-@media(max-width:600px){
-
-.container{
-padding:10px;
-}
-
+textarea{min-height:130px;resize:vertical}
+input:focus,textarea:focus,select:focus{border-color:var(--blue2)}
+.container{width:min(1150px,94%);margin:auto}
 header{
-padding-top:22px;
+ position:sticky;
+ top:0;
+ z-index:100;
+ background:rgba(3,7,18,.86);
+ backdrop-filter:blur(18px);
+ border-bottom:1px solid var(--border);
 }
-
-.logo-name{
-font-size:29px;
+.nav{
+ min-height:72px;
+ display:flex;
+ justify-content:space-between;
+ align-items:center;
+ gap:12px;
 }
-
-.logo-icon{
-width:54px;
-height:54px;
-font-size:27px;
+.brand{display:flex;align-items:center;gap:10px}
+.logo{
+ width:46px;height:46px;
+ border-radius:14px;
+ display:grid;
+ place-items:center;
+ background:linear-gradient(135deg,#2563eb,#7c3aed);
+ font-size:23px;
+ font-weight:900;
 }
-
-.features{
-grid-template-columns:repeat(2,1fr);
+.brand h1{margin:0;font-size:20px}
+.brand small{color:var(--muted);font-size:11px}
+.navbuttons{display:flex;gap:7px;flex-wrap:wrap}
+.navbuttons button{padding:9px 11px;font-size:12px}
+main{padding:25px 0 60px}
+.hero{
+ border:1px solid var(--border);
+ border-radius:24px;
+ padding:30px;
+ background:linear-gradient(145deg,rgba(15,23,42,.97),rgba(7,14,27,.94));
+ margin-bottom:18px;
 }
-
-.quick-grid{
-grid-template-columns:repeat(2,1fr);
+.hero h2{font-size:34px;margin:8px 0}
+.hero p{color:var(--muted);line-height:1.6}
+.badge{
+ display:inline-block;
+ padding:6px 10px;
+ border-radius:999px;
+ background:#172554;
+ border:1px solid #1d4ed8;
+ color:#93c5fd;
+ font-size:11px;
 }
-
-.answer-buttons{
-grid-template-columns:1fr;
-}
-
-.custom-row{
-grid-template-columns:1fr;
-}
-
 .card{
-padding:16px;
-border-radius:18px;
+ background:rgba(11,18,32,.96);
+ border:1px solid var(--border);
+ border-radius:20px;
+ padding:20px;
+ margin-bottom:18px;
 }
-
+.card h3{margin:0 0 7px}
+.card p{color:var(--muted);line-height:1.5}
+.grid2{display:grid;grid-template-columns:repeat(2,1fr);gap:18px}
+.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:13px}
+.grid4{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+.actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
+.status{
+ margin-top:12px;
+ padding:11px;
+ border-radius:10px;
+ background:#07101d;
+ border:1px solid var(--border);
+ color:var(--muted);
+ font-size:13px;
 }
-
+.answer{
+ margin-top:14px;
+ padding:16px;
+ border-radius:14px;
+ background:#050b16;
+ border:1px solid var(--border);
+ min-height:80px;
+ white-space:pre-wrap;
+ line-height:1.6;
+}
+.stat{
+ padding:17px;
+ border-radius:15px;
+ background:#07101d;
+ border:1px solid var(--border);
+}
+.stat b{display:block;font-size:24px;margin-bottom:5px}
+.stat span{font-size:12px;color:var(--muted)}
+.tool{
+ padding:18px;
+ text-align:left;
+ min-height:105px;
+ background:linear-gradient(145deg,#111c31,#091321);
+ border:1px solid var(--border);
+}
+.tool strong{display:block;margin-bottom:7px}
+.tool span{color:var(--muted);font-size:12px;font-weight:400;line-height:1.4}
+.list{display:flex;flex-direction:column;gap:9px;max-height:400px;overflow:auto}
+.item{
+ padding:13px;
+ border:1px solid var(--border);
+ border-radius:12px;
+ background:#07101d;
+}
+.item small{color:var(--muted)}
+.hidden{display:none!important}
+.modal{
+ position:fixed;
+ inset:0;
+ background:rgba(0,0,0,.72);
+ z-index:200;
+ display:flex;
+ align-items:center;
+ justify-content:center;
+ padding:15px;
+}
+.modalbox{
+ width:min(650px,100%);
+ max-height:90vh;
+ overflow:auto;
+ background:#0b1220;
+ border:1px solid var(--border);
+ border-radius:20px;
+ padding:20px;
+}
+footer{text-align:center;color:var(--muted);padding:30px 0;font-size:13px}
+@media(max-width:800px){
+ .grid2,.grid3,.grid4{grid-template-columns:1fr}
+ .hero h2{font-size:26px}
+ .nav{align-items:flex-start;padding:12px 0}
+ .navbuttons{justify-content:flex-end}
+ .card{padding:16px}
+}
 </style>
-
 </head>
 
 <body>
 
-<div class="container">
-
 <header>
+<div class="container nav">
+ <div class="brand">
+  <div class="logo">✦</div>
+  <div>
+   <h1>AzDar <span style="color:#60a5fa">AI</span></h1>
+   <small>Created by Azmat Ali</small>
+  </div>
+ </div>
 
-<div class="logo">
-
-<div class="logo-icon">
-✦
+ <div class="navbuttons">
+  <button class="secondary" onclick="go('home')">Home</button>
+  <button class="secondary" onclick="go('chat')">AI Chat</button>
+  <button class="secondary" onclick="go('tools')">Tools</button>
+  <button class="secondary" onclick="go('workspace')">Workspace</button>
+  <button class="secondary" onclick="openSettings()">⚙️</button>
+  <button class="red" onclick="logout()">Logout</button>
+ </div>
 </div>
-
-<div>
-
-<div class="logo-name">
-AzDar <span>AI</span>
-</div>
-
-<div class="creator">
-Created by Azmat Ali
-</div>
-
-</div>
-
-</div>
-
-<div class="tagline">
-Smart Voice & AI Assistant
-</div>
-
-<div class="version-badge">
-⚡ V8
-</div>
-
 </header>
 
+<main class="container">
+
 <div id="authBox" class="card">
-
-<div class="section-label">
-Account
-</div>
-
-<h2>🔐 Welcome to AzDar AI</h2>
-
-<p>
-Create an account or login to access your AI dashboard.
-</p>
-
-<div class="account-buttons">
-
-<button onclick="showRegister()">
-📝 Register
-</button>
-
-<button onclick="showLogin()">
-🔑 Login
-</button>
-
-</div>
-
-</div>
-
-<div id="dashboard" class="dashboard">
-
-    <div class="card" id="registerBox" style="display:none;">
-
-<div class="section-label">
-Create Account
-</div>
-
-<h2>📝 Register</h2>
-
-<p>
-Create your AzDar AI account to continue.
-</p>
-
-<input
-type="text"
-id="registerName"
-class="auth-input"
-placeholder="Your Name"
-autocomplete="name"
->
-
-<input
-type="email"
-id="registerEmail"
-class="auth-input"
-placeholder="Email Address"
-autocomplete="email"
->
-
-<input
-type="password"
-id="registerPassword"
-class="auth-input"
-placeholder="Password (minimum 6 characters)"
-autocomplete="new-password"
->
-
-<button class="btn" onclick="registerUser()">
-Create Account
-</button>
-
-<button
-class="btn"
-style="background:#111827;border:1px solid #334155;"
-onclick="showLogin()"
->
-Already have an account? Login
-</button>
-
-<div id="registerStatus" class="status-box"></div>
-
-</div>
-
-
-<div class="card" id="loginBox" style="display:none;">
-
-<div class="section-label">
-Login
-</div>
-
-<h2>🔑 Login to AzDar AI</h2>
-
-<p>
-Login to open your personal AI dashboard.
-</p>
-
-<input
-type="email"
-id="loginEmail"
-class="auth-input"
-placeholder="Email Address"
-autocomplete="email"
->
-
-<input
-type="password"
-id="loginPassword"
-class="auth-input"
-placeholder="Password"
-autocomplete="current-password"
->
-
-<button class="btn" onclick="loginUser()">
-Login
-</button>
-
-<button
-class="btn"
-style="background:#111827;border:1px solid #334155;"
-onclick="forgotPassword()"
->
-Forgot Password?
-</button>
-
-<button
-class="btn"
-style="background:#111827;border:1px solid #334155;"
-onclick="showRegister()"
->
-Create New Account
-</button>
-
-<div id="loginStatus" class="status-box"></div>
-
-</div>
-
-
-<div id="mainDashboard">
-
-
-<div class="card">
-
-<div class="section-label">
-My Account
-</div>
-
-<h2>👤 My Account</h2>
-
-<div class="user-box">
-
-<div>
-<strong>Name:</strong>
-<span id="userName">Loading...</span>
-</div>
-
-<div style="margin-top:7px;">
-<strong>Email:</strong>
-<span id="userEmail">Loading...</span>
-</div>
-
-</div>
-
-<button
-class="btn"
-style="background:#7f1d1d;"
-onclick="logoutUser()"
->
-🚪 Logout
-</button>
-
-</div>
-
-
-<div class="card">
-
-<div class="section-label">
-Smart AI
-</div>
-
-<h2>✨ Ask AzDar AI</h2>
-
-<p>
-Ask anything and get an AI-powered response.
-</p>
-
-<textarea
-id="question"
-placeholder="Type your question here..."
-></textarea>
-
-<div class="answer-buttons">
-
-<button onclick="askAI()" id="askButton">
-✨ Ask AI
-</button>
-
-<button onclick="clearAI()">
-🗑️ Clear
-</button>
-
-<button onclick="copyQuestion()">
-📋 Copy
-</button>
-
-</div>
-
-<div
-id="aiStatus"
-class="status-box"
->
-AI Assistant ready.
-</div>
-
-<div
-id="answer"
-class="answer"
->
-Your AI answer will appear here.
-</div>
-
-<div class="answer-buttons">
-
-<button onclick="copyAnswer()">
-📋 Copy Answer
-</button>
-
-<button onclick="readAnswer()">
-🔊 Read Answer
-</button>
-
-<button onclick="stopReading()">
-⏹️ Stop Reading
-</button>
-
-</div>
-
-<button
-class="btn"
-style="background:#111827;border:1px solid #334155;"
-onclick="showAnswer()"
->
-👁️ Show Answer
-</button>
-
-</div>
-
-
-<div class="card">
-
-<div class="section-label">
-AI Tools
-</div>
-
-<h2>⚡ Quick AI Tools</h2>
-
-<p>
-Use these shortcuts for faster access.
-</p>
-
-<div class="quick-grid">
-
-<button onclick="showTime()">
-🕐 Time
-</button>
-
-<button onclick="showDate()">
-📅 Date
-</button>
-
-<button onclick="openGoogle()">
-🔎 Google
-</button>
-
-<button onclick="openYouTube()">
-▶️ YouTube
-</button>
-
-<button onclick="openWhatsApp()">
-💬 WhatsApp
-</button>
-
-<button onclick="openFacebook()">
-📘 Facebook
-</button>
-
-</div>
-
-</div>
-
-
-<div class="card">
-
-<div class="section-label">
-Voice Assistant
-</div>
-
-<h2>🎙️ Smart Voice Assistant</h2>
-
-<p>
-Speak English or Roman Urdu commands.
-</p>
-
-<div id="voiceStatus">
-Voice Assistant is ready.
-</div>
-
-<button
-class="btn"
-onclick="startVoice()"
->
-🎙️ Start Voice Assistant
-</button>
-
-<button
-class="btn"
-style="background:#7f1d1d;"
-onclick="stopVoice()"
->
-⏹️ Stop Voice Assistant
-</button>
-
-</div>
-
-
-<div class="card">
-
-<div class="section-label">
-Voice Commands
-</div>
-
-<h2>🚀 Quick Commands</h2>
-
-<div class="quick-grid">
-
-<button onclick="openGoogle()">
-🔎 Google
-</button>
-
-<button onclick="openYouTube()">
-▶️ YouTube
-</button>
-
-<button onclick="openWhatsApp()">
-💬 WhatsApp
-</button>
-
-<button onclick="openFacebook()">
-📘 Facebook
-</button>
-
-<button onclick="openInstagram()">
-📸 Instagram
-</button>
-
-<button onclick="openTikTok()">
-🎵 TikTok
-</button>
-
-<button onclick="showTime()">
-🕐 Time
-</button>
-
-<button onclick="showDate()">
-📅 Date
-</button>
-
-<button onclick="toggleDark()">
-🌙 Dark
-</button>
-
-<button onclick="toggleLight()">
-☀️ Light
-</button>
-
-<button onclick="goBack()">
-⬅️ Back
-</button>
-
-<button onclick="refreshPage()">
-🔄 Refresh
-</button>
-
-</div>
-
-</div>
-<div class="card">
-
-<div class="section-label">
-Custom Commands
-</div>
-
-<h2>🛠️ My Custom Commands</h2>
-
-<p>
-Create your own voice command and connect it with any website.
-</p>
-
-<input
-type="text"
-id="customCommand"
-class="custom-input"
-placeholder="Example: TikTok kholo"
->
-
-<input
-type="url"
-id="customURL"
-class="custom-input"
-placeholder="https://example.com"
->
-
-<button
-class="btn"
-onclick="addCustomCommand()"
->
-➕ Add Custom Command
-</button>
-
-<div
-id="customCommandStatus"
-class="status-box"
->
-No custom command selected.
-</div>
-
-<div
-id="customCommandList"
-style="margin-top:15px;"
->
-</div>
-
-</div>
-
-
-<div class="card">
-
-<div class="section-label">
-Command History
-</div>
-
-<h2>🕘 Command History</h2>
-
-<p>
-Your recent voice and AI commands are saved on this device.
-</p>
-
-<div class="answer-buttons">
-
-<button onclick="showHistory()">
-👁️ Show History
-</button>
-
-<button onclick="clearHistory()">
-🗑️ Clear History
-</button>
-
-</div>
-
-<div
-id="historyBox"
-class="answer"
-style="display:none;"
->
-No history yet.
-</div>
-
-</div>
-
-
-<div class="card">
-
-<div class="section-label">
-Text Box Controls
-</div>
-
-<h2>📝 Text Tools</h2>
-
-<p>
-Use these controls with your AI question.
-</p>
-
-<div class="quick-grid">
-
-<button onclick="clearAI()">
-🗑️ Clear Text
-</button>
-
-<button onclick="copyQuestion()">
-📋 Copy Text
-</button>
-
-<button onclick="readQuestion()">
-🔊 Read Text
-</button>
-
-<button onclick="showQuestion()">
-👁️ Show Text
-</button>
-
-</div>
-
-</div>
-
-
-<div class="card">
-
-<div class="section-label">
-Navigation
-</div>
-
-<h2>🧭 Browser Controls</h2>
-
-<div class="quick-grid">
-
-<button onclick="goBack()">
-⬅️ Back
-</button>
-
-<button onclick="goForward()">
-➡️ Forward
-</button>
-
-<button onclick="refreshPage()">
-🔄 Refresh
-</button>
-
-<button onclick="toggleDark()">
-🌙 Dark Mode
-</button>
-
-<button onclick="toggleLight()">
-☀️ Light Mode
-</button>
-
-</div>
-
-</div>
-
-
-<div class="card">
-
-<div class="section-label">
-AzDar AI V8
-</div>
-
-<h2>🚀 AI Platform Features</h2>
-
-<div class="features">
-
-<div class="feature">
-
-<div class="feature-icon">
-✨
-</div>
-
-<div class="feature-title">
-Smart AI
-</div>
-
-<div class="feature-text">
-AI question & answer
-</div>
-
-</div>
-
-
-<div class="feature">
-
-<div class="feature-icon">
-🎙️
-</div>
-
-<div class="feature-title">
-Voice
-</div>
-
-<div class="feature-text">
-Voice command control
-</div>
-
-</div>
-
-
-<div class="feature">
-
-<div class="feature-icon">
-🔎
-</div>
-
-<div class="feature-title">
-Search
-</div>
-
-<div class="feature-text">
-Google & YouTube search
-</div>
-
-</div>
-
-
-<div class="feature">
-
-<div class="feature-icon">
-⚡
-</div>
-
-<div class="feature-title">
-Commands
-</div>
-
-<div class="feature-text">
-Custom commands
-</div>
-
-</div>
-
-
-<div class="feature">
-
-<div class="feature-icon">
-🕘
-</div>
-
-<div class="feature-title">
-History
-</div>
-
-<div class="feature-text">
-Command history
-</div>
-
-</div>
-
-
-<div class="feature">
-
-<div class="feature-icon">
-🌙
-</div>
-
-<div class="feature-title">
-Themes
-</div>
-
-<div class="feature-text">
-Dark & light mode
-</div>
-
-</div>
-
-</div>
-
-</div>
-
+ <section class="hero">
+  <span class="badge">AZDAR AI V15</span>
+  <h2>One AI. Many Powerful Tools.</h2>
+  <p>Chat, create, study, code, translate, summarize and organize your AI work in one place.</p>
+ </section>
+
+ <div class="grid2">
+  <div>
+   <h3>Create Account</h3>
+   <input id="registerName" placeholder="Your name">
+   <br><br>
+   <input id="registerEmail" type="email" placeholder="Email">
+   <br><br>
+   <input id="registerPassword" type="password" placeholder="Password">
+   <br><br>
+   <button onclick="registerUser()">Create Account</button>
+  </div>
+
+  <div>
+   <h3>Login</h3>
+   <input id="loginEmail" type="email" placeholder="Email">
+   <br><br>
+   <input id="loginPassword" type="password" placeholder="Password">
+   <br><br>
+   <button onclick="loginUser()">Login</button>
+   <button class="secondary" onclick="forgotPassword()">Forgot</button>
+  </div>
+ </div>
+
+ <div id="authStatus" class="status">Login or create your AzDar AI account.</div>
+</div>
+
+<div id="app" class="hidden">
+
+<section id="home" class="hero">
+ <span class="badge">PROFESSIONAL AI WORKSPACE</span>
+ <h2>Welcome to AzDar AI</h2>
+ <p>
+  Your personal AI workspace for conversations, content creation,
+  documents, voice commands, learning, coding and business tasks.
+ </p>
+
+ <div class="actions">
+  <button onclick="go('chat')">✨ Start AI Chat</button>
+  <button class="secondary" onclick="go('tools')">🧰 Explore Tools</button>
+  <button class="secondary" onclick="go('voice')">🎙️ Voice AI</button>
+  <button class="secondary" onclick="go('workspace')">🗂️ Workspace</button>
+ </div>
+</section>
+
+<section class="card">
+ <h3>📊 Dashboard</h3>
+
+ <div class="grid4">
+  <div class="stat">
+   <b id="statQuestions">0</b>
+   <span>AI Questions</span>
+  </div>
+  <div class="stat">
+   <b id="statTools">0</b>
+   <span>Tools Used</span>
+  </div>
+  <div class="stat">
+   <b id="statVoice">0</b>
+   <span>Voice Uses</span>
+  </div>
+  <div class="stat">
+   <b id="statSaved">0</b>
+   <span>Saved Items</span>
+  </div>
+ </div>
+</section>
+
+<section id="chat" class="card">
+ <h3>🤖 AI Chat Pro</h3>
+ <p>Ask AzDar AI anything. Start a new conversation whenever you want.</p>
+
+ <textarea id="question" placeholder="Ask AzDar AI anything..."></textarea>
+
+ <div class="actions">
+  <button id="askButton" onclick="askAI()">✨ Ask AI</button>
+  <button class="secondary" onclick="voiceAsk()">🎙️ Voice Ask</button>
+  <button class="secondary" onclick="newChat()">🆕 New Chat</button>
+  <button class="secondary" onclick="clearAI()">🗑️ Clear</button>
+ </div>
+
+ <div id="aiStatus" class="status">AI Assistant ready.</div>
+ <div id="answer" class="answer">Your AI answer will appear here.</div>
+
+ <div class="actions">
+  <button class="secondary" onclick="copyAnswer()">📋 Copy</button>
+  <button class="secondary" onclick="readAnswer()">🔊 Read</button>
+  <button class="red" onclick="stopReading()">⏹ Stop</button>
+  <button class="green" onclick="saveAnswer()">💾 Save</button>
+ </div>
+</section>
+
+<section class="card">
+ <h3>⚡ AI Prompt Center</h3>
+
+ <div class="grid3">
+  <button class="tool" onclick="promptAI('Explain this in simple words: ')">
+   <strong>📚 Explain</strong>
+   <span>Understand difficult topics easily.</span>
+  </button>
+
+  <button class="tool" onclick="promptAI('Write a professional version of: ')">
+   <strong>✍️ Write</strong>
+   <span>Professional content and messages.</span>
+  </button>
+
+  <button class="tool" onclick="promptAI('Summarize this clearly: ')">
+   <strong>📝 Summarize</strong>
+   <span>Convert long content into key points.</span>
+  </button>
+
+  <button class="tool" onclick="promptAI('Translate this into English naturally: ')">
+   <strong>🌐 Translate</strong>
+   <span>Natural language translation.</span>
+  </button>
+
+  <button class="tool" onclick="promptAI('Give me creative ideas for: ')">
+   <strong>💡 Brainstorm</strong>
+   <span>Generate practical ideas.</span>
+  </button>
+
+  <button class="tool" onclick="promptAI('Help me solve this coding problem: ')">
+   <strong>💻 Coding</strong>
+   <span>Understand and solve code problems.</span>
+  </button>
+ </div>
+</section>
+
+<section id="tools" class="card">
+ <h3>🧰 AI Tools Center</h3>
+ <p>Specialized AI tools powered by the same AzDar AI backend.</p>
+
+ <div class="grid4">
+  <button class="tool" onclick="openTool('writer')">
+   <strong>✍️ AI Writer</strong><span>Emails, posts, descriptions and content.</span>
+  </button>
+
+  <button class="tool" onclick="openTool('translator')">
+   <strong>🌐 Translator</strong><span>Translate text naturally.</span>
+  </button>
+
+  <button class="tool" onclick="openTool('summarizer')">
+   <strong>📝 Summarizer</strong><span>Extract the important information.</span>
+  </button>
+
+  <button class="tool" onclick="openTool('study')">
+   <strong>🎓 Study Helper</strong><span>Learn subjects step by step.</span>
+  </button>
+
+  <button class="tool" onclick="openTool('coding')">
+   <strong>💻 Coding Helper</strong><span>Debug and understand code.</span>
+  </button>
+
+  <button class="tool" onclick="openTool('business')">
+   <strong>💼 Business AI</strong><span>Business ideas and professional planning.</span>
+  </button>
+
+  <button class="tool" onclick="openTool('social')">
+   <strong>📱 Social AI</strong><span>Captions, posts and content ideas.</span>
+  </button>
+
+  <button class="tool" onclick="openTool('ideas')">
+   <strong>💡 Idea Generator</strong><span>Creative and practical ideas.</span>
+  </button>
+ </div>
+</section>
+
+    <section id="toolArea" class="card hidden">
+ <h3 id="toolTitle">AI Tool</h3>
+ <p id="toolDescription"></p>
+
+ <textarea id="toolInput" placeholder="Enter your request or text..."></textarea>
+
+ <div class="actions">
+  <button onclick="runTool()">🚀 Run Tool</button>
+  <button class="secondary" onclick="closeTool()">Close</button>
+ </div>
+
+ <div id="toolStatus" class="status">Ready.</div>
+ <div id="toolOutput" class="answer">Tool result will appear here.</div>
+
+ <div class="actions">
+  <button class="secondary" onclick="copyTool()">📋 Copy</button>
+  <button class="secondary" onclick="readTool()">🔊 Read</button>
+  <button class="green" onclick="saveTool()">💾 Save</button>
+ </div>
+</section>
+
+<section id="voice" class="card">
+ <h3>🎙️ Voice AI Pro</h3>
+ <p>
+  Speak English or Roman Urdu. Website commands are executed directly;
+  other questions are sent to AI.
+ </p>
+
+ <div class="actions">
+  <button onclick="startVoice()">🎙️ Start Listening</button>
+  <button class="red" onclick="stopVoice()">⏹ Stop</button>
+ </div>
+
+ <div id="voiceStatus" class="status">Voice Assistant ready.</div>
+
+ <div class="answer">
+  <strong>Recognized Speech</strong>
+  <div id="voiceText" style="margin-top:8px;color:#93c5fd">
+   Nothing recognized yet.
+  </div>
+ </div>
+</section>
+
+<section class="card">
+ <h3>⚡ Smart Website Commands</h3>
+
+ <div class="grid4">
+  <button onclick="openURL('https://www.google.com')">🔎 Google</button>
+  <button onclick="openURL('https://www.youtube.com')">▶️ YouTube</button>
+  <button onclick="openURL('https://web.whatsapp.com')">💬 WhatsApp</button>
+  <button onclick="openURL('https://www.facebook.com')">📘 Facebook</button>
+  <button onclick="openURL('https://www.instagram.com')">📸 Instagram</button>
+  <button onclick="openURL('https://www.tiktok.com')">🎵 TikTok</button>
+  <button onclick="showTime()">🕐 Time</button>
+  <button onclick="showDate()">📅 Date</button>
+  <button onclick="setTheme('dark')">🌙 Dark</button>
+  <button onclick="setTheme('light')">☀️ Light</button>
+  <button onclick="history.back()">⬅️ Back</button>
+  <button onclick="location.reload()">🔄 Refresh</button>
+ </div>
+</section>
+
+<section class="card">
+ <h3>🧠 Custom Commands</h3>
+ <p>Create commands such as “my website kholo”.</p>
+
+ <input id="customCommand" placeholder="Example: My website kholo">
+ <br><br>
+ <input id="customURL" placeholder="https://example.com">
+ 
+ <div class="actions">
+  <button onclick="addCommand()">➕ Add</button>
+  <button class="secondary" onclick="clearCommands()">Clear All</button>
+ </div>
+
+ <div id="commandStatus" class="status">No custom command added.</div>
+ <div id="commandList" class="list"></div>
+</section>
+
+<section id="workspace" class="card">
+ <h3>🗂️ Personal AI Workspace</h3>
+ <p>Manage your saved AI work from one place.</p>
+
+ <div class="grid3">
+  <button class="tool" onclick="showWorkspace('saved')">
+   <strong>💾 Saved Results</strong>
+   <span>Open your saved AI answers and tool results.</span>
+  </button>
+
+  <button class="tool" onclick="showWorkspace('chats')">
+   <strong>💬 Chat History</strong>
+   <span>Review your previous AI conversations.</span>
+  </button>
+
+  <button class="tool" onclick="showWorkspace('prompts')">
+   <strong>📌 Saved Prompts</strong>
+   <span>Store useful prompts for later.</span>
+  </button>
+ </div>
+</section>
+
+<section class="card">
+ <h3>💾 Saved Results</h3>
+
+ <div id="savedList" class="list">
+  <div class="item">No saved results yet.</div>
+ </div>
+
+ <div class="actions">
+  <button class="red" onclick="clearSaved()">Delete All Saved</button>
+ </div>
+</section>
+
+<section class="card">
+ <h3>💬 Conversation History</h3>
+
+ <div id="chatList" class="list">
+  <div class="item">No conversations yet.</div>
+ </div>
+
+ <div class="actions">
+  <button class="red" onclick="clearChats()">Clear Chats</button>
+ </div>
+</section>
+
+<section class="card">
+ <h3>📌 Saved Prompts</h3>
+
+ <textarea id="promptToSave" placeholder="Write a useful prompt to save..."></textarea>
+
+ <div class="actions">
+  <button onclick="savePrompt()">📌 Save Prompt</button>
+ </div>
+
+ <div id="promptList" class="list"></div>
+</section>
+
+<section class="card">
+ <h3>📄 Document AI</h3>
+ <p>
+  Prepare text from a document and ask AzDar AI to summarize,
+  explain or extract important points.
+ </p>
+
+ <input id="documentName" placeholder="Document name">
+ <br><br>
+ <textarea id="documentText" placeholder="Paste document text here..."></textarea>
+
+ <div class="actions">
+  <button onclick="documentAction('summary')">📝 Summarize</button>
+  <button onclick="documentAction('questions')">❓ Ask Questions</button>
+  <button onclick="documentAction('points')">📌 Key Points</button>
+ </div>
+
+ <div id="documentStatus" class="status">Document Assistant ready.</div>
+ <div id="documentOutput" class="answer">Document result will appear here.</div>
+</section>
+
+<section class="card">
+ <h3>🔍 Universal Search</h3>
+ <p>Search your local AI workspace or open a web search.</p>
+
+ <input id="universalSearch" placeholder="Search chats, saved results, prompts...">
+
+ <div class="actions">
+  <button onclick="workspaceSearch()">🔍 Search Workspace</button>
+  <button class="secondary" onclick="webSearch()">🌐 Web Search</button>
+ </div>
+
+ <div id="searchResults" class="list" style="margin-top:12px"></div>
+</section>
+
+<section class="card">
+ <h3>🧠 Smart Memory</h3>
+ <p>
+  Save simple preferences or instructions that you want available
+  while using this browser.
+ </p>
+
+ <input id="memoryInput" placeholder="Example: Keep explanations simple.">
+
+ <div class="actions">
+  <button onclick="saveMemory()">💾 Save Memory</button>
+  <button class="red" onclick="clearMemory()">Clear Memory</button>
+ </div>
+
+ <div id="memoryList" class="list" style="margin-top:12px"></div>
+</section>
+
+<section class="card">
+ <h3>📱 Quick Productivity</h3>
+
+ <div class="grid3">
+  <button onclick="promptAI('Create a professional email about: ')">
+   ✉️ Email Writer
+  </button>
+
+  <button onclick="promptAI('Create a professional social media caption about: ')">
+   📱 Caption Writer
+  </button>
+
+  <button onclick="promptAI('Create a study plan for: ')">
+   📚 Study Plan
+  </button>
+
+  <button onclick="promptAI('Create a business plan for: ')">
+   💼 Business Plan
+  </button>
+
+  <button onclick="promptAI('Give me a step-by-step solution for: ')">
+   🧩 Problem Solver
+  </button>
+
+  <button onclick="promptAI('Give me 10 creative ideas for: ')">
+   💡 10 Ideas
+  </button>
+ </div>
+</section>
+
+<section class="card">
+ <h3>👤 Account Center</h3>
+
+ <div class="grid3">
+  <div class="stat">
+   <b id="profileName">User</b>
+   <span>Name</span>
+  </div>
+
+  <div class="stat">
+   <b id="profileEmail">—</b>
+   <span>Email</span>
+  </div>
+
+  <div class="stat">
+   <b>V15</b>
+   <span>AzDar AI Version</span>
+  </div>
+ </div>
+
+ <div class="actions">
+  <button class="secondary" onclick="openSettings()">⚙️ Settings</button>
+  <button class="red" onclick="logout()">Logout</button>
+ </div>
+</section>
+
+</div>
+
+<div id="settingsModal" class="modal hidden">
+ <div class="modalbox">
+  <h3>⚙️ AzDar AI Settings</h3>
+
+  <p>Appearance</p>
+  <div class="actions">
+   <button onclick="setTheme('dark')">🌙 Dark Mode</button>
+   <button onclick="setTheme('light')">☀️ Light Mode</button>
+  </div>
+
+  <p style="margin-top:20px">Workspace</p>
+  <div class="actions">
+   <button class="red" onclick="clearEverything()">Clear Local Workspace</button>
+   <button class="secondary" onclick="closeSettings()">Close</button>
+  </div>
+ </div>
 </div>
 
 <footer>
-
-<div>
-AzDar AI V8
-</div>
-
-<div style="margin-top:6px;">
-Created by Azmat Ali
-</div>
-
-<div style="margin-top:6px;">
-Smart • Secure • Mobile Friendly
-</div>
-
+ AzDar AI V15 • Created by Azmat Ali
 </footer>
 
-</div>
-
 <script>
+const SUPABASE_URL="https://pqqhswvtrxktzrcrrnka.supabase.co";
+const SUPABASE_KEY="sb_publishable_9XSVISR_xvcPX_xP4MIFzQ_-HIHvSXo";
 
-const SUPABASE_URL =
-"https://pqqhswvtrxktzrcrrnka.supabase.co";
-
-const SUPABASE_KEY =
-"sb_publishable_9XSVISR_xvcPX_xP4MIFzQ_-HIHvSXo";
-
-const supabaseClient =
-window.supabase.createClient(
-SUPABASE_URL,
-SUPABASE_KEY
+const supabaseClient=window.supabase.createClient(
+ SUPABASE_URL,
+ SUPABASE_KEY
 );
 
-const SITE_URL =
-"https://azmatwattoo.github.io/Voice-command-ai/";
-
-const AI_API_URL =
-"https://voice-command-ai-five.vercel.app/api/ask";
-
-const authBox =
-document.getElementById("authBox");
-
-const dashboard =
-document.getElementById("dashboard");
-
-const mainDashboard =
-document.getElementById("mainDashboard");
-
-const registerBox =
-document.getElementById("registerBox");
-
-const loginBox =
-document.getElementById("loginBox");
-
-const questionElement =
-document.getElementById("question");
-
-const answerElement =
-document.getElementById("answer");
-
-const aiStatus =
-document.getElementById("aiStatus");
-
-const askButton =
-document.getElementById("askButton");
-
-function showRegister(){
-
-registerBox.style.display = "block";
-loginBox.style.display = "none";
-authBox.style.display = "none";
-
-}
-
-function showLogin(){
-
-loginBox.style.display = "block";
-registerBox.style.display = "none";
-authBox.style.display = "none";
-
-}
-
-function showAuth(){
-
-authBox.style.display = "block";
-registerBox.style.display = "none";
-loginBox.style.display = "none";
-dashboard.classList.remove("active");
-
-}
-
-function setStatus(element,message){
-
-if(element){
-element.textContent = message;
-}
-
-}
-    async function registerUser(){
-
-const name =
-document.getElementById("registerName").value.trim();
-
-const email =
-document.getElementById("registerEmail").value.trim();
-
-const password =
-document.getElementById("registerPassword").value;
-
-const status =
-document.getElementById("registerStatus");
-
-if(!name || !email || !password){
-
-setStatus(
-status,
-"Please fill all fields."
-);
-
-return;
-}
-
-if(password.length < 6){
-
-setStatus(
-status,
-"Password must be at least 6 characters."
-);
-
-return;
-}
-
-setStatus(
-status,
-"Creating your account..."
-);
-
-try{
-
-const {data,error} =
-await supabaseClient.auth.signUp({
-
-email:email,
-
-password:password,
-
-options:{
-data:{
-name:name
-},
-
-emailRedirectTo:SITE_URL
-
-}
-
-});
-
-if(error){
-
-setStatus(
-status,
-error.message
-);
-
-return;
-}
-
-if(data.user){
-
-setStatus(
-status,
-"Account created successfully. Please check your email if verification is required."
-);
-
-}
-
-}catch(error){
-
-setStatus(
-status,
-"Registration failed: " + error.message
-);
-
-}
-
-}
-
-
-async function loginUser(){
-
-const email =
-document.getElementById("loginEmail").value.trim();
-
-const password =
-document.getElementById("loginPassword").value;
-
-const status =
-document.getElementById("loginStatus");
-
-if(!email || !password){
-
-setStatus(
-status,
-"Please enter email and password."
-);
-
-return;
-}
-
-setStatus(
-status,
-"Logging in..."
-);
-
-try{
-
-const {data,error} =
-await supabaseClient.auth.signInWithPassword({
-
-email:email,
-
-password:password
-
-});
-
-if(error){
-
-setStatus(
-status,
-error.message
-);
-
-return;
-}
-
-if(data.user){
-
-showDashboard(
-data.user
-);
-
-}
-
-}catch(error){
-
-setStatus(
-status,
-"Login failed: " + error.message
-);
-
-}
-
-}
-
-
-async function forgotPassword(){
-
-const email =
-document.getElementById("loginEmail").value.trim();
-
-const status =
-document.getElementById("loginStatus");
-
-if(!email){
-
-setStatus(
-status,
-"Enter your email first."
-);
-
-return;
-}
-
-setStatus(
-status,
-"Sending password reset email..."
-);
-
-try{
-
-const {error} =
-await supabaseClient.auth.resetPasswordForEmail(
-email,
-{
-redirectTo:SITE_URL
-}
-);
-
-if(error){
-
-setStatus(
-status,
-error.message
-);
-
-return;
-}
-
-setStatus(
-status,
-"Password reset email sent. Check your inbox."
-);
-
-}catch(error){
-
-setStatus(
-status,
-"Reset failed: " + error.message
-);
-
-}
-
-}
-
-
-function showDashboard(user){
-
-authBox.style.display =
-"none";
-
-registerBox.style.display =
-"none";
-
-loginBox.style.display =
-"none";
-
-dashboard.classList.add(
-"active"
-);
-
-if(mainDashboard){
-
-mainDashboard.style.display =
-"block";
-
-}
-
-const name =
-user.user_metadata &&
-user.user_metadata.name
-?
-user.user_metadata.name
-:
-"AzDar AI User";
-
-const email =
-user.email || "Not available";
-
-document.getElementById(
-"userName"
-).textContent = name;
-
-document.getElementById(
-"userEmail"
-).textContent = email;
-
-loadCustomCommands();
-
-showHistory();
-
-}
-
-
-async function logoutUser(){
-
-try{
-
-await supabaseClient.auth.signOut();
-
-}catch(error){
-
-console.log(error);
-
-}
-
-showAuth();
-
-document.getElementById(
-"loginEmail"
-).value = "";
-
-document.getElementById(
-"loginPassword"
-).value = "";
-
-}
-
-
-async function checkLoginState(){
-
-try{
-
-const {data,error} =
-await supabaseClient.auth.getSession();
-
-if(error){
-
-console.log(error);
-
-showAuth();
-
-return;
-}
-
-if(data.session &&
-data.session.user){
-
-showDashboard(
-data.session.user
-);
-
-}else{
-
-showAuth();
-
-}
-
-}catch(error){
-
-console.log(error);
-
-showAuth();
-
-}
-
-}
-
-
-supabaseClient.auth.onAuthStateChange(
-(event,session)=>{
-
-if(session &&
-session.user){
-
-showDashboard(
-session.user
-);
-
-}else{
-
-showAuth();
-
-}
-
-}
-);
-
-
-function saveHistory(text){
-
-if(!text){
-return;
-}
-
-let history = [];
-
-try{
-
-history =
-JSON.parse(
-localStorage.getItem(
-"azdarAIHistory"
-)
-) || [];
-
-}catch(error){
-
-history = [];
-
-}
-
-history.unshift({
-
-text:text,
-
-time:new Date().toLocaleString()
-
-});
-
-history =
-history.slice(0,50);
-
-localStorage.setItem(
-"azdarAIHistory",
-JSON.stringify(history)
-);
-
-}
-
-
-function showHistory(){
-
-const box =
-document.getElementById(
-"historyBox"
-);
-
-let history = [];
-
-try{
-
-history =
-JSON.parse(
-localStorage.getItem(
-"azdarAIHistory"
-)
-) || [];
-
-}catch(error){
-
-history = [];
-
-}
-
-box.style.display =
-"block";
-
-if(history.length === 0){
-
-box.innerHTML =
-"No command history yet.";
-
-return;
-
-}
-
-box.innerHTML =
-history.map(
-(item,index)=>`
-
-<div class="history-item">
-
-<div>
-<strong>${index + 1}.</strong>
-${escapeHTML(item.text)}
-</div>
-
-<div class="history-time">
-${escapeHTML(item.time)}
-</div>
-
-</div>
-
-`
-).join("");
-
-}
-
-
-function clearHistory(){
-
-localStorage.removeItem(
-"azdarAIHistory"
-);
-
-const box =
-document.getElementById(
-"historyBox"
-);
-
-box.style.display =
-"block";
-
-box.innerHTML =
-"History cleared.";
-
-}
-
-
-function escapeHTML(text){
-
-return String(text)
-.replace(/&/g,"&amp;")
-.replace(/</g,"&lt;")
-.replace(/>/g,"&gt;")
-.replace(/"/g,"&quot;")
-.replace(/'/g,"&#039;");
-
-    }
-async function askAI(){
-
-const question =
-questionElement.value.trim();
-
-if(!question){
-
-aiStatus.textContent =
-"Please enter a question first.";
-
-return;
-
-}
-
-if(askButton){
-askButton.disabled = true;
-askButton.textContent = "⏳ Thinking...";
-}
-
-aiStatus.textContent =
-"AI Assistant is processing your question...";
-
-answerElement.textContent =
-"Thinking...";
-
-saveHistory(question);
-
-try{
-
-const response =
-await fetch(
-AI_API_URL,
-{
-method:"POST",
-
-headers:{
-"Content-Type":"application/json"
-},
-
-body:JSON.stringify({
-question:question
-})
-
-}
-);
-
-const contentType =
-response.headers.get(
-"content-type"
-) || "";
-
-const rawText =
-await response.text();
-
-if(!response.ok){
-
-throw new Error(
-"Backend error: " +
-response.status +
-" " +
-response.statusText
-);
-
-}
-
-if(!contentType.includes(
-"application/json"
-)){
-
-throw new Error(
-"Backend returned an invalid response."
-);
-
-}
-
-let data;
-
-try{
-
-data =
-JSON.parse(rawText);
-
-}catch(error){
-
-throw new Error(
-"Invalid JSON response from backend."
-);
-
-}
-
-const aiAnswer =
-data.answer ??
-data.reply ??
-data.response ??
-data.output ??
-data.text;
-
-if(!aiAnswer){
-
-throw new Error(
-"AI response was empty."
-);
-
-}
-
-answerElement.textContent =
-String(aiAnswer);
-
-aiStatus.textContent =
-"✅ AI Assistant connected successfully.";
-
-}catch(error){
-
-console.error(error);
-
-answerElement.textContent =
-"Sorry, AI Assistant could not respond right now.";
-
-aiStatus.textContent =
-"❌ " + error.message;
-
-}finally{
-
-if(askButton){
-
-askButton.disabled = false;
-askButton.textContent = "✨ Ask AI";
-
-}
-
-}
-
-}
-
-
-function showAnswer(){
-
-if(!answerElement.textContent.trim()){
-
-return;
-
-}
-
-answerElement.style.display =
-"block";
-
-answerElement.scrollIntoView({
-behavior:"smooth",
-block:"center"
-});
-
-}
-
-
-function copyQuestion(){
-
-const text =
-questionElement.value.trim();
-
-if(!text){
-
-aiStatus.textContent =
-"Nothing to copy.";
-
-return;
-
-}
-
-navigator.clipboard.writeText(text)
-.then(()=>{
-
-aiStatus.textContent =
-"✅ Question copied.";
-
-})
-.catch(()=>{
-
-aiStatus.textContent =
-"❌ Copy failed.";
-
-});
-
-}
-
-
-function copyAnswer(){
-
-const text =
-answerElement.textContent.trim();
-
-if(
-!text ||
-text === "Your AI answer will appear here."
-){
-
-aiStatus.textContent =
-"Nothing to copy.";
-
-return;
-
-}
-
-navigator.clipboard.writeText(text)
-.then(()=>{
-
-aiStatus.textContent =
-"✅ AI answer copied.";
-
-})
-.catch(()=>{
-
-aiStatus.textContent =
-"❌ Copy failed.";
-
-});
-
-}
-
-
-function readQuestion(){
-
-const text =
-questionElement.value.trim();
-
-if(!text){
-
-aiStatus.textContent =
-"Nothing to read.";
-
-return;
-
-}
-
-if(
-"speechSynthesis" in window
-){
-
-speechSynthesis.cancel();
-
-const speech =
-new SpeechSynthesisUtterance(text);
-
-speech.lang =
-"en-US";
-
-speech.rate =
-0.95;
-
-speech.pitch =
-1;
-
-speechSynthesis.speak(
-speech
-);
-
-aiStatus.textContent =
-"🔊 Reading your text...";
-
-}else{
-
-aiStatus.textContent =
-"Speech is not supported on this browser.";
-
-}
-
-}
-
-
-function readAnswer(){
-
-const text =
-answerElement.textContent.trim();
-
-if(
-!text ||
-text === "Your AI answer will appear here."
-){
-
-aiStatus.textContent =
-"Nothing to read.";
-
-return;
-
-}
-
-if(
-"speechSynthesis" in window
-){
-
-speechSynthesis.cancel();
-
-const speech =
-new SpeechSynthesisUtterance(text);
-
-speech.lang =
-"en-US";
-
-speech.rate =
-0.95;
-
-speech.pitch =
-1;
-
-speechSynthesis.speak(
-speech
-);
-
-aiStatus.textContent =
-"🔊 Reading AI answer...";
-
-}else{
-
-aiStatus.textContent =
-"Speech is not supported on this browser.";
-
-}
-
-}
-
-
-function stopReading(){
-
-if(
-"speechSynthesis" in window
-){
-
-speechSynthesis.cancel();
-
-aiStatus.textContent =
-"⏹️ Reading stopped.";
-
-}
-
-}
-
-
-function clearAI(){
-
-questionElement.value = "";
-
-answerElement.textContent =
-"Your AI answer will appear here.";
-
-aiStatus.textContent =
-"AI Assistant ready.";
-
-}
-
-
-function showQuestion(){
-
-questionElement.focus();
-
-questionElement.scrollIntoView({
-behavior:"smooth",
-block:"center"
-});
-
-}
-
-
-function openGoogle(){
-
-window.open(
-"https://www.google.com",
-"_blank"
-);
-
-}
-
-
-function openYouTube(){
-
-window.open(
-"https://www.youtube.com",
-"_blank"
-);
-
-}
-
-
-function openWhatsApp(){
-
-window.open(
-"https://web.whatsapp.com",
-"_blank"
-);
-
-}
-
-
-function openFacebook(){
-
-window.open(
-"https://www.facebook.com",
-"_blank"
-);
-
-}
-
-
-function openInstagram(){
-
-window.open(
-"https://www.instagram.com",
-"_blank"
-);
-
-}
-
-
-function openTikTok(){
-
-window.open(
-"https://www.tiktok.com",
-"_blank"
-);
-
-}
-
-
-function showTime(){
-
-const time =
-new Date().toLocaleTimeString();
-
-questionElement.value =
-"What time is it?";
-
-answerElement.textContent =
-"🕐 Current time: " + time;
-
-saveHistory(
-"Show time"
-);
-
-}
-
-
-function showDate(){
-
-const date =
-new Date().toLocaleDateString(
-undefined,
-{
-weekday:"long",
-year:"numeric",
-month:"long",
-day:"numeric"
-}
-);
-
-questionElement.value =
-"What is today's date?";
-
-answerElement.textContent =
-"📅 Today is " + date;
-
-saveHistory(
-"Show date"
-);
-
-}
-
-
-function toggleDark(){
-
-document.body.classList.remove(
-"light"
-);
-
-localStorage.setItem(
-"azdarTheme",
-"dark"
-);
-
-}
-
-
-function toggleLight(){
-
-document.body.classList.add(
-"light"
-);
-
-localStorage.setItem(
-"azdarTheme",
-"light"
-);
-
+const AI_API_URL="https://voice-command-ai-five.vercel.app/api/ask";
+
+const KEYS={
+ chats:"azdarV15Chats",
+ saved:"azdarV15Saved",
+ prompts:"azdarV15Prompts",
+ commands:"azdarV15Commands",
+ memory:"azdarV15Memory",
+ stats:"azdarV15Stats",
+ theme:"azdarV15Theme"
+};
+
+let recognition=null;
+let listening=false;
+let currentAnswer="";
+let currentTool="";
+let stats={
+ questions:0,
+ tools:0,
+ voice:0,
+ saved:0
+};
+
+function $(id){
+ return document.getElementById(id);
+}
+
+function go(id){
+ const el=$(id);
+ if(el)el.scrollIntoView({behavior:"smooth"});
+}
+
+function escapeHTML(v){
+ return String(v??"")
+ .replaceAll("&","&amp;")
+ .replaceAll("<","&lt;")
+ .replaceAll(">","&gt;")
+ .replaceAll('"',"&quot;")
+ .replaceAll("'","&#039;");
+}
+
+function loadJSON(key,fallback=[]){
+ try{
+  const data=JSON.parse(localStorage.getItem(key));
+  return data??fallback;
+ }catch(e){
+  return fallback;
+ }
+}
+
+function saveJSON(key,data){
+ localStorage.setItem(key,JSON.stringify(data));
+}
+
+function loadStats(){
+ const s=loadJSON(KEYS.stats,{});
+
+ stats={
+  questions:Number(s.questions||0),
+  tools:Number(s.tools||0),
+  voice:Number(s.voice||0),
+  saved:Number(s.saved||0)
+ };
+
+ updateStats();
+}
+
+function updateStats(){
+ $("statQuestions").textContent=stats.questions;
+ $("statTools").textContent=stats.tools;
+ $("statVoice").textContent=stats.voice;
+ $("statSaved").textContent=stats.saved;
+}
+
+function saveStats(){
+ saveJSON(KEYS.stats,stats);
+ updateStats();
+}
+
+function setTheme(theme){
+ localStorage.setItem(KEYS.theme,theme);
+
+ if(theme==="light"){
+  document.documentElement.style.setProperty("--bg","#f1f5f9");
+  document.documentElement.style.setProperty("--bg2","#e2e8f0");
+  document.documentElement.style.setProperty("--card","#ffffff");
+  document.documentElement.style.setProperty("--card2","#f8fafc");
+  document.documentElement.style.setProperty("--border","#cbd5e1");
+  document.documentElement.style.setProperty("--text","#0f172a");
+  document.documentElement.style.setProperty("--muted","#475569");
+  document.body.style.background="linear-gradient(135deg,#e2e8f0,#f8fafc)";
+ }else{
+  document.documentElement.style.setProperty("--bg","#030712");
+  document.documentElement.style.setProperty("--bg2","#07101f");
+  document.documentElement.style.setProperty("--card","#0b1220");
+  document.documentElement.style.setProperty("--card2","#111b2d");
+  document.documentElement.style.setProperty("--border","#1e293b");
+  document.documentElement.style.setProperty("--text","#f8fafc");
+  document.documentElement.style.setProperty("--muted","#94a3b8");
+  document.body.style.background=
+   "radial-gradient(circle at top,#122653 0,#030712 42%,#020617 100%)";
+ }
 }
-
 
 function loadTheme(){
-
-const theme =
-localStorage.getItem(
-"azdarTheme"
-);
-
-if(theme === "light"){
-
-document.body.classList.add(
-"light"
-);
-
-}else{
-
-document.body.classList.remove(
-"light"
-);
-
+ setTheme(localStorage.getItem(KEYS.theme)||"dark");
 }
 
+async function registerUser(){
+ const name=$("registerName").value.trim();
+ const email=$("registerEmail").value.trim();
+ const password=$("registerPassword").value;
+
+ if(!name||!email||!password){
+  $("authStatus").textContent="Please fill all fields.";
+  return;
+ }
+
+ if(password.length<6){
+  $("authStatus").textContent="Password must contain at least 6 characters.";
+  return;
+ }
+
+ $("authStatus").textContent="Creating account...";
+
+ const {data,error}=await supabaseClient.auth.signUp({
+  email,
+  password,
+  options:{
+   data:{full_name:name}
+  }
+ });
+
+ if(error){
+  $("authStatus").textContent=error.message;
+  return;
+ }
+
+ $("authStatus").textContent=
+  data.session
+   ?"Account created successfully."
+   :"Account created. Check your email if confirmation is required.";
 }
 
+async function loginUser(){
+ const email=$("loginEmail").value.trim();
+ const password=$("loginPassword").value;
 
-function goBack(){
+ if(!email||!password){
+  $("authStatus").textContent="Enter email and password.";
+  return;
+ }
 
-window.history.back();
+ $("authStatus").textContent="Logging in...";
 
+ const {data,error}=await supabaseClient.auth.signInWithPassword({
+  email,
+  password
+ });
+
+ if(error){
+  $("authStatus").textContent=error.message;
+  return;
+ }
+
+ showApp(data.user);
 }
 
+async function forgotPassword(){
+ const email=$("loginEmail").value.trim();
 
-function goForward(){
+ if(!email){
+  $("authStatus").textContent="Enter your email first.";
+  return;
+ }
 
-window.history.forward();
+ const {error}=await supabaseClient.auth.resetPasswordForEmail(
+  email,
+  {redirectTo:location.origin+location.pathname}
+ );
 
+ $("authStatus").textContent=
+  error?error.message:"Password reset email sent.";
 }
 
+async function logout(){
+ await supabaseClient.auth.signOut();
 
-function refreshPage(){
+ $("app").classList.add("hidden");
+ $("authBox").classList.remove("hidden");
 
-window.location.reload();
-
+ window.scrollTo({top:0,behavior:"smooth"});
 }
 
+function showApp(user){
+ $("authBox").classList.add("hidden");
+ $("app").classList.remove("hidden");
 
-questionElement.addEventListener(
-"keydown",
-function(event){
+ const name=
+  user.user_metadata?.full_name||
+  user.user_metadata?.name||
+  user.email?.split("@")[0]||
+  "User";
 
-if(
-event.ctrlKey &&
-event.key === "Enter"
-){
+ $("profileName").textContent=name;
+ $("profileEmail").textContent=user.email||"—";
 
-event.preventDefault();
-
-askAI();
-
+ loadAll();
 }
 
-}
-);
-    function getCustomCommands(){
+async function checkSession(){
+ const {data}=await supabaseClient.auth.getSession();
 
-try{
-
-return JSON.parse(
-localStorage.getItem(
-"azdarCustomCommands"
-)
-) || [];
-
-}catch(error){
-
-return [];
-
+ if(data.session?.user){
+  showApp(data.session.user);
+ }
 }
 
-}
-
-
-function saveCustomCommands(commands){
-
-localStorage.setItem(
-"azdarCustomCommands",
-JSON.stringify(commands)
-);
-
-}
-
-
-function addCustomCommand(){
-
-const commandInput =
-document.getElementById(
-"customCommand"
-);
-
-const urlInput =
-document.getElementById(
-"customURL"
-);
-
-const status =
-document.getElementById(
-"customCommandStatus"
-);
-
-const command =
-commandInput.value
-.trim()
-.toLowerCase();
-
-const url =
-urlInput.value.trim();
-
-if(!command || !url){
-
-status.textContent =
-"Please enter both command and URL.";
-
-return;
-
-}
-
-if(
-!url.startsWith("http://") &&
-!url.startsWith("https://")
-){
-
-status.textContent =
-"URL must start with http:// or https://";
-
-return;
-
-}
-
-let commands =
-getCustomCommands();
-
-const existing =
-commands.findIndex(
-item =>
-item.command.toLowerCase() === command
-);
-
-if(existing !== -1){
-
-commands[existing].url = url;
-
-}else{
-
-commands.push({
-
-command:command,
-
-url:url
-
+supabaseClient.auth.onAuthStateChange((event,session)=>{
+ if(session?.user)showApp(session.user);
 });
 
+async function askAI(questionOverride=null){
+ const question=(
+  questionOverride!==null
+   ?questionOverride
+   :$("question").value
+ ).trim();
+
+ if(!question){
+  $("aiStatus").textContent="Please enter a question.";
+  return;
+ }
+
+ $("question").value=question;
+ $("askButton").disabled=true;
+ $("aiStatus").textContent="🤖 AzDar AI is thinking...";
+ $("answer").textContent="Please wait...";
+
+ try{
+  const response=await fetch(AI_API_URL,{
+   method:"POST",
+   headers:{
+    "Content-Type":"application/json"
+   },
+   body:JSON.stringify({
+    question
+   })
+  });
+
+  const raw=await response.text();
+
+  let data;
+
+  try{
+   data=JSON.parse(raw);
+  }catch(e){
+   throw new Error(
+    response.status===405
+     ?"Backend only accepts POST requests."
+     :"Backend returned an invalid response."
+   );
+  }
+
+  if(!response.ok){
+   throw new Error(
+    data.error||
+    data.message||
+    "AI backend request failed."
+   );
+  }
+
+  const result=
+   data.answer||
+   data.reply||
+   data.response||
+   data.output||
+   data.text;
+
+  if(!result){
+   throw new Error("AI returned an empty answer.");
+  }
+
+  currentAnswer=String(result);
+  $("answer").textContent=currentAnswer;
+  $("aiStatus").textContent="✅ AI response received.";
+
+  stats.questions++;
+  saveStats();
+
+  addChat(question,currentAnswer);
+
+ }catch(error){
+  $("answer").textContent="AI Assistant error: "+error.message;
+  $("aiStatus").textContent="❌ AI connection failed.";
+ }finally{
+  $("askButton").disabled=false;
+ }
 }
 
-saveCustomCommands(
-commands
-);
-
-commandInput.value = "";
-urlInput.value = "";
-
-status.textContent =
-"✅ Custom command saved.";
-
-loadCustomCommands();
-
+function promptAI(prompt){
+ $("question").value=prompt;
+ go("chat");
+ setTimeout(()=>$("question").focus(),300);
 }
 
-
-function loadCustomCommands(){
-
-const list =
-document.getElementById(
-"customCommandList"
-);
-
-if(!list){
-return;
+function newChat(){
+ $("question").value="";
+ currentAnswer="";
+ $("answer").textContent="New conversation started.";
+ $("aiStatus").textContent="New chat ready.";
+ go("chat");
 }
 
-const commands =
-getCustomCommands();
-
-if(commands.length === 0){
-
-list.innerHTML =
-`
-<div class="status-box">
-No custom commands yet.
-</div>
-`;
-
-return;
-
+function clearAI(){
+ $("question").value="";
+ currentAnswer="";
+ $("answer").textContent="Your AI answer will appear here.";
+ $("aiStatus").textContent="AI Assistant ready.";
 }
 
-list.innerHTML =
-commands.map(
-(item,index)=>`
+function copyAnswer(){
+ const text=currentAnswer||$("answer").textContent;
 
-<div
-class="history-item"
->
+ if(!text)return;
 
-<div>
-<strong>
-🎤 ${escapeHTML(item.command)}
-</strong>
-</div>
-
-<div
-style="
-margin-top:6px;
-font-size:12px;
-color:#64748b;
-word-break:break-all;
-"
->
-${escapeHTML(item.url)}
-</div>
-
-<div
-class="quick-grid"
-style="margin-top:10px;"
->
-
-<button
-onclick="testCustomCommand(${index})"
->
-▶️ Test
-</button>
-
-<button
-onclick="deleteCustomCommand(${index})"
->
-🗑️ Delete
-</button>
-
-</div>
-
-</div>
-
-`
-).join("");
-
+ navigator.clipboard.writeText(text)
+ .then(()=>$("aiStatus").textContent="✅ Answer copied.");
 }
 
+function readAnswer(){
+ const text=currentAnswer||$("answer").textContent;
 
-function testCustomCommand(index){
+ if(!text)return;
 
-const commands =
-getCustomCommands();
+ speechSynthesis.cancel();
+ speechSynthesis.speak(
+  new SpeechSynthesisUtterance(text)
+ );
 
-if(
-!commands[index]
-){
-
-return;
-
+ $("aiStatus").textContent="🔊 Reading...";
 }
 
-const item =
-commands[index];
-
-saveHistory(
-"Test custom command: " +
-item.command
-);
-
-window.open(
-item.url,
-"_blank"
-);
-
-const status =
-document.getElementById(
-"customCommandStatus"
-);
-
-status.textContent =
-"🚀 Opened: " +
-item.command;
-
+function stopReading(){
+ speechSynthesis.cancel();
+ $("aiStatus").textContent="Reading stopped.";
 }
 
+function saveAnswer(){
+ const answer=currentAnswer||$("answer").textContent;
+ const question=$("question").value.trim();
 
-function deleteCustomCommand(index){
+ if(!answer||answer==="Your AI answer will appear here.")return;
 
-let commands =
-getCustomCommands();
+ const items=loadJSON(KEYS.saved,[]);
 
-if(
-!commands[index]
-){
+ items.unshift({
+  id:Date.now(),
+  type:"AI Chat",
+  title:question||"AI Result",
+  content:answer,
+  time:new Date().toLocaleString()
+ });
 
-return;
+ saveJSON(KEYS.saved,items.slice(0,100));
 
+ stats.saved++;
+ saveStats();
+
+ renderSaved();
 }
 
-const name =
-commands[index].command;
+function addChat(question,answer){
+ const chats=loadJSON(KEYS.chats,[]);
 
-commands.splice(
-index,
-1
-);
+ chats.unshift({
+  id:Date.now(),
+  title:question.slice(0,70),
+  question,
+  answer,
+  time:new Date().toLocaleString()
+ });
 
-saveCustomCommands(
-commands
-);
-
-loadCustomCommands();
-
-const status =
-document.getElementById(
-"customCommandStatus"
-);
-
-status.textContent =
-"🗑️ Deleted: " + name;
-
+ saveJSON(KEYS.chats,chats.slice(0,100));
+ renderChats();
 }
 
+function renderChats(){
+ const box=$("chatList");
+ const chats=loadJSON(KEYS.chats,[]);
 
-function findCustomCommand(text){
+ if(!chats.length){
+  box.innerHTML='<div class="item">No conversations yet.</div>';
+  return;
+ }
 
-const commands =
-getCustomCommands();
-
-const normalized =
-text
-.trim()
-.toLowerCase();
-
-return commands.find(
-item => {
-
-const command =
-item.command
-.trim()
-.toLowerCase();
-
-return (
-normalized === command ||
-normalized.includes(command)
-);
-
-}
-);
-
+ box.innerHTML=chats.map((chat,index)=>`
+  <div class="item">
+   <small>${escapeHTML(chat.time)}</small>
+   <div style="margin-top:7px">
+    <strong>${escapeHTML(chat.title)}</strong>
+   </div>
+   <div style="margin-top:8px;color:#94a3b8">
+    ${escapeHTML(String(chat.answer).slice(0,350))}
+   </div>
+   <div class="actions">
+    <button onclick="openChat(${index})">Open</button>
+    <button class="red" onclick="deleteChat(${index})">Delete</button>
+   </div>
+  </div>
+ `).join("");
 }
 
+function openChat(index){
+ const chats=loadJSON(KEYS.chats,[]);
+ const chat=chats[index];
 
-function runCustomCommand(text){
+ if(!chat)return;
 
-const item =
-findCustomCommand(text);
-
-if(!item){
-
-return false;
-
+ $("question").value=chat.question||"";
+ currentAnswer=chat.answer||"";
+ $("answer").textContent=currentAnswer;
+ $("aiStatus").textContent="Conversation opened.";
+ go("chat");
 }
 
-saveHistory(
-"Custom command: " +
-text
-);
-
-const status =
-document.getElementById(
-"customCommandStatus"
-);
-
-status.textContent =
-"🚀 Running: " +
-item.command;
-
-window.open(
-item.url,
-"_blank"
-);
-
-return true;
-
+function deleteChat(index){
+ const chats=loadJSON(KEYS.chats,[]);
+ chats.splice(index,1);
+ saveJSON(KEYS.chats,chats);
+ renderChats();
 }
 
-
-function searchGoogle(query){
-
-const cleanQuery =
-query.trim();
-
-if(!cleanQuery){
-
-openGoogle();
-
-return;
-
+function clearChats(){
+ localStorage.removeItem(KEYS.chats);
+ renderChats();
 }
 
-saveHistory(
-"Google search: " +
-cleanQuery
-);
+function renderSaved(){
+ const box=$("savedList");
+ const items=loadJSON(KEYS.saved,[]);
 
-window.open(
-"https://www.google.com/search?q=" +
-encodeURIComponent(cleanQuery),
-"_blank"
-);
+ if(!items.length){
+  box.innerHTML='<div class="item">No saved results yet.</div>';
+  return;
+ }
 
+ box.innerHTML=items.map((item,index)=>`
+  <div class="item">
+   <small>${escapeHTML(item.type)} • ${escapeHTML(item.time)}</small>
+   <div style="margin-top:7px">
+    <strong>${escapeHTML(item.title)}</strong>
+   </div>
+   <div style="margin-top:8px;white-space:pre-wrap">
+    ${escapeHTML(item.content)}
+   </div>
+   <div class="actions">
+    <button onclick="openSaved(${index})">Open</button>
+    <button class="red" onclick="deleteSaved(${index})">Delete</button>
+   </div>
+  </div>
+ `).join("");
 }
 
+function openSaved(index){
+ const items=loadJSON(KEYS.saved,[]);
+ const item=items[index];
 
-function searchYouTube(query){
+ if(!item)return;
 
-const cleanQuery =
-query.trim();
-
-if(!cleanQuery){
-
-openYouTube();
-
-return;
-
+ currentAnswer=item.content||"";
+ $("question").value=item.title||"";
+ $("answer").textContent=currentAnswer;
+ $("aiStatus").textContent="Saved result opened.";
+ go("chat");
 }
 
-saveHistory(
-"YouTube search: " +
-cleanQuery
-);
+function deleteSaved(index){
+ const items=loadJSON(KEYS.saved,[]);
 
-window.open(
-"https://www.youtube.com/results?search_query=" +
-encodeURIComponent(cleanQuery),
-"_blank"
-);
+ items.splice(index,1);
+ saveJSON(KEYS.saved,items);
 
+ if(stats.saved>0)stats.saved--;
+
+ saveStats();
+ renderSaved();
 }
 
-
-function normalizeVoiceText(text){
-
-return text
-.toLowerCase()
-.trim()
-.replace(/[.,!?]/g,"")
-.replace(/\s+/g," ");
-
+function clearSaved(){
+ localStorage.removeItem(KEYS.saved);
+ stats.saved=0;
+ saveStats();
+ renderSaved();
 }
 
+function savePrompt(){
+ const value=$("promptToSave").value.trim();
 
-function handleVoiceCommand(text){
+ if(!value)return;
 
-const command =
-normalizeVoiceText(text);
+ const prompts=loadJSON(KEYS.prompts,[]);
 
-if(!command){
+ prompts.unshift({
+  id:Date.now(),
+  text:value,
+  time:new Date().toLocaleString()
+ });
 
-return;
+ saveJSON(KEYS.prompts,prompts.slice(0,100));
 
+ $("promptToSave").value="";
+ renderPrompts();
 }
 
-if(
-runCustomCommand(command)
-){
+function renderPrompts(){
+ const box=$("promptList");
+ const prompts=loadJSON(KEYS.prompts,[]);
 
-return;
+ if(!prompts.length){
+  box.innerHTML='<div class="item">No saved prompts yet.</div>';
+  return;
+ }
 
+ box.innerHTML=prompts.map((p,index)=>`
+  <div class="item">
+   <small>${escapeHTML(p.time)}</small>
+   <div style="margin-top:7px;white-space:pre-wrap">
+    ${escapeHTML(p.text)}
+   </div>
+   <div class="actions">
+    <button onclick="useSavedPrompt(${index})">Use</button>
+    <button class="red" onclick="deletePrompt(${index})">Delete</button>
+   </div>
+  </div>
+ `).join("");
 }
 
-if(
-command === "youtube" ||
-command === "youtube kholo" ||
-command === "open youtube" ||
-command.includes("youtube kholo")
-){
+function useSavedPrompt(index){
+ const prompts=loadJSON(KEYS.prompts,[]);
+ const p=prompts[index];
 
-openYouTube();
-return;
+ if(!p)return;
 
+ $("question").value=p.text;
+ go("chat");
 }
 
-
-if(
-command === "google" ||
-command === "google kholo" ||
-command === "open google" ||
-command.includes("google kholo")
-){
-
-openGoogle();
-return;
-
+function deletePrompt(index){
+ const prompts=loadJSON(KEYS.prompts,[]);
+ prompts.splice(index,1);
+ saveJSON(KEYS.prompts,prompts);
+ renderPrompts();
 }
 
-
-if(
-command === "whatsapp" ||
-command === "whatsapp kholo" ||
-command === "open whatsapp"
-){
-
-openWhatsApp();
-return;
-
+function clearPrompts(){
+ localStorage.removeItem(KEYS.prompts);
+ renderPrompts();
 }
 
+function showWorkspace(type){
+ if(type==="saved")renderSaved();
+ if(type==="chats")renderChats();
+ if(type==="prompts")renderPrompts();
 
-if(
-command === "facebook" ||
-command === "facebook kholo" ||
-command === "open facebook"
-){
-
-openFacebook();
-return;
-
+ go("workspace");
 }
 
-
-if(
-command === "instagram" ||
-command === "instagram kholo" ||
-command === "open instagram"
-){
-
-openInstagram();
-return;
-
-}
-
-
-if(
-command === "tiktok" ||
-command === "tiktok kholo" ||
-command === "open tiktok"
-){
-
-openTikTok();
-return;
-
-}
-
-
-if(
-command === "time" ||
-command.includes("time batao") ||
-command.includes("what time")
-){
-
-showTime();
-return;
-
-}
-
-
-if(
-command === "date" ||
-command.includes("date batao") ||
-command.includes("today date") ||
-command.includes("what is today's date")
-){
-
-showDate();
-return;
-
-}
-
-
-if(
-command.includes("dark mode") ||
-command.includes("dark theme") ||
-command === "dark"
-){
-
-toggleDark();
-return;
-
-}
-
-
-if(
-command.includes("light mode") ||
-command.includes("light theme") ||
-command === "light"
-){
-
-toggleLight();
-return;
-
-}
-
-
-if(
-command === "back" ||
-command === "go back"
-){
-
-goBack();
-return;
-
-}
-
-
-if(
-command === "forward" ||
-command === "go forward"
-){
-
-goForward();
-return;
-
-}
-
-
-if(
-command === "refresh" ||
-command === "page refresh"
-){
-
-refreshPage();
-return;
-
-}
-
-
-if(
-command === "clear text" ||
-command === "text clear" ||
-command === "clear textbox" ||
-command === "textbox clear"
-){
-
-clearAI();
-return;
-
-}
-
-
-if(
-command.startsWith("google search ")
-){
-
-const query =
-command
-.replace(
-"google search ",
-""
-)
-.trim();
-
-searchGoogle(
-query
-);
-
-return;
-
-}
-
-
-if(
-command.startsWith("search google ")
-){
-
-const query =
-command
-.replace(
-"search google ",
-""
-)
-.trim();
-
-searchGoogle(
-query
-);
-
-return;
-
-}
-
-
-if(
-command.startsWith("youtube search ")
-){
-
-const query =
-command
-.replace(
-"youtube search ",
-""
-)
-.trim();
-
-searchYouTube(
-query
-);
-
-return;
-
-}
-
-
-if(
-command.startsWith("search youtube ")
-){
-
-const query =
-command
-.replace(
-"search youtube ",
-""
-)
-.trim();
-
-searchYouTube(
-query
-);
-
-return;
-
-}
-
-
-questionElement.value =
-text;
-
-aiStatus.textContent =
-"🎙️ Sending your voice command to AI...";
-
-askAI();
-
-}
-    let recognition = null;
-
-let isListening = false;
-
-const SpeechRecognition =
-window.SpeechRecognition ||
-window.webkitSpeechRecognition;
-
-
-function startVoice(){
-
-if(!SpeechRecognition){
-
-document.getElementById(
-"voiceStatus"
-).textContent =
-"❌ Voice recognition is not supported in this browser.";
-
-return;
-
-}
-
-if(isListening){
-
-document.getElementById(
-"voiceStatus"
-).textContent =
-"🎙️ Voice Assistant is already listening.";
-
-return;
-
-}
-
-recognition =
-new SpeechRecognition();
-
-recognition.lang =
-"en-US";
-
-recognition.continuous =
-false;
-
-recognition.interimResults =
-false;
-
-recognition.maxAlternatives =
-3;
-
-
-recognition.onstart =
-function(){
-
-isListening = true;
-
-document.getElementById(
-"voiceStatus"
-).textContent =
-"🎙️ Listening... Speak now.";
-
+const toolData={
+ writer:{
+  title:"✍️ AI Writer",
+  description:"Create professional content.",
+  prompt:"Write professional, natural and engaging content for:\n\n"
+ },
+ translator:{
+  title:"🌐 Translator",
+  description:"Translate text naturally.",
+  prompt:"Translate the following text naturally while preserving its meaning:\n\n"
+ },
+ summarizer:{
+  title:"📝 Summarizer",
+  description:"Create a useful summary.",
+  prompt:"Summarize the following content and extract the important points:\n\n"
+ },
+ study:{
+  title:"🎓 Study Helper",
+  description:"Learn topics step by step.",
+  prompt:"Explain the following topic like a helpful teacher. Use simple language and examples:\n\n"
+ },
+ coding:{
+  title:"💻 Coding Helper",
+  description:"Understand and solve coding problems.",
+  prompt:"Act as a coding assistant. Analyze and solve this problem with clear explanation:\n\n"
+ },
+ business:{
+  title:"💼 Business AI",
+  description:"Business ideas and planning.",
+  prompt:"Act as a professional business assistant. Provide practical guidance for:\n\n"
+ },
+ social:{
+  title:"📱 Social AI",
+  description:"Create social media content.",
+  prompt:"Create engaging and natural social media content for:\n\n"
+ },
+ ideas:{
+  title:"💡 Idea Generator",
+  description:"Generate practical ideas.",
+  prompt:"Generate 10 useful, creative and practical ideas for:\n\n"
+ }
 };
 
+function openTool(tool){
+ const data=toolData[tool];
 
-recognition.onresult =
-function(event){
+ if(!data)return;
 
-let text = "";
+ currentTool=tool;
 
-if(
-event.results &&
-event.results[0]
-){
+ $("toolTitle").textContent=data.title;
+ $("toolDescription").textContent=data.description;
+ $("toolInput").value=data.prompt;
+ $("toolOutput").textContent="Tool result will appear here.";
+ $("toolStatus").textContent="Ready.";
 
-for(
-let i = 0;
-i < event.results[0].length;
-i++
-){
-
-const transcript =
-event.results[0][i].transcript;
-
-if(transcript){
-
-text = transcript;
-
-break;
-
+ $("toolArea").classList.remove("hidden");
+ go("toolArea");
 }
 
+function closeTool(){
+ $("toolArea").classList.add("hidden");
+ currentTool="";
 }
 
+async function runTool(){
+ const input=$("toolInput").value.trim();
+
+ if(!input){
+  $("toolStatus").textContent="Enter your request first.";
+  return;
+ }
+
+ const config=toolData[currentTool];
+
+ if(!config)return;
+
+ const question=config.prompt+input;
+
+ $("toolStatus").textContent="🤖 Processing...";
+ $("toolOutput").textContent="Please wait...";
+
+ try{
+  const response=await fetch(AI_API_URL,{
+   method:"POST",
+   headers:{
+    "Content-Type":"application/json"
+   },
+   body:JSON.stringify({question})
+  });
+
+  const raw=await response.text();
+
+  let data;
+
+  try{
+   data=JSON.parse(raw);
+  }catch(e){
+   throw new Error("Backend returned an invalid response.");
+  }
+
+  if(!response.ok){
+   throw new Error(
+    data.error||
+    data.message||
+    "Tool request failed."
+   );
+  }
+
+  const result=
+   data.answer||
+   data.reply||
+   data.response||
+   data.output||
+   data.text;
+
+  if(!result)throw new Error("Empty AI result.");
+
+  $("toolOutput").textContent=String(result);
+  $("toolStatus").textContent="✅ Tool completed.";
+
+  stats.tools++;
+  saveStats();
+
+ }catch(error){
+  $("toolOutput").textContent="Tool error: "+error.message;
+  $("toolStatus").textContent="❌ Tool failed.";
+ }
 }
 
-text =
-text.trim();
+function copyTool(){
+ const text=$("toolOutput").textContent;
 
-if(!text){
+ if(!text)return;
 
-document.getElementById(
-"voiceStatus"
-).textContent =
-"⚠️ I couldn't understand your voice.";
-
-return;
-
+ navigator.clipboard.writeText(text)
+ .then(()=>$("toolStatus").textContent="✅ Result copied.");
 }
 
-document.getElementById(
-"voiceStatus"
-).textContent =
-"✅ Heard: " + text;
+function readTool(){
+ const text=$("toolOutput").textContent;
 
-questionElement.value =
-text;
+ if(!text)return;
 
-saveHistory(
-"Voice: " + text
-);
-
-handleVoiceCommand(
-text
-);
-
-};
-
-
-recognition.onerror =
-function(event){
-
-isListening = false;
-
-let message =
-"Voice error.";
-
-if(
-event.error === "not-allowed"
-){
-
-message =
-"❌ Microphone permission denied.";
-
-}else if(
-event.error === "no-speech"
-){
-
-message =
-"⚠️ No speech detected. Try again.";
-
-}else if(
-event.error === "audio-capture"
-){
-
-message =
-"❌ Microphone not available.";
-
-}else if(
-event.error === "network"
-){
-
-message =
-"❌ Voice recognition network error.";
-
-}else{
-
-message =
-"❌ Voice error: " +
-event.error;
-
+ speechSynthesis.cancel();
+ speechSynthesis.speak(new SpeechSynthesisUtterance(text));
 }
 
-document.getElementById(
-"voiceStatus"
-).textContent =
-message;
+function saveTool(){
+ const content=$("toolOutput").textContent;
 
-};
+ if(!content||content==="Tool result will appear here.")return;
 
+ const items=loadJSON(KEYS.saved,[]);
 
-recognition.onend =
-function(){
+ items.unshift({
+  id:Date.now(),
+  type:"AI Tool",
+  title:toolData[currentTool]?.title||"AI Tool",
+  content,
+  time:new Date().toLocaleString()
+ });
 
-isListening = false;
+ saveJSON(KEYS.saved,items.slice(0,100));
 
-const status =
-document.getElementById(
-"voiceStatus"
-);
+ stats.saved++;
+ saveStats();
 
-if(
-status.textContent.includes(
-"Listening"
-)
-){
-
-status.textContent =
-"🎙️ Voice Assistant stopped.";
-
+ renderSaved();
+ $("toolStatus").textContent="💾 Result saved.";
 }
 
-};
+async function documentAction(action){
+ const text=$("documentText").value.trim();
+ const name=$("documentName").value.trim()||"Document";
 
-try{
+ if(!text){
+  $("documentStatus").textContent="Paste document text first.";
+  return;
+ }
 
-recognition.start();
+ let instruction="";
 
-}catch(error){
+ if(action==="summary"){
+  instruction="Summarize this document clearly and keep the most important information.";
+ }
 
-isListening = false;
+ if(action==="questions"){
+  instruction="Analyze this document and provide useful questions and answers based only on the provided content.";
+ }
 
-document.getElementById(
-"voiceStatus"
-).textContent =
-"❌ Could not start microphone.";
+ if(action==="points"){
+  instruction="Extract the key points from this document in a clear bullet-style structure.";
+ }
 
+ const question=
+  instruction+
+  "\n\nDocument name: "+
+  name+
+  "\n\nDocument content:\n"+
+  text;
+
+ $("documentStatus").textContent="🤖 Processing document...";
+ $("documentOutput").textContent="Please wait...";
+
+ try{
+  const response=await fetch(AI_API_URL,{
+   method:"POST",
+   headers:{
+    "Content-Type":"application/json"
+   },
+   body:JSON.stringify({question})
+  });
+
+  const raw=await response.text();
+  let data;
+
+  try{
+   data=JSON.parse(raw);
+  }catch(e){
+   throw new Error("Backend returned an invalid response.");
+  }
+
+  if(!response.ok){
+   throw new Error(data.error||data.message||"Document request failed.");
+  }
+
+  const result=
+   data.answer||
+   data.reply||
+   data.response||
+   data.output||
+   data.text;
+
+  if(!result)throw new Error("Empty document result.");
+
+  $("documentOutput").textContent=String(result);
+  $("documentStatus").textContent="✅ Document processed.";
+
+ }catch(error){
+  $("documentOutput").textContent="Document error: "+error.message;
+  $("documentStatus").textContent="❌ Document processing failed.";
+ }
 }
 
+    function openURL(url){
+ window.open(url,"_blank");
 }
 
+function showTime(){
+ const value=new Date().toLocaleTimeString();
+ $("answer").textContent=value;
+ currentAnswer=value;
+ $("aiStatus").textContent="🕐 Current time: "+value;
+ go("chat");
+}
+
+function showDate(){
+ const value=new Date().toLocaleDateString();
+ $("answer").textContent=value;
+ currentAnswer=value;
+ $("aiStatus").textContent="📅 Current date: "+value;
+ go("chat");
+}
+
+function addCommand(){
+ const command=$("customCommand").value.trim().toLowerCase();
+ const url=$("customURL").value.trim();
+
+ if(!command||!url){
+  $("commandStatus").textContent="Enter command and URL.";
+  return;
+ }
+
+ const commands=loadJSON(KEYS.commands,[]);
+
+ commands.push({
+  id:Date.now(),
+  command,
+  url
+ });
+
+ saveJSON(KEYS.commands,commands);
+
+ $("customCommand").value="";
+ $("customURL").value="";
+ $("commandStatus").textContent="✅ Command added.";
+
+ renderCommands();
+}
+
+function renderCommands(){
+ const box=$("commandList");
+ const commands=loadJSON(KEYS.commands,[]);
+
+ if(!commands.length){
+  box.innerHTML='<div class="item">No custom commands yet.</div>';
+  return;
+ }
+
+ box.innerHTML=commands.map((c,index)=>`
+  <div class="item">
+   <strong>${escapeHTML(c.command)}</strong>
+   <div style="color:#94a3b8;font-size:12px;margin-top:5px">
+    ${escapeHTML(c.url)}
+   </div>
+   <div class="actions">
+    <button onclick="testCommand(${index})">Test</button>
+    <button class="red" onclick="deleteCommand(${index})">Delete</button>
+   </div>
+  </div>
+ `).join("");
+}
+
+function testCommand(index){
+ const commands=loadJSON(KEYS.commands,[]);
+ const c=commands[index];
+
+ if(c)openURL(c.url);
+}
+
+function deleteCommand(index){
+ const commands=loadJSON(KEYS.commands,[]);
+ commands.splice(index,1);
+ saveJSON(KEYS.commands,commands);
+ renderCommands();
+}
+
+function clearCommands(){
+ localStorage.removeItem(KEYS.commands);
+ renderCommands();
+}
+
+function startVoice(forceAI=false){
+ if(!("SpeechRecognition" in window||"webkitSpeechRecognition" in window)){
+  $("voiceStatus").textContent="Speech recognition is not supported.";
+  return;
+ }
+
+ if(listening)return;
+
+ const Recognition=
+  window.SpeechRecognition||
+  window.webkitSpeechRecognition;
+
+ recognition=new Recognition();
+
+ recognition.lang="en-US";
+ recognition.continuous=false;
+ recognition.interimResults=false;
+ recognition.maxAlternatives=3;
+
+ listening=true;
+ $("voiceStatus").textContent="🎙️ Listening...";
+
+ recognition.onresult=async(event)=>{
+  const text=event.results[0][0].transcript.trim();
+
+  $("voiceText").textContent=text;
+
+  stats.voice++;
+  saveStats();
+
+  if(forceAI){
+   await askAI(text);
+  }else{
+   await processVoice(text);
+  }
+ };
+
+ recognition.onerror=(event)=>{
+  listening=false;
+  $("voiceStatus").textContent="Voice error: "+event.error;
+ };
+
+ recognition.onend=()=>{
+  listening=false;
+
+  if($("voiceStatus").textContent.includes("Listening")){
+   $("voiceStatus").textContent="Voice Assistant stopped.";
+  }
+ };
+
+ recognition.start();
+}
+
+function voiceAsk(){
+ startVoice(true);
+}
 
 function stopVoice(){
+ if(recognition){
+  try{recognition.stop()}catch(e){}
+ }
 
-if(
-recognition &&
-isListening
-){
-
-try{
-
-recognition.stop();
-
-}catch(error){
-
-console.log(error);
-
+ listening=false;
+ $("voiceStatus").textContent="Voice Assistant stopped.";
 }
 
+async function processVoice(text){
+ const command=text.toLowerCase().trim();
+
+ const custom=loadJSON(KEYS.commands,[]);
+
+ for(const item of custom){
+  if(command===item.command||command.includes(item.command)){
+   openURL(item.url);
+   $("voiceStatus").textContent="✅ Custom command executed.";
+   return;
+  }
+ }
+
+ if(command.includes("youtube")&&(command.includes("open")||command.includes("kholo"))){
+  openURL("https://www.youtube.com");
+  $("voiceStatus").textContent="▶️ YouTube opened.";
+  return;
+ }
+
+ if(command.includes("google")&&(command.includes("open")||command.includes("kholo"))){
+  openURL("https://www.google.com");
+  $("voiceStatus").textContent="🔎 Google opened.";
+  return;
+ }
+
+ if(command.includes("whatsapp")&&(command.includes("open")||command.includes("kholo"))){
+  openURL("https://web.whatsapp.com");
+  $("voiceStatus").textContent="💬 WhatsApp opened.";
+  return;
+ }
+
+ if(command.includes("facebook")&&(command.includes("open")||command.includes("kholo"))){
+  openURL("https://www.facebook.com");
+  $("voiceStatus").textContent="📘 Facebook opened.";
+  return;
+ }
+
+ if(command.includes("instagram")&&(command.includes("open")||command.includes("kholo"))){
+  openURL("https://www.instagram.com");
+  $("voiceStatus").textContent="📸 Instagram opened.";
+  return;
+ }
+
+ if(command.includes("tiktok")&&(command.includes("open")||command.includes("kholo"))){
+  openURL("https://www.tiktok.com");
+  $("voiceStatus").textContent="🎵 TikTok opened.";
+  return;
+ }
+
+ if(command.includes("dark")){
+  setTheme("dark");
+  $("voiceStatus").textContent="🌙 Dark mode enabled.";
+  return;
+ }
+
+ if(command.includes("light")){
+  setTheme("light");
+  $("voiceStatus").textContent="☀️ Light mode enabled.";
+  return;
+ }
+
+ if(command.includes("time")){
+  showTime();
+  return;
+ }
+
+ if(command.includes("date")){
+  showDate();
+  return;
+ }
+
+ if(command.includes("back")){
+  history.back();
+  return;
+ }
+
+ if(command.includes("refresh")){
+  location.reload();
+  return;
+ }
+
+ $("voiceStatus").textContent="🤖 Sending voice question to AI...";
+ await askAI(text);
 }
 
-isListening = false;
+function saveMemory(){
+ const value=$("memoryInput").value.trim();
 
-document.getElementById(
-"voiceStatus"
-).textContent =
-"⏹️ Voice Assistant stopped.";
+ if(!value)return;
 
+ const memories=loadJSON(KEYS.memory,[]);
+
+ memories.push({
+  id:Date.now(),
+  text:value
+ });
+
+ saveJSON(KEYS.memory,memories);
+ $("memoryInput").value="";
+ renderMemory();
 }
 
+function renderMemory(){
+ const box=$("memoryList");
+ const memories=loadJSON(KEYS.memory,[]);
 
-function voiceCommandDemo(command){
+ if(!memories.length){
+  box.innerHTML='<div class="item">No memory saved.</div>';
+  return;
+ }
 
-questionElement.value =
-command;
-
-saveHistory(
-"Voice demo: " + command
-);
-
-handleVoiceCommand(
-command
-);
-
+ box.innerHTML=memories.map((m,index)=>`
+  <div class="item">
+   ${escapeHTML(m.text)}
+   <div class="actions">
+    <button class="red" onclick="deleteMemory(${index})">Delete</button>
+   </div>
+  </div>
+ `).join("");
 }
 
-
-function speakStatus(text){
-
-if(
-!"speechSynthesis" in window
-){
-
-return;
-
+function deleteMemory(index){
+ const memories=loadJSON(KEYS.memory,[]);
+ memories.splice(index,1);
+ saveJSON(KEYS.memory,memories);
+ renderMemory();
 }
 
-speechSynthesis.cancel();
-
-const speech =
-new SpeechSynthesisUtterance(
-text
-);
-
-speech.lang =
-"en-US";
-
-speech.rate =
-0.95;
-
-speech.pitch =
-1;
-
-speechSynthesis.speak(
-speech
-);
-
+function clearMemory(){
+ localStorage.removeItem(KEYS.memory);
+ renderMemory();
 }
 
+function workspaceSearch(){
+ const query=$("universalSearch").value.trim().toLowerCase();
+ const box=$("searchResults");
 
-window.addEventListener(
-"beforeunload",
-function(){
+ if(!query){
+  box.innerHTML="";
+  return;
+ }
 
-if(
-recognition &&
-isListening
-){
+ const results=[];
 
-try{
+ loadJSON(KEYS.chats,[]).forEach(x=>{
+  if(JSON.stringify(x).toLowerCase().includes(query)){
+   results.push({
+    type:"Chat",
+    text:x.title||x.question||"Conversation"
+   });
+  }
+ });
 
-recognition.stop();
+ loadJSON(KEYS.saved,[]).forEach(x=>{
+  if(JSON.stringify(x).toLowerCase().includes(query)){
+   results.push({
+    type:"Saved",
+    text:x.title||"Saved Result"
+   });
+  }
+ });
 
-}catch(error){
+ loadJSON(KEYS.prompts,[]).forEach(x=>{
+  if(String(x.text).toLowerCase().includes(query)){
+   results.push({
+    type:"Prompt",
+    text:x.text
+   });
+  }
+ });
 
+ if(!results.length){
+  box.innerHTML='<div class="item">No matching workspace items.</div>';
+  return;
+ }
+
+ box.innerHTML=results.slice(0,30).map(r=>`
+  <div class="item">
+   <small>${escapeHTML(r.type)}</small>
+   <div style="margin-top:6px">${escapeHTML(r.text)}</div>
+  </div>
+ `).join("");
 }
 
+function webSearch(){
+ const q=$("universalSearch").value.trim();
+
+ if(!q)return;
+
+ window.open(
+  "https://www.google.com/search?q="+encodeURIComponent(q),
+  "_blank"
+ );
 }
 
-if(
-"speechSynthesis" in window
-){
-
-speechSynthesis.cancel();
-
+function openSettings(){
+ $("settingsModal").classList.remove("hidden");
 }
 
-}
-);
-
-
-document.addEventListener(
-"visibilitychange",
-function(){
-
-if(
-document.hidden &&
-recognition &&
-isListening
-){
-
-try{
-
-recognition.stop();
-
-}catch(error){
-
+function closeSettings(){
+ $("settingsModal").classList.add("hidden");
 }
 
+function clearEverything(){
+ [
+  KEYS.chats,
+  KEYS.saved,
+  KEYS.prompts,
+  KEYS.commands,
+  KEYS.memory,
+  KEYS.stats
+ ].forEach(k=>localStorage.removeItem(k));
+
+ stats={
+  questions:0,
+  tools:0,
+  voice:0,
+  saved:0
+ };
+
+ saveStats();
+ renderAll();
+ closeSettings();
 }
 
-}
-);
-
-
-function setupCustomCommandEnter(){
-
-const commandInput =
-document.getElementById(
-"customCommand"
-);
-
-const urlInput =
-document.getElementById(
-"customURL"
-);
-
-if(commandInput){
-
-commandInput.addEventListener(
-"keydown",
-function(event){
-
-if(
-event.key === "Enter"
-){
-
-event.preventDefault();
-
-urlInput.focus();
-
+function renderAll(){
+ renderSaved();
+ renderChats();
+ renderPrompts();
+ renderCommands();
+ renderMemory();
+ updateStats();
 }
 
-}
-);
-
-}
-
-if(urlInput){
-
-urlInput.addEventListener(
-"keydown",
-function(event){
-
-if(
-event.key === "Enter"
-){
-
-event.preventDefault();
-
-addCustomCommand();
-
+function loadAll(){
+ loadTheme();
+ loadStats();
+ renderAll();
 }
 
-}
-);
+$("question").addEventListener("keydown",e=>{
+ if(e.ctrlKey&&e.key==="Enter"){
+  e.preventDefault();
+  askAI();
+ }
+});
 
-}
+$("toolInput").addEventListener("keydown",e=>{
+ if(e.ctrlKey&&e.key==="Enter"){
+  e.preventDefault();
+  runTool();
+ }
+});
 
-}
+$("universalSearch").addEventListener("keydown",e=>{
+ if(e.key==="Enter"){
+  e.preventDefault();
+  workspaceSearch();
+ }
+});
 
-
-function setupAuthEnter(){
-
-const loginPassword =
-document.getElementById(
-"loginPassword"
-);
-
-const registerPassword =
-document.getElementById(
-"registerPassword"
-);
-
-if(loginPassword){
-
-loginPassword.addEventListener(
-"keydown",
-function(event){
-
-if(
-event.key === "Enter"
-){
-
-event.preventDefault();
-
-loginUser();
-
-}
-
-}
-);
-
-}
-
-if(registerPassword){
-
-registerPassword.addEventListener(
-"keydown",
-function(event){
-
-if(
-event.key === "Enter"
-){
-
-event.preventDefault();
-
-registerUser();
-
-}
-
-}
-);
-
-}
-
-}
-
-
-function setInitialAIState(){
-
-answerElement.textContent =
-"Your AI answer will appear here.";
-
-aiStatus.textContent =
-"AI Assistant ready.";
-
-}
-
-
-function initializeAzDarAI(){
+$("customCommand").addEventListener("keydown",e=>{
+ if(e.key==="Enter"){
+  e.preventDefault();
+  addCommand();
+ }
+});
 
 loadTheme();
-
-loadCustomCommands();
-
-showHistory();
-
-setupCustomCommandEnter();
-
-setupAuthEnter();
-
-setInitialAIState();
-
-checkLoginState();
-
-}
-
-
-initializeAzDarAI();
+checkSession();
 
 </script>
-
 </body>
-
 </html>
