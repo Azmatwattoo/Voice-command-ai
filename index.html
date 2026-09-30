@@ -1,1 +1,1321 @@
+<!DOCTYPE html>
+<html lang="en">
+<head> 
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#080b16">
+<title>AzDar AI V20</title>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/4.4.168/pdf.min.mjs" type="module"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.8.0/mammoth.browser.min.js"></script>
+<style>
+:root{
+ --bg:#070a12;--card:#101522;--card2:#151b2b;--text:#f5f7ff;
+ --muted:#9da7bd;--line:#273047;--accent:#6d7cff;--accent2:#9b6cff;
+ --danger:#ff5d73;--success:#35d49a;--shadow:0 18px 50px #0008;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+ margin:0;background:radial-gradient(circle at top,#172044 0,#070a12 48%);
+ color:var(--text);font-family:Inter,Arial,sans-serif;min-height:100vh
+}
+button,input,textarea,select{font:inherit}
+button{cursor:pointer}
+.app{max-width:1180px;margin:auto;padding:16px}
+.topbar{
+ position:sticky;top:0;z-index:20;display:flex;align-items:center;
+ justify-content:space-between;gap:10px;padding:12px 14px;margin-bottom:16px;
+ background:#090d18e8;border:1px solid var(--line);border-radius:20px;
+ backdrop-filter:blur(18px)
+}
+.brand{display:flex;align-items:center;gap:10px}
+.logo{
+ width:46px;height:46px;border-radius:15px;display:grid;place-items:center;
+ background:linear-gradient(135deg,var(--accent),var(--accent2));
+ font-size:25px;font-weight:900;box-shadow:0 8px 25px #6d7cff55
+}
+.brand h1{font-size:18px;margin:0}.brand small{color:var(--muted)}
+.nav{display:flex;gap:6px;flex-wrap:wrap;justify-content:flex-end}
+.btn{
+ border:1px solid var(--line);background:var(--card2);color:var(--text);
+ padding:10px 13px;border-radius:12px;font-weight:700
+}
+.btn:hover{transform:translateY(-1px);border-color:#59688f}
+.primary{background:linear-gradient(135deg,var(--accent),var(--accent2));border:0}
+.danger{color:#fff;background:#5d1e2b}
+.success{color:#fff;background:#164d3d}
+.muted{color:var(--muted)}
+.hero{
+ padding:30px 22px;border:1px solid var(--line);border-radius:26px;
+ background:linear-gradient(145deg,#131a2cdd,#0c101bdd);box-shadow:var(--shadow);
+ margin-bottom:16px
+}
+.hero h2{font-size:clamp(28px,6vw,48px);margin:0 0 10px}
+.hero p{color:var(--muted);max-width:760px;line-height:1.6}
+.grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.grid2{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
+.card{
+ background:linear-gradient(145deg,var(--card),#0c111d);
+ border:1px solid var(--line);border-radius:20px;padding:18px;
+ box-shadow:0 10px 35px #0004
+}
+.card h3{margin-top:0}
+.stat strong{font-size:28px;display:block;margin-top:5px}
+.stat span{color:var(--muted);font-size:13px}
+.section{margin:16px 0}
+textarea,input,select{
+ width:100%;border:1px solid var(--line);background:#080c15;color:var(--text);
+ border-radius:14px;padding:13px;outline:none
+}
+textarea:focus,input:focus,select:focus{border-color:var(--accent)}
+textarea{resize:vertical;min-height:130px;line-height:1.5}
+.row{display:flex;gap:8px;flex-wrap:wrap}
+.row>*{flex:1}
+.answer{
+ white-space:pre-wrap;line-height:1.65;background:#080c15;border:1px solid var(--line);
+ border-radius:15px;padding:15px;min-height:80px
+}
+.pill{
+ display:inline-block;padding:6px 9px;border-radius:999px;background:#202944;
+ color:#cbd4f5;font-size:12px;margin:3px
+}
+.tool{
+ padding:15px;border:1px solid var(--line);border-radius:16px;background:#0d1320
+}
+.tool strong{display:block;margin-bottom:6px}
+.list{display:flex;flex-direction:column;gap:8px}
+.item{
+ border:1px solid var(--line);border-radius:14px;padding:12px;background:#0c111d
+}
+.item b{display:block;margin-bottom:5px}
+.item small{color:var(--muted)}
+.hidden{display:none!important}
+.auth{
+ min-height:100vh;display:grid;place-items:center;padding:20px
+}
+.authbox{width:min(470px,100%);padding:25px}
+.auth-tabs{display:flex;gap:7px;margin-bottom:15px}
+.auth-tabs button{flex:1}
+.status{padding:10px;border-radius:12px;margin:10px 0;font-size:14px}
+.status.ok{background:#123c30;color:#70e6ba}
+.status.err{background:#431d28;color:#ff9bac}
+.status.info{background:#1b2440;color:#b9c4ff}
+.modal{
+ position:fixed;inset:0;background:#0009;display:none;align-items:center;
+ justify-content:center;padding:18px;z-index:100
+}
+.modal.show{display:flex}
+.modalbox{
+ width:min(700px,100%);max-height:90vh;overflow:auto;background:var(--card);
+ border:1px solid var(--line);border-radius:22px;padding:20px
+}
+.bottomnav{
+ display:none;position:fixed;bottom:10px;left:10px;right:10px;z-index:50;
+ background:#0b101ceF;border:1px solid var(--line);border-radius:18px;
+ padding:8px;grid-template-columns:repeat(5,1fr);gap:5px
+}
+.bottomnav button{font-size:11px;padding:9px 3px}
+footer{text-align:center;color:var(--muted);padding:30px 10px}
+@media(max-width:850px){
+ .grid{grid-template-columns:repeat(2,1fr)}
+ .grid3{grid-template-columns:1fr 1fr}
+ .topbar{align-items:flex-start}.nav{display:none}.bottomnav{display:grid}
+ body{padding-bottom:80px}
+}
+@media(max-width:560px){
+ .app{padding:10px}.grid,.grid2,.grid3{grid-template-columns:1fr}
+ .hero{padding:23px 16px}.card{padding:15px}
+ .brand small{display:none}
+}
+</style>
+</head>
+<body>
+<div id="authScreen" class="auth">
+ <div class="card authbox">
+  <div class="brand" style="margin-bottom:20px">
+   <div class="logo">✦</div>
+   <div><h1>AzDar AI</h1><small>Created by Azmat Ali</small></div>
+  </div>
+  <div class="auth-tabs">
+   <button class="btn primary" id="loginTab">Login</button>
+   <button class="btn" id="registerTab">Register</button>
+  </div>
+  <div id="authStatus"></div>
+  <input id="authName" placeholder="Your name" class="hidden">
+  <br class="hidden" id="nameBreak">
+  <input id="authEmail" type="email" placeholder="Email address">
+  <br>
+  <input id="authPassword" type="password" placeholder="Password">
+  <div class="row" style="margin-top:10px">
+   <button class="btn primary" id="authSubmit">Login</button>
+   <button class="btn" id="forgotBtn">Forgot Password</button>
+  </div>
+  <p class="muted" style="font-size:13px;margin-top:15px">
+   AzDar AI V20 — Your personal AI workspace.
+  </p>
+ </div>
+</div>
+<div id="app" class="app hidden">
+<header class="topbar">
+ <div class="brand">
+  <div class="logo">✦</div>
+  <div><h1>AzDar AI</h1><small>Created by Azmat Ali</small></div>
+ </div>
+ <nav class="nav">
+  <button class="btn" onclick="go('home')">Home</button>
+  <button class="btn" onclick="go('chat')">AI Chat</button>
+  <button class="btn" onclick="go('tools')">Tools</button>
+  <button class="btn" onclick="go('workspace')">Workspace</button>
+  <button class="btn" onclick="openSettings()">Settings</button>
+  <button class="btn danger" onclick="logout()">Logout</button>
+ </nav>
+</header>
 
+<main id="main">
+<section id="home" class="hero">
+ <span class="pill">V20 PLATFORM</span>
+ <h2>One AI. Many Powerful Tools.</h2>
+ <p>
+  Chat, voice, documents, writing, study, coding, business, search,
+  memory and personal workspace — all inside AzDar AI.
+ </p>
+ <div class="row">
+  <button class="btn primary" onclick="go('chat')">✨ Start AI Chat</button>
+  <button class="btn" onclick="go('tools')">🛠️ Explore Tools</button>
+  <button class="btn" onclick="go('documents')">📄 Documents</button>
+ </div>
+</section>
+
+<section class="section">
+ <div class="grid">
+  <div class="card stat"><span>AI Questions</span><strong id="statQuestions">0</strong></div>
+  <div class="card stat"><span>Tools Used</span><strong id="statTools">0</strong></div>
+  <div class="card stat"><span>Voice Uses</span><strong id="statVoice">0</strong></div>
+  <div class="card stat"><span>Saved Items</span><strong id="statSaved">0</strong></div>
+ </div>
+</section>
+
+<section id="chat" class="section card">
+ <h3>🤖 AI Chat Pro</h3>
+ <p class="muted">Ask anything. Your saved memory can be included as context.</p>
+ <textarea id="question" placeholder="Ask AzDar AI anything..."></textarea>
+ <div class="row" style="margin-top:9px">
+  <button class="btn primary" id="askButton" onclick="askAI()">✨ Ask AI</button>
+  <button class="btn" onclick="voiceAsk()">🎙️ Voice Ask</button>
+  <button class="btn" onclick="newChat()">＋ New Chat</button>
+  <button class="btn" onclick="clearAI()">Clear</button>
+ </div>
+ <div id="aiStatus"></div>
+ <div id="answer" class="answer">AI answer will appear here...</div>
+ <div class="row" style="margin-top:9px">
+  <button class="btn" onclick="copyAnswer()">📋 Copy</button>
+  <button class="btn" onclick="readAnswer()">🔊 Read</button>
+  <button class="btn" onclick="stopReading()">⏹ Stop</button>
+  <button class="btn success" onclick="saveAnswer()">💾 Save</button>
+ </div>
+</section>
+
+<section class="section card">
+ <h3>⚡ Prompt Center</h3>
+ <div class="grid3">
+  <button class="btn" onclick="promptAI('Explain this simply: ')">Explain</button>
+  <button class="btn" onclick="promptAI('Write a professional version of: ')">Write</button>
+  <button class="btn" onclick="promptAI('Summarize this: ')">Summarize</button>
+  <button class="btn" onclick="promptAI('Translate this into English: ')">Translate</button>
+  <button class="btn" onclick="promptAI('Give me creative ideas for: ')">Brainstorm</button>
+  <button class="btn" onclick="promptAI('Help me solve this coding problem: ')">Coding</button>
+ </div>
+</section>
+
+<section id="tools" class="section card">
+ <h3>🛠️ AI Tools Center</h3>
+ <div id="toolsGrid" class="grid3"></div>
+</section>
+
+<section id="toolPanel" class="section card hidden">
+ <h3 id="toolTitle">AI Tool</h3>
+ <p id="toolDescription" class="muted"></p>
+ <textarea id="toolInput" placeholder="Enter your content..."></textarea>
+ <div class="row" style="margin-top:9px">
+  <button class="btn primary" onclick="runTool()">Run Tool</button>
+  <button class="btn" onclick="closeTool()">Close</button>
+ </div>
+ <div id="toolStatus"></div>
+ <div id="toolOutput" class="answer">Tool output will appear here...</div>
+ <div class="row" style="margin-top:9px">
+  <button class="btn" onclick="copyTool()">📋 Copy</button>
+  <button class="btn" onclick="readTool()">🔊 Read</button>
+  <button class="btn success" onclick="saveTool()">💾 Save</button>
+ </div>
+</section>
+
+  <section id="voice" class="section card">
+ <h3>🎙️ Voice AI Pro</h3>
+ <p class="muted">English and Roman Urdu voice commands are supported where browser speech recognition is available.</p>
+ <div class="row">
+  <button class="btn primary" onclick="startVoice()">🎙️ Start Listening</button>
+  <button class="btn" onclick="stopVoice()">⏹ Stop</button>
+ </div>
+ <div id="voiceStatus"></div>
+ <div id="voiceText" class="answer">Voice text will appear here...</div>
+</section>
+
+<section class="section card">
+ <h3>⚡ Smart Website Commands</h3>
+ <div class="grid3">
+  <button class="btn" onclick="processCommand('youtube kholo')">YouTube</button>
+  <button class="btn" onclick="processCommand('google kholo')">Google</button>
+  <button class="btn" onclick="processCommand('whatsapp kholo')">WhatsApp</button>
+  <button class="btn" onclick="processCommand('facebook kholo')">Facebook</button>
+  <button class="btn" onclick="processCommand('instagram kholo')">Instagram</button>
+  <button class="btn" onclick="processCommand('tiktok kholo')">TikTok</button>
+  <button class="btn" onclick="processCommand('time')">Time</button>
+  <button class="btn" onclick="processCommand('date')">Date</button>
+  <button class="btn" onclick="setTheme('dark')">Dark</button>
+  <button class="btn" onclick="setTheme('light')">Light</button>
+  <button class="btn" onclick="history.back()">Back</button>
+  <button class="btn" onclick="location.reload()">Refresh</button>
+ </div>
+</section>
+
+<section class="section card">
+ <h3>🧩 Custom Commands</h3>
+ <div class="grid2">
+  <input id="customCommand" placeholder="Command e.g. college kholo">
+  <input id="customURL" placeholder="URL e.g. https://example.com">
+ </div>
+ <div class="row" style="margin-top:9px">
+  <button class="btn primary" onclick="addCustomCommand()">＋ Add Command</button>
+  <button class="btn" onclick="clearCustomCommands()">Clear All</button>
+ </div>
+ <div id="customList" class="list" style="margin-top:12px"></div>
+</section>
+
+<section id="workspace" class="section">
+ <div class="grid2">
+  <div class="card">
+   <h3>💬 Conversation History</h3>
+   <input id="chatSearch" placeholder="Search conversations..." oninput="renderChats()">
+   <div id="chatList" class="list" style="margin-top:10px"></div>
+  </div>
+  <div class="card">
+   <h3>💾 Saved Results</h3>
+   <input id="savedSearch" placeholder="Search saved results..." oninput="renderSaved()">
+   <div id="savedList" class="list" style="margin-top:10px"></div>
+  </div>
+ </div>
+</section>
+
+<section class="section card">
+ <h3>⭐ Prompt Library</h3>
+ <textarea id="promptInput" placeholder="Save your own reusable prompt..."></textarea>
+ <div class="row" style="margin-top:9px">
+  <button class="btn primary" onclick="savePrompt()">Save Prompt</button>
+ </div>
+ <div id="promptList" class="list" style="margin-top:12px"></div>
+</section>
+
+<section id="documents" class="section card">
+ <h3>📄 Document AI Pro</h3>
+ <p class="muted">Upload PDF, DOCX or TXT and extract its text in your browser before sending selected tasks to the AI backend.</p>
+ <input id="documentFile" type="file" accept=".pdf,.docx,.txt">
+ <div id="documentStatus"></div>
+ <textarea id="documentText" placeholder="Extracted document text will appear here..."></textarea>
+ <div class="row" style="margin-top:9px">
+  <button class="btn primary" onclick="extractDocument()">📥 Extract Document</button>
+  <button class="btn" onclick="documentAction('summary')">Summary</button>
+  <button class="btn" onclick="documentAction('questions')">Questions</button>
+  <button class="btn" onclick="documentAction('points')">Key Points</button>
+ </div>
+ <div id="documentResult" class="answer" style="margin-top:10px">Document AI result...</div>
+</section>
+
+  <section class="section card">
+ <h3>🧠 Smart Memory</h3>
+ <p class="muted">Saved memories can automatically be added to your AI request as context.</p>
+ <textarea id="memoryInput" placeholder="Example: I prefer simple explanations in Roman Urdu."></textarea>
+ <div class="row" style="margin-top:9px">
+  <button class="btn primary" onclick="saveMemory()">Save Memory</button>
+  <button class="btn" onclick="clearMemory()">Clear Memory</button>
+ </div>
+ <div id="memoryList" class="list" style="margin-top:12px"></div>
+</section>
+
+<section class="section card">
+ <h3>🔎 Universal Search</h3>
+ <input id="universalSearch" placeholder="Search chats, saved results, prompts and memories..." oninput="universalSearchRun()">
+ <div id="universalResults" class="list" style="margin-top:12px"></div>
+ <button class="btn" style="margin-top:10px" onclick="webSearch()">🌐 Search Web</button>
+</section>
+
+<section class="section card">
+ <h3>⚡ Productivity Center</h3>
+ <div class="grid3">
+  <button class="btn" onclick="productivity('Write a professional email about: ')">📧 Email Writer</button>
+  <button class="btn" onclick="productivity('Create a social media caption about: ')">📱 Caption Writer</button>
+  <button class="btn" onclick="productivity('Create a study plan for: ')">📚 Study Plan</button>
+  <button class="btn" onclick="productivity('Create a practical business plan for: ')">💼 Business Plan</button>
+  <button class="btn" onclick="productivity('Help me solve this problem: ')">🎯 Problem Solver</button>
+  <button class="btn" onclick="productivity('Give me 10 useful ideas for: ')">💡 10 Ideas</button>
+ </div>
+</section>
+
+<section class="section card">
+ <h3>👤 Account Center</h3>
+ <div class="grid2">
+  <div>
+   <p><span class="muted">Name</span><br><b id="accountName">—</b></p>
+   <p><span class="muted">Email</span><br><b id="accountEmail">—</b></p>
+  </div>
+  <div>
+   <p><span class="muted">Platform</span><br><b>AzDar AI V20</b></p>
+   <p><span class="muted">Creator</span><br><b>Azmat Ali</b></p>
+  </div>
+ </div>
+ <div class="row">
+  <button class="btn" onclick="openSettings()">⚙️ Settings</button>
+  <button class="btn danger" onclick="logout()">Logout</button>
+ </div>
+</section>
+
+<footer>
+ <b>AzDar AI V20</b><br>
+ Created by Azmat Ali<br>
+ <span>AI Platform • Workspace • Tools • Documents • Voice</span>
+</footer>
+</main>
+
+<div class="bottomnav">
+ <button class="btn" onclick="go('home')">🏠<br>Home</button>
+ <button class="btn" onclick="go('chat')">🤖<br>Chat</button>
+ <button class="btn" onclick="go('tools')">🛠️<br>Tools</button>
+ <button class="btn" onclick="go('workspace')">💾<br>Work</button>
+ <button class="btn" onclick="openSettings()">⚙️<br>Settings</button>
+</div>
+</div>
+
+<div id="settingsModal" class="modal">
+ <div class="modalbox">
+  <h3>⚙️ Settings</h3>
+  <p class="muted">Customize your AzDar AI workspace.</p>
+  <div class="row">
+   <button class="btn" onclick="setTheme('dark');closeSettings()">🌙 Dark</button>
+   <button class="btn" onclick="setTheme('light');closeSettings()">☀️ Light</button>
+  </div>
+  <hr style="border-color:var(--line);margin:18px 0">
+  <button class="btn danger" onclick="clearEverything()">Clear Local Workspace</button>
+  <button class="btn" style="margin-top:8px" onclick="closeSettings()">Close</button>
+ </div>
+</div>
+
+  <script>
+const SUPABASE_URL="https://pqqhswvtrxktzrcrrnka.supabase.co";
+const SUPABASE_KEY="sb_publishable_9XSVISR_xvcPX_xP4MIFzQ_-HIHvSXo";
+const AI_API_URL="https://voice-command-ai-five.vercel.app/api/ask";
+const supabaseClient=window.supabase.createClient(SUPABASE_URL,SUPABASE_KEY);
+
+const KEYS={
+ chats:"azdarV20Chats",
+ saved:"azdarV20Saved",
+ prompts:"azdarV20Prompts",
+ commands:"azdarV20Commands",
+ memory:"azdarV20Memory",
+ stats:"azdarV20Stats",
+ theme:"azdarV20Theme"
+};
+
+let stats={questions:0,tools:0,voice:0,saved:0};
+let chats=[],saved=[],prompts=[],commands=[],memory=[];
+let currentTool=null,currentUser=null,recognition=null,authMode="login";
+
+const $=id=>document.getElementById(id);
+
+function loadJSON(key,fallback=[]){
+ try{return JSON.parse(localStorage.getItem(key))??fallback}
+ catch(e){return fallback}
+}
+function saveJSON(key,value){localStorage.setItem(key,JSON.stringify(value))}
+function esc(value){
+ return String(value??"").replace(/[&<>"']/g,m=>({
+  "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"
+ }[m]));
+}
+function status(id,msg,type="info"){
+ const el=$(id);if(!el)return;
+ el.innerHTML=msg?`<div class="status ${type}">${esc(msg)}</div>`:"";
+}
+function go(id){
+ const el=$(id);if(el)el.scrollIntoView({behavior:"smooth",block:"start"});
+}
+function setTheme(theme){
+ document.documentElement.dataset.theme=theme;
+ localStorage.setItem(KEYS.theme,theme);
+ if(theme==="light"){
+  document.documentElement.style.setProperty("--bg","#f2f5fb");
+  document.documentElement.style.setProperty("--card","#ffffff");
+  document.documentElement.style.setProperty("--card2","#eef2f9");
+  document.documentElement.style.setProperty("--text","#101522");
+  document.documentElement.style.setProperty("--muted","#5e687c");
+  document.documentElement.style.setProperty("--line","#d7deea");
+ }else{
+  document.documentElement.style.setProperty("--bg","#070a12");
+  document.documentElement.style.setProperty("--card","#101522");
+  document.documentElement.style.setProperty("--card2","#151b2b");
+  document.documentElement.style.setProperty("--text","#f5f7ff");
+  document.documentElement.style.setProperty("--muted","#9da7bd");
+  document.documentElement.style.setProperty("--line","#273047");
+ }
+}
+function loadTheme(){setTheme(localStorage.getItem(KEYS.theme)||"dark")}
+function loadAll(){
+ chats=loadJSON(KEYS.chats,[]);
+ saved=loadJSON(KEYS.saved,[]);
+ prompts=loadJSON(KEYS.prompts,[]);
+ commands=loadJSON(KEYS.commands,[]);
+ memory=loadJSON(KEYS.memory,[]);
+ stats=loadJSON(KEYS.stats,{questions:0,tools:0,voice:0,saved:saved.length});
+ renderAll();
+}
+function saveStats(){
+ stats.saved=saved.length;
+ saveJSON(KEYS.stats,stats);
+ updateStats();
+}
+function updateStats(){
+ $("statQuestions").textContent=stats.questions||0;
+ $("statTools").textContent=stats.tools||0;
+ $("statVoice").textContent=stats.voice||0;
+ $("statSaved").textContent=saved.length;
+}
+function showApp(user){
+ currentUser=user;
+ $("authScreen").classList.add("hidden");
+ $("app").classList.remove("hidden");
+ $("accountEmail").textContent=user?.email||"—";
+ $("accountName").textContent=
+  user?.user_metadata?.full_name||
+  user?.user_metadata?.name||
+  user?.email?.split("@")[0]||"User";
+ loadAll();
+}
+function showAuth(){
+ $("app").classList.add("hidden");
+ $("authScreen").classList.remove("hidden");
+}
+function setAuthMode(mode){
+ authMode=mode;
+ const register=mode==="register";
+ $("authName").classList.toggle("hidden",!register);
+ $("nameBreak").classList.toggle("hidden",!register);
+ $("authSubmit").textContent=register?"Create Account":"Login";
+ $("loginTab").classList.toggle("primary",!register);
+ $("registerTab").classList.toggle("primary",register);
+ status("authStatus","");
+}
+    $("loginTab").onclick=()=>setAuthMode("login");
+$("registerTab").onclick=()=>setAuthMode("register");
+
+$("authSubmit").onclick=async()=>{
+ const email=$("authEmail").value.trim();
+ const password=$("authPassword").value;
+ const name=$("authName").value.trim();
+ if(!email||!password){
+  status("authStatus","Email and password are required.","err");return;
+ }
+ status("authStatus","Please wait...","info");
+ try{
+  if(authMode==="register"){
+   const {data,error}=await supabaseClient.auth.signUp({
+    email,password,options:{data:{full_name:name||"AzDar User"}}
+   });
+   if(error)throw error;
+   if(data.session)showApp(data.user);
+   else status("authStatus","Registration successful. Check your email if confirmation is required.","ok");
+  }else{
+   const {data,error}=await supabaseClient.auth.signInWithPassword({email,password});
+   if(error)throw error;
+   showApp(data.user);
+  }
+ }catch(e){status("authStatus",e.message||"Authentication error","err")}
+};
+
+$("forgotBtn").onclick=async()=>{
+ const email=$("authEmail").value.trim();
+ if(!email){status("authStatus","Enter your email first.","err");return}
+ try{
+  const {error}=await supabaseClient.auth.resetPasswordForEmail(email,{
+   redirectTo:location.href
+  });
+  if(error)throw error;
+  status("authStatus","Password reset email sent if the account exists.","ok");
+ }catch(e){status("authStatus",e.message,"err")}
+};
+
+async function logout(){
+ try{await supabaseClient.auth.signOut()}catch(e){}
+ currentUser=null;showAuth();
+}
+
+supabaseClient.auth.onAuthStateChange((event,session)=>{
+ if(session?.user)showApp(session.user);
+ else if(event==="SIGNED_OUT")showAuth();
+});
+
+async function checkSession(){
+ const {data}=await supabaseClient.auth.getSession();
+ if(data.session?.user)showApp(data.session.user);
+ else showAuth();
+}
+
+async function askAI(questionOverride=null){
+ let q=questionOverride??$("question").value.trim();
+ if(!q){status("aiStatus","Please enter a question.","err");return ""}
+ const btn=$("askButton");btn.disabled=true;
+ status("aiStatus","AzDar AI is thinking...","info");
+ $("answer").textContent="Thinking...";
+ let finalQuestion=q;
+ if(memory.length){
+  const mem=memory.slice(-10).map(x=>"- "+x.text).join("\n");
+  finalQuestion=
+   "Use the following user memory only when relevant. Do not reveal the memory list.\n"+
+   mem+"\n\nUser request:\n"+q;
+ }
+ try{
+  const res=await fetch(AI_API_URL,{
+   method:"POST",
+   headers:{"Content-Type":"application/json"},
+   body:JSON.stringify({question:finalQuestion})
+  });
+  const raw=await res.text();
+  let data;
+  try{data=JSON.parse(raw)}
+  catch(e){throw new Error("Backend returned an invalid response.")}
+  if(!res.ok)throw new Error(data.error||data.message||"AI backend error");
+  const answer=data.answer??data.reply??data.response??data.output??data.text;
+  if(!answer)throw new Error("No AI answer was returned.");
+  $("answer").textContent=answer;
+  status("aiStatus","AI response received.","ok");
+  stats.questions++;
+  saveJSON(KEYS.stats,stats);
+  addChat(q,answer);
+  updateStats();
+  return answer;
+ }catch(e){
+  $("answer").textContent="AI could not respond.";
+  status("aiStatus",e.message||"Failed to connect to AI backend.","err");
+  return "";
+ }finally{btn.disabled=false}
+}
+
+function promptAI(prefix){
+ $("question").value=prefix;
+ go("chat");
+ $("question").focus();
+}
+function productivity(prefix){
+ promptAI(prefix);
+}
+function newChat(){
+ $("question").value="";
+ $("answer").textContent="New chat started.";
+ status("aiStatus","New conversation ready.","ok");
+ go("chat");
+}
+function clearAI(){
+ $("question").value="";
+ $("answer").textContent="AI answer will appear here...";
+ status("aiStatus","");
+}
+function getAnswer(){return $("answer").textContent.trim()}
+async function copyAnswer(){
+ const text=getAnswer();
+ if(!text||text==="AI answer will appear here...")return;
+ await navigator.clipboard.writeText(text);
+ status("aiStatus","Answer copied.","ok");
+}
+function readText(text){
+ if(!text)return;
+ speechSynthesis.cancel();
+ speechSynthesis.speak(new SpeechSynthesisUtterance(text));
+}
+function readAnswer(){readText(getAnswer())}
+function stopReading(){speechSynthesis.cancel()}
+function saveAnswer(){
+ const text=getAnswer();
+ if(!text||text==="AI answer will appear here...")return;
+ saved.unshift({id:Date.now(),title:$("question").value.trim()||"AI Answer",text,date:new Date().toLocaleString(),type:"chat"});
+ saved=saved.slice(0,100);
+ saveJSON(KEYS.saved,saved);saveStats();renderSaved();
+ status("aiStatus","Answer saved.","ok");
+ }
+
+  function addChat(question,answer){
+ chats.unshift({id:Date.now(),question,answer,date:new Date().toLocaleString()});
+ chats=chats.slice(0,200);
+ saveJSON(KEYS.chats,chats);
+ renderChats();
+}
+
+function renderChats(){
+ const box=$("chatList");
+ const query=($("chatSearch")?.value||"").toLowerCase().trim();
+ const data=chats.filter(x=>
+  !query||x.question.toLowerCase().includes(query)||x.answer.toLowerCase().includes(query)
+ );
+ if(!data.length){box.innerHTML='<div class="item muted">No conversations found.</div>';return}
+ box.innerHTML=data.map(x=>`
+  <div class="item">
+   <b>${esc(x.question.slice(0,100))}</b>
+   <small>${esc(x.date)}</small>
+   <p>${esc(x.answer.slice(0,180))}${x.answer.length>180?"…":""}</p>
+   <div class="row">
+    <button class="btn" onclick="openChat(${x.id})">Open</button>
+    <button class="btn danger" onclick="deleteChat(${x.id})">Delete</button>
+   </div>
+  </div>
+ `).join("");
+}
+function openChat(id){
+ const x=chats.find(v=>v.id===id);if(!x)return;
+ $("question").value=x.question;
+ $("answer").textContent=x.answer;
+ go("chat");
+}
+function deleteChat(id){
+ chats=chats.filter(x=>x.id!==id);
+ saveJSON(KEYS.chats,chats);renderChats();
+}
+function clearChats(){
+ if(!confirm("Clear all conversation history?"))return;
+ chats=[];saveJSON(KEYS.chats,chats);renderChats();
+}
+
+function renderSaved(){
+ const box=$("savedList");
+ const query=($("savedSearch")?.value||"").toLowerCase().trim();
+ const data=saved.filter(x=>
+  !query||(x.title+" "+x.text).toLowerCase().includes(query)
+ );
+ if(!data.length){box.innerHTML='<div class="item muted">No saved results.</div>';return}
+ box.innerHTML=data.map(x=>`
+  <div class="item">
+   <b>${esc(x.title)}</b>
+   <small>${esc(x.date||"")}</small>
+   <p>${esc(x.text.slice(0,220))}${x.text.length>220?"…":""}</p>
+   <div class="row">
+    <button class="btn" onclick="openSaved(${x.id})">Open</button>
+    <button class="btn danger" onclick="deleteSaved(${x.id})">Delete</button>
+   </div>
+  </div>
+ `).join("");
+}
+function openSaved(id){
+ const x=saved.find(v=>v.id===id);if(!x)return;
+ $("answer").textContent=x.text;go("chat");
+}
+function deleteSaved(id){
+ saved=saved.filter(x=>x.id!==id);
+ saveJSON(KEYS.saved,saved);saveStats();renderSaved();
+}
+
+function savePrompt(){
+ const text=$("promptInput").value.trim();
+ if(!text)return;
+ prompts.unshift({id:Date.now(),text,date:new Date().toLocaleString()});
+ prompts=prompts.slice(0,100);
+ saveJSON(KEYS.prompts,prompts);
+ $("promptInput").value="";
+ renderPrompts();
+}
+function renderPrompts(){
+ const box=$("promptList");
+ if(!prompts.length){box.innerHTML='<div class="item muted">No saved prompts.</div>';return}
+ box.innerHTML=prompts.map(x=>`
+  <div class="item">
+   <b>${esc(x.text.slice(0,100))}</b>
+   <small>${esc(x.date)}</small>
+   <div class="row" style="margin-top:8px">
+    <button class="btn" onclick="usePrompt(${x.id})">Use</button>
+    <button class="btn danger" onclick="deletePrompt(${x.id})">Delete</button>
+   </div>
+  </div>
+ `).join("");
+}
+function usePrompt(id){
+ const x=prompts.find(v=>v.id===id);if(!x)return;
+ $("question").value=x.text;go("chat");
+}
+function deletePrompt(id){
+ prompts=prompts.filter(x=>x.id!==id);
+ saveJSON(KEYS.prompts,prompts);renderPrompts();
+}
+    
+const toolData={
+ writer:{
+  title:"✍️ AI Writer",
+  description:"Create professional, natural and useful written content.",
+  prompt:"Write high-quality content based on this request:\n"
+ },
+ translator:{
+  title:"🌐 Translator",
+  description:"Translate text while preserving meaning and tone.",
+  prompt:"Translate the following text. Preserve its meaning and natural tone:\n"
+ },
+ summarizer:{
+  title:"📝 Summarizer",
+  description:"Turn long text into a clear concise summary.",
+  prompt:"Summarize the following text with the most important information:\n"
+ },
+ study:{
+  title:"📚 Study Assistant",
+  description:"Explain topics, create notes and help with learning.",
+  prompt:"Act as a helpful study assistant. Explain and organize this topic clearly:\n"
+ },
+ coding:{
+  title:"💻 Coding Assistant",
+  description:"Help understand, debug and improve code.",
+  prompt:"Act as a coding assistant. Analyze and solve this request. Explain the solution clearly:\n"
+ },
+ business:{
+  title:"💼 Business Assistant",
+  description:"Generate practical business ideas, plans and copy.",
+  prompt:"Act as a practical business assistant. Help with this request:\n"
+ },
+ social:{
+  title:"📱 Social Media Assistant",
+  description:"Create captions, hooks, content ideas and posts.",
+  prompt:"Act as a social media content assistant. Create useful content for:\n"
+ },
+ ideas:{
+  title:"💡 Idea Generator",
+  description:"Generate creative and practical ideas.",
+  prompt:"Generate creative, practical and varied ideas for:\n"
+ },
+ email:{
+  title:"📧 Email Writer",
+  description:"Create professional emails.",
+  prompt:"Write a professional and natural email for:\n"
+ },
+ problem:{
+  title:"🎯 Problem Solver",
+  description:"Break down a problem and suggest practical solutions.",
+  prompt:"Analyze this problem and provide practical step-by-step solutions:\n"
+ }
+};
+function renderTools(){
+ $("toolsGrid").innerHTML=Object.entries(toolData).map(([id,t])=>`
+  <div class="tool">
+   <strong>${esc(t.title)}</strong>
+   <small class="muted">${esc(t.description)}</small>
+   <button class="btn primary" style="margin-top:10px;width:100%" onclick="openTool('${id}')">Open</button>
+  </div>
+ `).join("");
+}
+function openTool(id){
+ currentTool=id;
+ const t=toolData[id];
+ $("toolTitle").textContent=t.title;
+ $("toolDescription").textContent=t.description;
+ $("toolInput").value="";
+ $("toolOutput").textContent="Tool output will appear here...";
+ status("toolStatus","");
+ $("toolPanel").classList.remove("hidden");
+ go("toolPanel");
+}
+function closeTool(){
+ currentTool=null;$("toolPanel").classList.add("hidden");
+}
+
+async function runTool(){
+ if(!currentTool)return;
+ const input=$("toolInput").value.trim();
+ if(!input){status("toolStatus","Enter some content first.","err");return}
+ const t=toolData[currentTool];
+ status("toolStatus","Running AI tool...","info");
+ $("toolOutput").textContent="Working...";
+ try{
+  const result=await askRawAI(t.prompt+input);
+  $("toolOutput").textContent=result;
+  stats.tools++;
+  saveJSON(KEYS.stats,stats);updateStats();
+  status("toolStatus","Tool completed.","ok");
+ }catch(e){
+  $("toolOutput").textContent="Tool failed.";
+  status("toolStatus",e.message,"err");
+ }
+}
+
+async function askRawAI(question){
+ const res=await fetch(AI_API_URL,{
+  method:"POST",
+  headers:{"Content-Type":"application/json"},
+  body:JSON.stringify({question})
+ });
+ const raw=await res.text();
+ let data;
+ try{data=JSON.parse(raw)}catch(e){throw new Error("Invalid backend response.")}
+ if(!res.ok)throw new Error(data.error||data.message||"AI request failed");
+ const answer=data.answer??data.reply??data.response??data.output??data.text;
+ if(!answer)throw new Error("Empty AI response");
+ return String(answer);
+}
+async function copyTool(){
+ const text=$("toolOutput").textContent.trim();
+ if(text)await navigator.clipboard.writeText(text);
+ status("toolStatus","Tool output copied.","ok");
+}
+function readTool(){readText($("toolOutput").textContent)}
+function saveTool(){
+ const text=$("toolOutput").textContent.trim();
+ if(!text||text==="Tool output will appear here...")return;
+ saved.unshift({
+  id:Date.now(),
+  title:currentTool?(toolData[currentTool]?.title||"AI Tool"):"AI Tool",
+  text,date:new Date().toLocaleString(),type:"tool"
+ });
+ saved=saved.slice(0,100);
+ saveJSON(KEYS.saved,saved);saveStats();renderSaved();
+ status("toolStatus","Tool output saved.","ok");
+}
+
+async function extractDocument(){
+ const file=$("documentFile").files[0];
+ if(!file){status("documentStatus","Select a PDF, DOCX or TXT file first.","err");return}
+ status("documentStatus","Extracting document...","info");
+ $("documentText").value="";
+ try{
+  let text="";
+  if(file.name.toLowerCase().endsWith(".txt")){
+   text=await file.text();
+  }else if(file.name.toLowerCase().endsWith(".docx")){
+   if(!window.mammoth)throw new Error("DOCX library is still loading. Try again.");
+   const buffer=await file.arrayBuffer();
+   const result=await mammoth.extractRawText({arrayBuffer:buffer});
+   text=result.value;
+  }else if(file.name.toLowerCase().endsWith(".pdf")){
+   const pdfjs=await import("https://cdnjs.cloudflare.com/ajax/libs/pdf.js/4.4.168/pdf.min.mjs");
+   pdfjs.GlobalWorkerOptions.workerSrc=
+    "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/4.4.168/pdf.worker.min.mjs";
+   const buffer=await file.arrayBuffer();
+   const pdf=await pdfjs.getDocument({data:buffer}).promise;
+   let pages=[];
+   for(let i=1;i<=pdf.numPages;i++){
+    const page=await pdf.getPage(i);
+    const content=await page.getTextContent();
+    pages.push(content.items.map(x=>x.str).join(" "));
+   }
+   text=pages.join("\n\n");
+  }else{
+   throw new Error("Only PDF, DOCX and TXT are supported.");
+  }
+  if(!text.trim())throw new Error("No readable text was found.");
+  $("documentText").value=text;
+  status("documentStatus",`Extracted ${text.length.toLocaleString()} characters.`,"ok");
+ }catch(e){status("documentStatus",e.message||"Document extraction failed.","err")}
+}
+
+async function documentAction(action){
+ const text=$("documentText").value.trim();
+ if(!text){status("documentStatus","Extract a document first.","err");return}
+ let instruction="";
+ if(action==="summary")instruction="Summarize this document clearly. Include the main ideas and important details:\n";
+ if(action==="questions")instruction="Create useful questions and answers based only on this document:\n";
+ if(action==="points")instruction="Extract the most important key points from this document:\n";
+ status("documentStatus","AI is analyzing the document...","info");
+ $("documentResult").textContent="Working...";
+ try{
+  const result=await askRawAI(instruction+text.slice(0,120000));
+  $("documentResult").textContent=result;
+  status("documentStatus","Document AI completed.","ok");
+  saved.unshift({
+   id:Date.now(),title:"Document "+action,text:result,
+   date:new Date().toLocaleString(),type:"document"
+  });
+  saved=saved.slice(0,100);saveJSON(KEYS.saved,saved);saveStats();renderSaved();
+ }catch(e){
+  $("documentResult").textContent="Document AI failed.";
+  status("documentStatus",e.message,"err");
+ }
+}
+    function saveMemory(){
+ const text=$("memoryInput").value.trim();
+ if(!text)return;
+ memory.push({id:Date.now(),text,date:new Date().toLocaleString()});
+ memory=memory.slice(-50);
+ saveJSON(KEYS.memory,memory);
+ $("memoryInput").value="";
+ renderMemory();
+}
+function renderMemory(){
+ const box=$("memoryList");
+ if(!memory.length){
+  box.innerHTML='<div class="item muted">No memories saved.</div>';return;
+ }
+ box.innerHTML=memory.map(x=>`
+  <div class="item">
+   <b>${esc(x.text)}</b>
+   <small>${esc(x.date)}</small>
+   <button class="btn danger" style="margin-top:7px" onclick="deleteMemory(${x.id})">Delete</button>
+  </div>
+ `).join("");
+}
+function deleteMemory(id){
+ memory=memory.filter(x=>x.id!==id);
+ saveJSON(KEYS.memory,memory);renderMemory();
+}
+function clearMemory(){
+ if(!confirm("Clear all Smart Memory?"))return;
+ memory=[];saveJSON(KEYS.memory,memory);renderMemory();
+}
+
+function universalSearchRun(){
+ const q=$("universalSearch").value.toLowerCase().trim();
+ const box=$("universalResults");
+ if(!q){box.innerHTML="";return}
+ let results=[];
+ chats.forEach(x=>{
+  if((x.question+" "+x.answer).toLowerCase().includes(q))
+   results.push({type:"Chat",title:x.question,text:x.answer,id:x.id});
+ });
+ saved.forEach(x=>{
+  if((x.title+" "+x.text).toLowerCase().includes(q))
+   results.push({type:"Saved",title:x.title,text:x.text,id:x.id});
+ });
+ prompts.forEach(x=>{
+  if(x.text.toLowerCase().includes(q))
+   results.push({type:"Prompt",title:x.text,text:"Saved prompt",id:x.id});
+ });
+ memory.forEach(x=>{
+  if(x.text.toLowerCase().includes(q))
+   results.push({type:"Memory",title:x.text,text:"Smart Memory",id:x.id});
+ });
+ results=results.slice(0,30);
+ if(!results.length){
+  box.innerHTML='<div class="item muted">Nothing found.</div>';return;
+ }
+ box.innerHTML=results.map(x=>`
+  <div class="item">
+   <span class="pill">${esc(x.type)}</span>
+   <b>${esc(x.title.slice(0,120))}</b>
+   <p>${esc(x.text.slice(0,180))}</p>
+  </div>
+ `).join("");
+}
+function webSearch(){
+ const q=$("universalSearch").value.trim();
+ if(!q){alert("Enter something to search.");return}
+ window.open("https://www.google.com/search?q="+encodeURIComponent(q),"_blank");
+}
+
+function addCustomCommand(){
+ const command=$("customCommand").value.trim().toLowerCase();
+ const url=$("customURL").value.trim();
+ if(!command||!url){alert("Enter both command and URL.");return}
+ let finalURL=url;
+ if(!/^https?:\/\//i.test(finalURL))finalURL="https://"+finalURL;
+ commands.push({id:Date.now(),command,url:finalURL});
+ commands=commands.slice(-100);
+ saveJSON(KEYS.commands,commands);
+ $("customCommand").value="";$("customURL").value="";
+ renderCommands();
+}
+function renderCommands(){
+ const box=$("customList");
+ if(!commands.length){
+  box.innerHTML='<div class="item muted">No custom commands.</div>';return;
+ }
+ box.innerHTML=commands.map(x=>`
+  <div class="item">
+   <b>“${esc(x.command)}”</b>
+   <small>${esc(x.url)}</small>
+   <div class="row" style="margin-top:7px">
+    <button class="btn" onclick="testCommand(${x.id})">Test</button>
+    <button class="btn danger" onclick="deleteCommand(${x.id})">Delete</button>
+   </div>
+  </div>
+ `).join("");
+}
+function testCommand(id){
+ const x=commands.find(v=>v.id===id);if(x)openURL(x.url);
+}
+function deleteCommand(id){
+ commands=commands.filter(x=>x.id!==id);
+ saveJSON(KEYS.commands,commands);renderCommands();
+}
+function clearCustomCommands(){
+ if(!confirm("Clear all custom commands?"))return;
+ commands=[];saveJSON(KEYS.commands,commands);renderCommands();
+}
+function openURL(url){window.open(url,"_blank","noopener,noreferrer")}
+
+function processCommand(raw){
+ const text=raw.toLowerCase().trim();
+ const custom=commands.find(x=>text===x.command||text.includes(x.command));
+ if(custom){openURL(custom.url);return true}
+ if(text.includes("youtube")||text.includes("you tube")){
+  if(text.includes("search")||text.includes("dhoondo")){
+   const q=text.replace(/youtube|you tube|search|dhoondo|khojo|par/gi,"").trim();
+   openURL("https://www.youtube.com/results?search_query="+encodeURIComponent(q||""));
+  }else openURL("https://www.youtube.com/");
+  return true;
+ }
+ if(text.includes("google")&&(
+  text.includes("search")||text.includes("khojo")||text.includes("dhoondo"))){
+  const q=text.replace(/google|search|khojo|dhoondo|par/gi,"").trim();
+  openURL("https://www.google.com/search?q="+encodeURIComponent(q||""));
+  return true;
+ }
+ const sites={
+  whatsapp:"https://web.whatsapp.com/",
+  facebook:"https://www.facebook.com/",
+  instagram:"https://www.instagram.com/",
+  tiktok:"https://www.tiktok.com/"
+ };
+ for(const [name,url] of Object.entries(sites)){
+  if(text.includes(name)){openURL(url);return true}
+ }
+ if(text.includes("time")){
+  alert(new Date().toLocaleTimeString());return true
+ }
+ if(text.includes("date")){
+  alert(new Date().toLocaleDateString());return true
+ }
+ if(text.includes("dark")){setTheme("dark");return true}
+ if(text.includes("light")){setTheme("light");return true}
+ if(text.includes("back")){history.back();return true}
+ if(text.includes("refresh")){location.reload();return true}
+ if(text.includes("new chat")){newChat();return true}
+ return false;
+}
+    function startVoice(){
+ const SR=window.SpeechRecognition||window.webkitSpeechRecognition;
+ if(!SR){
+  status("voiceStatus","Speech recognition is not supported in this browser.","err");
+  return;
+ }
+ if(recognition)try{recognition.stop()}catch(e){}
+ recognition=new SR();
+ recognition.lang="en-US";
+ recognition.interimResults=false;
+ recognition.continuous=false;
+ recognition.onstart=()=>{
+  status("voiceStatus","Listening... Speak now.","ok");
+ };
+ recognition.onerror=e=>{
+  status("voiceStatus","Voice error: "+(e.error||"unknown"),"err");
+ };
+ recognition.onresult=e=>{
+  const text=e.results[0][0].transcript.trim();
+  $("voiceText").textContent=text;
+  stats.voice++;
+  saveJSON(KEYS.stats,stats);updateStats();
+  processVoice(text);
+ };
+ recognition.onend=()=>{
+  if($("voiceStatus"))status("voiceStatus","Voice listening stopped.","info");
+ };
+ recognition.start();
+}
+function stopVoice(){
+ if(recognition)try{recognition.stop()}catch(e){}
+}
+async function voiceAsk(){
+ const SR=window.SpeechRecognition||window.webkitSpeechRecognition;
+ if(!SR){
+  status("voiceStatus","Speech recognition is not supported.","err");return;
+ }
+ const r=new SR();
+ r.lang="en-US";r.interimResults=false;r.continuous=false;
+ status("voiceStatus","Listening for your AI question...","info");
+ r.onresult=async e=>{
+  const text=e.results[0][0].transcript.trim();
+  $("voiceText").textContent=text;
+  $("question").value=text;
+  go("chat");
+  const answer=await askAI(text);
+  if(answer)readText(answer);
+ };
+ r.onerror=e=>status("voiceStatus","Voice error: "+e.error,"err");
+ r.start();
+}
+function processVoice(text){
+ const handled=processCommand(text);
+ if(handled){
+  status("voiceStatus","Command executed.","ok");return;
+ }
+ $("question").value=text;
+ go("chat");
+ askAI(text);
+}
+
+document.addEventListener("keydown",e=>{
+ if((e.ctrlKey||e.metaKey)&&e.key==="Enter"){
+  if(document.activeElement===$("question"))askAI();
+  else if(document.activeElement===$("toolInput"))runTool();
+ }
+});
+
+function openSettings(){$("settingsModal").classList.add("show")}
+function closeSettings(){$("settingsModal").classList.remove("show")}
+$("settingsModal").addEventListener("click",e=>{
+ if(e.target.id==="settingsModal")closeSettings();
+});
+
+function clearEverything(){
+ if(!confirm("This will delete local chats, saved results, prompts, commands, memory and statistics. Continue?"))return;
+ Object.values(KEYS).forEach(k=>localStorage.removeItem(k));
+ chats=[];saved=[];prompts=[];commands=[];memory=[];
+ stats={questions:0,tools:0,voice:0,saved:0};
+ loadAll();
+ closeSettings();
+ alert("Local workspace cleared.");
+}
+
+function renderAll(){
+ updateStats();
+ renderTools();
+ renderChats();
+ renderSaved();
+ renderPrompts();
+ renderMemory();
+ renderCommands();
+ universalSearchRun();
+}
+
+loadTheme();
+checkSession();
+</script>
+
+<script>
+/*
+ AzDar AI V20 extended client functions.
+ These functions are intentionally loaded after the main application
+ so the core platform remains functional even if an optional feature
+ is unavailable in a browser.
+*/
+
+function downloadTextFile(filename,text){
+ const blob=new Blob([text],{type:"text/plain;charset=utf-8"});
+ const a=document.createElement("a");
+ a.href=URL.createObjectURL(blob);
+ a.download=filename;
+ document.body.appendChild(a);
+ a.click();
+ a.remove();
+ setTimeout(()=>URL.revokeObjectURL(a.href),1000);
+}
+
+function exportChats(){
+ if(!chats.length){alert("No chats to export.");return}
+ let text="AzDar AI V20 — Conversation Export\n\n";
+ chats.forEach((x,i)=>{
+  text+=`CHAT ${i+1}\n`;
+  text+=`Date: ${x.date}\n`;
+  text+=`Question: ${x.question}\n`;
+  text+=`Answer:\n${x.answer}\n`;
+  text+="\n"+"=".repeat(60)+"\n\n";
+ });
+ downloadTextFile("azdar-ai-chats.txt",text);
+}
+
+function exportSaved(){
+ if(!saved.length){alert("No saved results to export.");return}
+ let text="AzDar AI V20 — Saved Results\n\n";
+ saved.forEach((x,i)=>{
+  text+=`${i+1}. ${x.title}\n`;
+  text+=`${x.date||""}\n\n`;
+  text+=x.text+"\n\n"+"=".repeat(60)+"\n\n";
+ });
+ downloadTextFile("azdar-ai-saved.txt",text);
+}
+
+async function copyText(text,messageId){
+ try{
+  await navigator.clipboard.writeText(text);
+  if(messageId)status(messageId,"Copied.","ok");
+ }catch(e){
+  alert("Copy is not available. Please copy manually.");
+ }
+}
+
+function insertText(text,target="question"){
+ const el=$(target);
+ if(!el)return;
+ el.value=text;
+ el.focus();
+}
+
+function generateToolFromSelection(type){
+ const selected=window.getSelection()?.toString()?.trim()||"";
+ if(!selected){
+  alert("Select some text first.");
+  return;
+ }
+ if(toolData[type]){
+  openTool(type);
+  $("toolInput").value=selected;
+ }
+}
+
+function createCustomAITool(){
+ const title=prompt("Enter custom tool name:");
+ if(!title)return;
+ const instruction=prompt("Enter the AI instruction for this tool:");
+ if(!instruction)return;
+ const custom={
+  id:"custom_"+Date.now(),
+  title,
+  description:"Custom AI tool",
+  prompt:instruction
+ };
+ const customTools=loadJSON("azdarV20CustomTools",[]);
+ customTools.push(custom);
+ saveJSON("azdarV20CustomTools",customTools);
+ renderCustomTools();
+ alert("Custom AI tool created.");
+}
+
+function renderCustomTools(){
+ const customTools=loadJSON("azdarV20CustomTools",[]);
+ const grid=$("toolsGrid");
+ if(!grid)return;
+ const html=customTools.map(t=>`
+  <div class="tool">
+   <strong>🧩 ${esc(t.title)}</strong>
+   <small class="muted">${esc(t.description)}</small>
+   <button class="btn primary" style="margin-top:10px;width:100%" onclick="openCustomTool('${t.id}')">Open</button>
+  </div>
+ `).join("");
+ if(html)grid.insertAdjacentHTML("beforeend",html);
+}
+
+function openCustomTool(id){
+ const customTools=loadJSON("azdarV20CustomTools",[]);
+ const t=customTools.find(x=>x.id===id);
+ if(!t)return;
+ currentTool=id;
+ $("toolTitle").textContent="🧩 "+t.title;
+ $("toolDescription").textContent=t.description;
+ $("toolInput").value="";
+ $("toolOutput").textContent="Tool output will appear here...";
+ status("toolStatus","");
+ $("toolPanel").classList.remove("hidden");
+ go("toolPanel");
+}
+
+function renderToolsWithCustom(){
+ renderTools();
+ renderCustomTools();
+}
+
+function initializeExtendedFeatures(){
+ renderToolsWithCustom();
+}
+
+initializeExtendedFeatures();
+
+</script>
+</body>
+</html>
