@@ -1,532 +1,161 @@
-<!DOCTYPE html> 
+<!DOCTYPE html>
 <html lang="en">
 <head> 
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#080b16">
-<title>AzDar AI V21 — AI Tools Platform</title>
-
+<title>AzDar AI V30 — AI Tools Platform</title>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/4.4.168/pdf.min.mjs" type="module"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.8.0/mammoth.browser.min.js"></script>
-
 <style>
 :root{
- --bg:#070a12;
- --card:#101522;
- --card2:#151b2b;
- --text:#f5f7ff;
- --muted:#9da7bd;
- --line:#273047;
- --accent:#6d7cff;
- --accent2:#9b6cff;
- --danger:#ff5d73;
- --success:#35d49a;
- --shadow:0 18px 50px #0008;
+ --bg:#070a12;--card:#101522;--card2:#151b2b;--text:#f5f7ff;
+ --muted:#9da7bd;--line:#273047;--accent:#6d7cff;--accent2:#9b6cff;
+ --danger:#ff5d73;--success:#35d49a;--shadow:0 18px 50px #0008;
 }
-
 *{box-sizing:border-box}
-
-html{
- scroll-behavior:smooth
-}
-
+html{scroll-behavior:smooth}
 body{
- margin:0;
- background:radial-gradient(circle at top,#172044 0,#070a12 48%);
- color:var(--text);
- font-family:Inter,Arial,sans-serif;
- min-height:100vh
+ margin:0;background:radial-gradient(circle at top,#172044 0,#070a12 48%);
+ color:var(--text);font-family:Inter,Arial,sans-serif;min-height:100vh
 }
-
-button,input,textarea,select{
- font:inherit
-}
-
-button{
- cursor:pointer
-}
-
-.app{
- max-width:1180px;
- margin:auto;
- padding:16px
-}
-
+button,input,textarea,select{font:inherit}
+button{cursor:pointer}
+.app{max-width:1180px;margin:auto;padding:16px}
 .topbar{
- position:sticky;
- top:0;
- z-index:20;
- display:flex;
- align-items:center;
- justify-content:space-between;
- gap:10px;
- padding:12px 14px;
- margin-bottom:16px;
- background:#090d18e8;
- border:1px solid var(--line);
- border-radius:20px;
+ position:sticky;top:0;z-index:20;display:flex;align-items:center;
+ justify-content:space-between;gap:10px;padding:12px 14px;margin-bottom:16px;
+ background:#090d18e8;border:1px solid var(--line);border-radius:20px;
  backdrop-filter:blur(18px)
 }
-
-.brand{
- display:flex;
- align-items:center;
- gap:10px
-}
-
+.brand{display:flex;align-items:center;gap:10px}
 .logo{
- width:46px;
- height:46px;
- border-radius:15px;
- display:grid;
- place-items:center;
+ width:46px;height:46px;border-radius:15px;display:grid;place-items:center;
  background:linear-gradient(135deg,var(--accent),var(--accent2));
- font-size:25px;
- font-weight:900;
- box-shadow:0 8px 25px #6d7cff55
+ font-size:25px;font-weight:900;box-shadow:0 8px 25px #6d7cff55
 }
-
-.brand h1{
- font-size:18px;
- margin:0
-}
-
-.brand small{
- color:var(--muted)
-}
-
-.nav{
- display:flex;
- gap:6px;
- flex-wrap:wrap;
- justify-content:flex-end
-}
-
+.brand h1{font-size:18px;margin:0}.brand small{color:var(--muted)}
+.logo-img{width:46px;height:46px;object-fit:contain;border-radius:14px;display:block;filter:drop-shadow(0 8px 18px #0008)}
+.auth-logo-img{width:120px;height:120px;object-fit:contain;display:block;margin:0 auto 12px;border-radius:24px;filter:drop-shadow(0 10px 24px #0009)}
+.nav{display:flex;gap:6px;flex-wrap:wrap;justify-content:flex-end}
 .btn{
- border:1px solid var(--line);
- background:var(--card2);
- color:var(--text);
- padding:10px 13px;
- border-radius:12px;
- font-weight:700
+ border:1px solid var(--line);background:var(--card2);color:var(--text);
+ padding:10px 13px;border-radius:12px;font-weight:700
 }
-
-.btn:hover{
- transform:translateY(-1px);
- border-color:#59688f
-}
-
-.primary{
- background:linear-gradient(135deg,var(--accent),var(--accent2));
- border:0
-}
-
-.danger{
- color:#fff;
- background:#5d1e2b
-}
-
-.success{
- color:#fff;
- background:#164d3d
-}
-
-.muted{
- color:var(--muted)
-}
-
+.btn:hover{transform:translateY(-1px);border-color:#59688f}
+.primary{background:linear-gradient(135deg,var(--accent),var(--accent2));border:0}
+.danger{color:#fff;background:#5d1e2b}
+.success{color:#fff;background:#164d3d}
+.muted{color:var(--muted)}
 .hero{
- padding:30px 22px;
- border:1px solid var(--line);
- border-radius:26px;
- background:linear-gradient(145deg,#131a2cdd,#0c101bdd);
- box-shadow:var(--shadow);
+ padding:30px 22px;border:1px solid var(--line);border-radius:26px;
+ background:linear-gradient(145deg,#131a2cdd,#0c101bdd);box-shadow:var(--shadow);
  margin-bottom:16px
 }
-
-.hero h2{
- font-size:clamp(28px,6vw,48px);
- margin:0 0 10px
-}
-
-.hero p{
- color:var(--muted);
- max-width:760px;
- line-height:1.6
-}
-
-.grid{
- display:grid;
- grid-template-columns:repeat(4,1fr);
- gap:12px
-}
-
-.grid3{
- display:grid;
- grid-template-columns:repeat(3,1fr);
- gap:12px
-}
-
-.grid2{
- display:grid;
- grid-template-columns:repeat(2,1fr);
- gap:12px
-}
-
+.hero h2{font-size:clamp(28px,6vw,48px);margin:0 0 10px}
+.hero p{color:var(--muted);max-width:760px;line-height:1.6}
+.grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.grid2{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
 .card{
  background:linear-gradient(145deg,var(--card),#0c111d);
- border:1px solid var(--line);
- border-radius:20px;
- padding:18px;
+ border:1px solid var(--line);border-radius:20px;padding:18px;
  box-shadow:0 10px 35px #0004
 }
-
-.card h3{
- margin-top:0
-}
-
-.stat strong{
- font-size:28px;
- display:block;
- margin-top:5px
-}
-
-.stat span{
- color:var(--muted);
- font-size:13px
-}
-
-.section{
- margin:16px 0
-}
-
+.card h3{margin-top:0}
+.stat strong{font-size:28px;display:block;margin-top:5px}
+.stat span{color:var(--muted);font-size:13px}
+.section{margin:16px 0}
 textarea,input,select{
- width:100%;
- border:1px solid var(--line);
- background:#080c15;
- color:var(--text);
- border-radius:14px;
- padding:13px;
- outline:none
+ width:100%;border:1px solid var(--line);background:#080c15;color:var(--text);
+ border-radius:14px;padding:13px;outline:none
 }
-
-textarea:focus,
-input:focus,
-select:focus{
- border-color:var(--accent)
-}
-
-textarea{
- resize:vertical;
- min-height:130px;
- line-height:1.5
-}
-
-.row{
- display:flex;
- gap:8px;
- flex-wrap:wrap
-}
-
-.row>*{
- flex:1
-}
-
+textarea:focus,input:focus,select:focus{border-color:var(--accent)}
+textarea{resize:vertical;min-height:130px;line-height:1.5}
+.row{display:flex;gap:8px;flex-wrap:wrap}
+.row>*{flex:1}
 .answer{
- white-space:pre-wrap;
- line-height:1.65;
- background:#080c15;
- border:1px solid var(--line);
- border-radius:15px;
- padding:15px;
- min-height:80px
+ white-space:pre-wrap;line-height:1.65;background:#080c15;border:1px solid var(--line);
+ border-radius:15px;padding:15px;min-height:80px
 }
-
 .pill{
- display:inline-block;
- padding:6px 9px;
- border-radius:999px;
- background:#202944;
- color:#cbd4f5;
- font-size:12px;
- margin:3px
+ display:inline-block;padding:6px 9px;border-radius:999px;background:#202944;
+ color:#cbd4f5;font-size:12px;margin:3px
 }
-
 .tool{
- padding:15px;
- border:1px solid var(--line);
- border-radius:16px;
- background:#0d1320
+ padding:15px;border:1px solid var(--line);border-radius:16px;background:#0d1320
 }
-
-.tool strong{
- display:block;
- margin-bottom:6px
-}
-
-.list{
- display:flex;
- flex-direction:column;
- gap:8px
-}
-
+.tool strong{display:block;margin-bottom:6px}
+.list{display:flex;flex-direction:column;gap:8px}
 .item{
- border:1px solid var(--line);
- border-radius:14px;
- padding:12px;
- background:#0c111d
+ border:1px solid var(--line);border-radius:14px;padding:12px;background:#0c111d
 }
-
-.item b{
- display:block;
- margin-bottom:5px
-}
-
-.item small{
- color:var(--muted)
-}
-
-.hidden{
- display:none!important
-}
-
+.item b{display:block;margin-bottom:5px}
+.item small{color:var(--muted)}
+.hidden{display:none!important}
 .auth{
- min-height:100vh;
- display:grid;
- place-items:center;
- padding:20px
+ min-height:100vh;display:grid;place-items:center;padding:20px
 }
-
-.authbox{
- width:min(470px,100%);
- padding:25px
-}
-
-.auth-tabs{
- display:flex;
- gap:7px;
- margin-bottom:15px
-}
-
-.auth-tabs button{
- flex:1
-}
-
-.status{
- padding:10px;
- border-radius:12px;
- margin:10px 0;
- font-size:14px
-}
-
-.status.ok{
- background:#123c30;
- color:#70e6ba
-}
-
-.status.err{
- background:#431d28;
- color:#ff9bac
-}
-
-.status.info{
- background:#1b2440;
- color:#b9c4ff
-}
-
+.authbox{width:min(470px,100%);padding:25px}
+.auth-tabs{display:flex;gap:7px;margin-bottom:15px}
+.auth-tabs button{flex:1}
+.status{padding:10px;border-radius:12px;margin:10px 0;font-size:14px}
+.status.ok{background:#123c30;color:#70e6ba}
+.status.err{background:#431d28;color:#ff9bac}
+.status.info{background:#1b2440;color:#b9c4ff}
 .modal{
- position:fixed;
- inset:0;
- background:#0009;
- display:none;
- align-items:center;
- justify-content:center;
- padding:18px;
- z-index:100
+ position:fixed;inset:0;background:#0009;display:none;align-items:center;
+ justify-content:center;padding:18px;z-index:100
 }
-
-.modal.show{
- display:flex
-}
-
+.modal.show{display:flex}
 .modalbox{
- width:min(700px,100%);
- max-height:90vh;
- overflow:auto;
- background:var(--card);
- border:1px solid var(--line);
- border-radius:22px;
- padding:20px
+ width:min(700px,100%);max-height:90vh;overflow:auto;background:var(--card);
+ border:1px solid var(--line);border-radius:22px;padding:20px
 }
-
 .bottomnav{
- display:none;
- position:fixed;
- bottom:10px;
- left:10px;
- right:10px;
- z-index:50;
- background:#0b101ceF;
- border:1px solid var(--line);
- border-radius:18px;
- padding:8px;
- grid-template-columns:repeat(5,1fr);
- gap:5px
+ display:none;position:fixed;bottom:10px;left:10px;right:10px;z-index:50;
+ background:#0b101ceF;border:1px solid var(--line);border-radius:18px;
+ padding:8px;grid-template-columns:repeat(5,1fr);gap:5px
 }
-
-.bottomnav button{
- font-size:11px;
- padding:9px 3px
-}
-
-footer{
- text-align:center;
- color:var(--muted);
- padding:30px 10px
-}
-
+.bottomnav button{font-size:11px;padding:9px 3px}
+footer{text-align:center;color:var(--muted);padding:30px 10px}
 @media(max-width:850px){
- .grid{
-  grid-template-columns:repeat(2,1fr)
- }
-
- .grid3{
-  grid-template-columns:1fr 1fr
- }
-
- .topbar{
-  align-items:flex-start
- }
-
- .nav{
-  display:none
- }
-
- .bottomnav{
-  display:grid
- }
-
- body{
-  padding-bottom:80px
- }
+ .grid{grid-template-columns:repeat(2,1fr)}
+ .grid3{grid-template-columns:1fr 1fr}
+ .topbar{align-items:flex-start}.nav{display:none}.bottomnav{display:grid}
+ body{padding-bottom:80px}
 }
-
 @media(max-width:560px){
- .app{
-  padding:10px
- }
-
- .grid,
- .grid2,
- .grid3{
-  grid-template-columns:1fr
- }
-
- .hero{
-  padding:23px 16px
- }
-
- .card{
-  padding:15px
- }
-
- .brand small{
-  display:none
- }
+ .app{padding:10px}.grid,.grid2,.grid3{grid-template-columns:1fr}
+ .hero{padding:23px 16px}.card{padding:15px}
+ .brand small{display:none}
 }
 
-/* AzDar AI V21 branded logo */
-.az-logo-wrap{
- display:flex;
- align-items:center;
- gap:10px;
- min-width:0
-}
-
-.az-logo-svg{
- width:54px;
- height:54px;
- flex:0 0 54px;
- filter:drop-shadow(0 8px 18px rgba(0,0,0,.28))
-}
-
-.az-logo-img{
- width:58px;
- height:58px;
- object-fit:cover;
- border-radius:50%;
- display:block;
- flex:0 0 58px;
- filter:drop-shadow(0 8px 18px rgba(0,0,0,.32))
-}
-
-.auth-logo-img{
- width:190px;
- height:190px;
- object-fit:cover;
- border-radius:50%;
- display:block;
- margin:0 auto 14px;
- filter:drop-shadow(0 12px 28px rgba(0,0,0,.4))
-}
-
-.auth-brand{
- display:flex;
- flex-direction:column;
- align-items:center;
- text-align:center
-}
-
-@media(max-width:560px){
- .az-logo-img{
-  width:46px;
-  height:46px;
-  flex-basis:46px
- }
-
- .auth-logo-img{
-  width:155px;
-  height:155px
- }
-}
-
-.az-logo-name{
- font-weight:900;
- letter-spacing:.2px;
- line-height:1.05
-}
-
-.az-logo-name span{
- display:block;
- font-size:12px;
- font-weight:600;
- opacity:.72;
- margin-top:4px
-}
-
-@media(max-width:560px){
- .az-logo-svg{
-  width:46px;
-  height:46px;
-  flex-basis:46px
- }
-
- .az-logo-name{
-  font-size:18px
- }
-
- .az-logo-name span{
-  font-size:10px
- }
-}
+/* AzDar AI V30 branded logo */
+.az-logo-wrap{display:flex;align-items:center;gap:10px;min-width:0}
+.az-logo-svg{width:54px;height:54px;flex:0 0 54px;filter:drop-shadow(0 8px 18px rgba(0,0,0,.28))}
+.az-logo-name{font-weight:900;letter-spacing:.2px;line-height:1.05}
+.az-logo-name span{display:block;font-size:12px;font-weight:600;opacity:.72;margin-top:4px}
+@media(max-width:560px){.az-logo-svg{width:46px;height:46px;flex-basis:46px}.az-logo-name{font-size:18px}.az-logo-name span{font-size:10px}}
 </style>
 </head>
 <body>
+<div id="authScreen" class="auth">
+ <div class="card authbox">
+  <div style="text-align:center;margin-bottom:20px">
+   <img class="auth-logo-img" src="AzDar AI Neon Robot Emblem.png" alt="AzDar AI — Created by Azmat Ali">
+   <h1 style="margin:0">AzDar AI</h1>
+   <small class="muted">Created by Azmat Ali</small>
+  </div>
+  <div class="auth-tabs">
+   <button class="btn primary" id="loginTab">Login</button>
+   <button class="btn" id="registerTab">Register</button>
+  </div>
   <div id="authStatus"></div>
   <input id="authName" placeholder="Your name" class="hidden">
   <br class="hidden" id="nameBreak">
-  <input id="authEmail" type="email" placeholder="Email address">
+    <input id="authEmail" type="email" placeholder="Email address">
   <br>
   <input id="authPassword" type="password" placeholder="Password">
   <div class="row" style="margin-top:10px">
@@ -534,7 +163,7 @@ footer{
    <button class="btn" id="forgotBtn">Forgot Password</button>
   </div>
   <p class="muted" style="font-size:13px;margin-top:15px">
-   AzDar AI V21 — Your personal AI workspace.
+   AzDar AI V30 — Your personal AI workspace.
   </p>
  </div>
 </div>
@@ -543,9 +172,9 @@ footer{
 <header class="topbar">
  <div class="brand">
   <div class="az-logo-wrap" aria-label="AzDar AI — Created by Azmat Ali">
-   <img class="auth-logo-img" src="AzDar AI Neon Robot Emblem.png" alt="AzDar AI — Created by Azmat Ali">
-   <div class="az-logo-name">AzDar AI<span>Created by Azmat Ali</span></div>
-  </div>
+ <img class="logo-img" src="AzDar AI Neon Robot Emblem.png" alt="AzDar AI">
+ <div class="az-logo-name">AzDar AI<span>Created by Azmat Ali</span></div>
+</div>
  </div>
  <nav class="nav">
   <button class="btn" onclick="go('home')">Home</button>
@@ -559,7 +188,7 @@ footer{
 
 <main id="main">
 <section id="home" class="hero">
- <span class="pill">V21 PLATFORM</span>
+ <span class="pill">V30 PLATFORM</span>
  <h2>One AI. Many Powerful Tools.</h2>
  <p>
   Chat, voice, documents, writing, study, coding, business, search,
@@ -605,986 +234,1425 @@ footer{
  <h3>⚡ Prompt Center</h3>
  <div class="grid3">
   <button class="btn" onclick="promptAI('Explain this simply: ')">Explain</button>
-  <button class="btn" onclick="promptAI('Write a professional version of: ')">Write</button>
+  <button class="btn" onclick="promptAI('Write this professionally: ')">Write</button>
   <button class="btn" onclick="promptAI('Summarize this: ')">Summarize</button>
   <button class="btn" onclick="promptAI('Translate this into English: ')">Translate</button>
-  <button class="btn" onclick="promptAI('Give me creative ideas for: ')">Brainstorm</button>
-  <button class="btn" onclick="promptAI('Help me solve this coding problem: ')">Coding</button>
+  <button class="btn" onclick="promptAI('Brainstorm ideas for: ')">Brainstorm</button>
+  <button class="btn" onclick="promptAI('Help me with this coding problem: ')">Coding</button>
  </div>
 </section>
 
 <section id="tools" class="section card">
- <h3>🛠️ AI Tools Center</h3>
+ <div class="row" style="align-items:center">
+  <div style="flex:2">
+   <h3 style="margin-bottom:5px">🛠️ AI Tools Center</h3>
+   <p class="muted">Professional tools for everyday AI work.</p>
+  </div>
+  <div style="flex:1">
+   <input id="toolSearch" placeholder="Search tools..." oninput="filterTools(this.value)">
+  </div>
+ </div>
  <div id="toolsGrid" class="grid3"></div>
 </section>
 
 <section id="toolPanel" class="section card hidden">
- <h3 id="toolTitle">AI Tool</h3>
- <p id="toolDescription" class="muted"></p>
- <textarea id="toolInput" placeholder="Enter your content..."></textarea>
+ <div class="row">
+  <div style="flex:2">
+   <h3 id="toolTitle">Tool</h3>
+   <p id="toolDescription" class="muted"></p>
+  </div>
+  <button class="btn" onclick="closeTool()">✕ Close</button>
+ </div>
+ <textarea id="toolInput" placeholder="Enter your content here..."></textarea>
  <div class="row" style="margin-top:9px">
-  <button class="btn primary" onclick="runTool()">Run Tool</button>
-  <button class="btn" onclick="closeTool()">Close</button>
+  <button class="btn primary" onclick="runTool()">🚀 Run Tool</button>
+  <button class="btn" onclick="clearTool()">Clear</button>
  </div>
  <div id="toolStatus"></div>
  <div id="toolOutput" class="answer">Tool output will appear here...</div>
  <div class="row" style="margin-top:9px">
-  <button class="btn" onclick="copyTool()">📋 Copy</button>
-  <button class="btn" onclick="readTool()">🔊 Read</button>
-  <button class="btn success" onclick="saveTool()">💾 Save</button>
+  <button class="btn" onclick="copyToolOutput()">📋 Copy</button>
+  <button class="btn success" onclick="saveToolOutput()">💾 Save</button>
  </div>
 </section>
-
+ 
 <section id="voice" class="section card">
  <h3>🎙️ Voice AI Pro</h3>
- <p class="muted">English and Roman Urdu voice commands are supported where browser speech recognition is available.</p>
+ <p class="muted">Speak naturally in English or Roman Urdu.</p>
  <div class="row">
   <button class="btn primary" onclick="startVoice()">🎙️ Start Listening</button>
   <button class="btn" onclick="stopVoice()">⏹ Stop</button>
+  <button class="btn" onclick="readAnswer()">🔊 Read Answer</button>
  </div>
- <div id="voiceStatus"></div>
- <div id="voiceText" class="answer">Voice text will appear here...</div>
+ <div id="voiceStatus" class="status info">Voice is ready.</div>
+ <div class="item">
+  <b>Recognized Command</b>
+  <div id="voiceText" class="muted">Nothing heard yet.</div>
+ </div>
 </section>
 
-<section class="section card">
- <h3>⚡ Smart Website Commands</h3>
+<section id="commands" class="section card">
+ <h3>🌐 Smart Website Commands</h3>
+ <p class="muted">Use quick actions or create your own voice commands.</p>
  <div class="grid3">
-  <button class="btn" onclick="processCommand('youtube kholo')">YouTube</button>
-  <button class="btn" onclick="processCommand('google kholo')">Google</button>
-  <button class="btn" onclick="processCommand('whatsapp kholo')">WhatsApp</button>
-  <button class="btn" onclick="processCommand('facebook kholo')">Facebook</button>
-  <button class="btn" onclick="processCommand('instagram kholo')">Instagram</button>
-  <button class="btn" onclick="processCommand('tiktok kholo')">TikTok</button>
-  <button class="btn" onclick="processCommand('time')">Time</button>
-  <button class="btn" onclick="processCommand('date')">Date</button>
-  <button class="btn" onclick="setTheme('dark')">Dark</button>
-  <button class="btn" onclick="setTheme('light')">Light</button>
-  <button class="btn" onclick="history.back()">Back</button>
-  <button class="btn" onclick="location.reload()">Refresh</button>
+  <button class="btn" onclick="runCommand('youtube')">▶️ YouTube</button>
+  <button class="btn" onclick="runCommand('google')">🔎 Google</button>
+  <button class="btn" onclick="runCommand('whatsapp')">💬 WhatsApp</button>
+  <button class="btn" onclick="runCommand('facebook')">📘 Facebook</button>
+  <button class="btn" onclick="runCommand('instagram')">📸 Instagram</button>
+  <button class="btn" onclick="runCommand('tiktok')">🎵 TikTok</button>
+  <button class="btn" onclick="runCommand('time')">🕐 Time</button>
+  <button class="btn" onclick="runCommand('date')">📅 Date</button>
+  <button class="btn" onclick="runCommand('dark')">🌙 Dark</button>
+  <button class="btn" onclick="runCommand('light')">☀️ Light</button>
+  <button class="btn" onclick="runCommand('back')">⬅️ Back</button>
+  <button class="btn" onclick="runCommand('refresh')">🔄 Refresh</button>
  </div>
-</section>
-
-<section class="section card">
- <h3>🧩 Custom Commands</h3>
- <div class="grid2">
-  <input id="customCommand" placeholder="Command e.g. college kholo">
-  <input id="customURL" placeholder="URL e.g. https://example.com">
- </div>
- <div class="row" style="margin-top:9px">
-  <button class="btn primary" onclick="addCustomCommand()">＋ Add Command</button>
-  <button class="btn" onclick="clearCustomCommands()">Clear All</button>
- </div>
- <div id="customList" class="list" style="margin-top:12px"></div>
-</section>
-
-<section id="workspace" class="section">
- <div class="grid2">
-  <div class="card">
-   <h3>💬 Conversation History</h3>
-   <input id="chatSearch" placeholder="Search conversations..." oninput="renderChats()">
-   <div id="chatList" class="list" style="margin-top:10px"></div>
+ <div class="section">
+  <h4>➕ Custom Commands</h4>
+  <div class="row">
+   <input id="commandName" placeholder="Command e.g. TikTok kholo">
+   <input id="commandUrl" placeholder="URL e.g. https://www.tiktok.com">
+   <button class="btn primary" onclick="addCustomCommand()">Add</button>
   </div>
-  <div class="card">
-   <h3>💾 Saved Results</h3>
-   <input id="savedSearch" placeholder="Search saved results..." oninput="renderSaved()">
-   <div id="savedList" class="list" style="margin-top:10px"></div>
-  </div>
+  <div id="commandList" class="list" style="margin-top:10px"></div>
  </div>
-</section>
-
-<section class="section card">
- <h3>⭐ Prompt Library</h3>
- <textarea id="promptInput" placeholder="Save your own reusable prompt..."></textarea>
- <div class="row" style="margin-top:9px">
-  <button class="btn primary" onclick="savePrompt()">Save Prompt</button>
- </div>
- <div id="promptList" class="list" style="margin-top:12px"></div>
 </section>
 
 <section id="documents" class="section card">
  <h3>📄 Document AI Pro</h3>
- <p class="muted">Upload PDF, DOCX or TXT and extract its text in your browser before sending selected tasks to the AI backend.</p>
+ <p class="muted">Extract text from PDF, DOCX or TXT, then ask AI to analyze it.</p>
  <input id="documentFile" type="file" accept=".pdf,.docx,.txt">
- <div id="documentStatus"></div>
- <textarea id="documentText" placeholder="Extracted document text will appear here..."></textarea>
  <div class="row" style="margin-top:9px">
   <button class="btn primary" onclick="extractDocument()">📥 Extract Document</button>
-  <button class="btn" onclick="documentAction('summary')">Summary</button>
-  <button class="btn" onclick="documentAction('questions')">Questions</button>
-  <button class="btn" onclick="documentAction('points')">Key Points</button>
+  <button class="btn" onclick="clearDocument()">Clear</button>
  </div>
- <div id="documentResult" class="answer" style="margin-top:10px">Document AI result...</div>
-</section>
-
-<section class="section card">
- <h3>🧠 Smart Memory</h3>
- <p class="muted">Saved memories can automatically be added to your AI request as context.</p>
- <textarea id="memoryInput" placeholder="Example: I prefer simple explanations in Roman Urdu."></textarea>
+ <div id="documentStatus"></div>
+ <div id="documentText" class="answer">Document text will appear here...</div>
  <div class="row" style="margin-top:9px">
-  <button class="btn primary" onclick="saveMemory()">Save Memory</button>
-  <button class="btn" onclick="clearMemory()">Clear Memory</button>
+  <button class="btn" onclick="documentAI('Summarize this document clearly:')">📝 Summary</button>
+  <button class="btn" onclick="documentAI('Generate important questions and answers from this document:')">❓ Questions</button>
+  <button class="btn" onclick="documentAI('Extract the key points and important details from this document:')">📌 Key Points</button>
  </div>
- <div id="memoryList" class="list" style="margin-top:12px"></div>
+ <div id="documentAIStatus"></div>
+ <div id="documentAIOutput" class="answer">AI document result will appear here...</div>
 </section>
 
-<section class="section card">
+<section id="workspace" class="section card">
+ <h3>🧠 Personal Workspace</h3>
+ <div class="grid3">
+  <div class="item"><b>Conversation History</b><small>Previous AI chats</small></div>
+  <div class="item"><b>Saved Results</b><small>Important AI outputs</small></div>
+  <div class="item"><b>Smart Memory</b><small>Your saved context</small></div>
+ </div>
+
+ <div class="section">
+  <h4>💬 Conversation History</h4>
+  <input id="chatSearch" placeholder="Search conversations..." oninput="renderChats(this.value)">
+  <div id="chatList" class="list" style="margin-top:10px"></div>
+ </div>
+
+ <div class="section">
+  <h4>💾 Saved Results</h4>
+  <input id="savedSearch" placeholder="Search saved results..." oninput="renderSaved(this.value)">
+  <div id="savedList" class="list" style="margin-top:10px"></div>
+ </div>
+</section>
+
+<section id="memory" class="section card">
+ <h3>🧠 Smart Memory</h3>
+ <p class="muted">Save useful information that can be included in future AI questions.</p>
+ <div class="row">
+  <input id="memoryInput" placeholder="e.g. I prefer simple Roman Urdu explanations">
+  <button class="btn primary" onclick="saveMemory()">Save Memory</button>
+ </div>
+ <div id="memoryList" class="list" style="margin-top:10px"></div>
+</section>
+
+<section id="search" class="section card">
  <h3>🔎 Universal Search</h3>
- <input id="universalSearch" placeholder="Search chats, saved results, prompts and memories..." oninput="universalSearchRun()">
- <div id="universalResults" class="list" style="margin-top:12px"></div>
- <button class="btn" style="margin-top:10px" onclick="webSearch()">🌐 Search Web</button>
+ <input id="searchInput" placeholder="Search Google or your workspace...">
+ <div class="row" style="margin-top:9px">
+  <button class="btn primary" onclick="universalSearch()">Search</button>
+  <button class="btn" onclick="googleSearch()">Google</button>
+ </div>
+ <div id="searchResults" class="list" style="margin-top:10px"></div>
 </section>
 
-<section class="section card">
+ <section id="prompts" class="section card">
+ <h3>📚 Prompt Library</h3>
+ <div class="row">
+  <input id="promptTitle" placeholder="Prompt title">
+  <button class="btn primary" onclick="savePrompt()">Save Prompt</button>
+ </div>
+ <textarea id="promptText" placeholder="Write your reusable prompt..." style="margin-top:9px"></textarea>
+ <div id="promptList" class="list" style="margin-top:10px"></div>
+</section>
+
+<section id="productivity" class="section card">
  <h3>⚡ Productivity Center</h3>
  <div class="grid3">
-  <button class="btn" onclick="productivity('Write a professional email about: ')">📧 Email Writer</button>
-  <button class="btn" onclick="productivity('Create a social media caption about: ')">📱 Caption Writer</button>
-  <button class="btn" onclick="productivity('Create a study plan for: ')">📚 Study Plan</button>
-  <button class="btn" onclick="productivity('Create a practical business plan for: ')">💼 Business Plan</button>
-  <button class="btn" onclick="productivity('Help me solve this problem: ')">🎯 Problem Solver</button>
-  <button class="btn" onclick="productivity('Give me 10 useful ideas for: ')">💡 10 Ideas</button>
+  <button class="btn" onclick="insertPromptTemplate('professional')">Professional Writing</button>
+  <button class="btn" onclick="insertPromptTemplate('study')">Study Tutor</button>
+  <button class="btn" onclick="insertPromptTemplate('business')">Business Plan</button>
+  <button class="btn" onclick="insertPromptTemplate('coding')">Coding Help</button>
+  <button class="btn" onclick="insertPromptTemplate('social')">Social Captions</button>
+  <button class="btn" onclick="insertPromptTemplate('summarize')">Quick Summary</button>
  </div>
 </section>
 
-<section class="section card">
- <h3>👤 Account Center</h3>
- <div class="grid2">
-  <div>
-   <p><span class="muted">Name</span><br><b id="accountName">—</b></p>
-   <p><span class="muted">Email</span><br><b id="accountEmail">—</b></p>
+<section id="dashboard" class="section card">
+ <h3>📊 Smart Dashboard</h3>
+ <div class="grid3">
+  <div class="item">
+   <b>Activity</b>
+   <strong id="dashActivity">0</strong>
+   <small>Total questions + tools + voice uses</small>
   </div>
-  <div>
-   <p><span class="muted">Platform</span><br><b>AzDar AI V21</b></p>
-   <p><span class="muted">Creator</span><br><b>Azmat Ali</b></p>
-
+  <div class="item">
+   <b>Saved + Chats</b>
+   <strong id="dashSavedChats">0</strong>
+   <small>Your workspace content</small>
+  </div>
+  <div class="item">
+   <b>Memory</b>
+   <strong id="dashMemory">0</strong>
+   <small>Saved memory items</small>
   </div>
  </div>
- <div class="row">
+ <div class="row" style="margin-top:12px">
+  <span id="connectionPill" class="pill">🟢 Online</span>
+ </div>
+</section>
+
+<section id="account" class="section card">
+ <h3>👤 Account Center</h3>
+ <div class="item">
+  <b id="accountName">User</b>
+  <small id="accountEmail">Not signed in</small>
+ </div>
+ <div class="row" style="margin-top:10px">
   <button class="btn" onclick="openSettings()">⚙️ Settings</button>
   <button class="btn danger" onclick="logout()">Logout</button>
  </div>
 </section>
 
 <footer>
- <b>AzDar AI V21</b><br>
- Created by Azmat Ali<br>
- <span>AI Platform • Workspace • Tools • Documents • Voice</span>
+ <b>AzDar AI V30</b><br>
+ <span>Created by Azmat Ali • AI Tools Platform</span>
 </footer>
 </main>
 
 <div class="bottomnav">
  <button class="btn" onclick="go('home')">🏠<br>Home</button>
- <button class="btn" onclick="go('chat')">🤖<br>Chat</button>
+ <button class="btn" onclick="go('chat')">🤖<br>AI</button>
  <button class="btn" onclick="go('tools')">🛠️<br>Tools</button>
- <button class="btn" onclick="go('workspace')">💾<br>Work</button>
+ <button class="btn" onclick="go('workspace')">🧠<br>Work</button>
  <button class="btn" onclick="openSettings()">⚙️<br>Settings</button>
-</div>
 </div>
 
 <div id="settingsModal" class="modal">
  <div class="modalbox">
-  <h3>⚙️ Settings</h3>
-  <p class="muted">Customize your AzDar AI workspace.</p>
   <div class="row">
-   <button class="btn" onclick="setTheme('dark');closeSettings()">🌙 Dark</button>
-   <button class="btn" onclick="setTheme('light');closeSettings()">☀️ Light</button>
+   <div style="flex:2"><h3>⚙️ AzDar AI Settings</h3></div>
+   <button class="btn" onclick="closeSettings()">✕</button>
   </div>
-  <hr style="border-color:var(--line);margin:18px 0">
-  <button class="btn danger" onclick="clearEverything()">Clear Local Workspace</button>
-  <button class="btn" style="margin-top:8px" onclick="closeSettings()">Close</button>
+  <label class="muted">Theme</label>
+  <select id="themeSelect" onchange="setTheme(this.value)">
+   <option value="dark">Dark</option>
+   <option value="light">Light</option>
+  </select>
+  <div style="margin-top:14px">
+   <button class="btn danger" onclick="clearWorkspace()">Clear Local Workspace</button>
+  </div>
  </div>
 </div>
 
 <script>
-const SUPABASE_URL="https://pqqhswvtrxktzrcrrnka.supabase.co";
+ const SUPABASE_URL="https://pqqhswvtrxktzrcrrnka.supabase.co";
 const SUPABASE_KEY="sb_publishable_9XSVISR_xvcPX_xP4MIFzQ_-HIHvSXo";
 const AI_API_URL="https://voice-command-ai-five.vercel.app/api/ask";
-const supabaseClient=window.supabase.createClient(SUPABASE_URL,SUPABASE_KEY);
+
+const supabaseClient=window.supabase.createClient(
+ SUPABASE_URL,
+ SUPABASE_KEY
+);
 
 const KEYS={
- chats:"azdarV21Chats",
- saved:"azdarV21Saved",
- prompts:"azdarV21Prompts",
- commands:"azdarV21Commands",
- memory:"azdarV21Memory",
- stats:"azdarV21Stats",
- theme:"azdarV21Theme"
+ chats:"azdarV30Chats",
+ saved:"azdarV30Saved",
+ prompts:"azdarV30Prompts",
+ commands:"azdarV30Commands",
+ memory:"azdarV30Memory",
+ stats:"azdarV30Stats",
+ theme:"azdarV30Theme"
 };
 
-let stats={questions:0,tools:0,voice:0,saved:0};
-let chats=[],saved=[],prompts=[],commands=[],memory=[];
-let currentTool=null,currentUser=null,recognition=null,authMode="login";
+let currentUser=null;
+let isRegister=false;
+let currentTool=null;
 
-const $=id=>document.getElementById(id);
+let chats=loadJSON(KEYS.chats,[]);
+let saved=loadJSON(KEYS.saved,[]);
+let prompts=loadJSON(KEYS.prompts,[]);
+let commands=loadJSON(KEYS.commands,[]);
+let memory=loadJSON(KEYS.memory,[]);
+let stats=loadJSON(KEYS.stats,{
+ questions:0,
+ tools:0,
+ voice:0
+});
 
-function loadJSON(key,fallback=[]){
- try{return JSON.parse(localStorage.getItem(key))??fallback}
- catch(e){return fallback}
+function $(id){
+ return document.getElementById(id);
 }
-function saveJSON(key,value){localStorage.setItem(key,JSON.stringify(value))}
+
+function loadJSON(key,fallback){
+ try{
+  const value=localStorage.getItem(key);
+  return value?JSON.parse(value):fallback;
+ }catch(e){
+  return fallback;
+}
+
+function saveJSON(key,value){
+ localStorage.setItem(key,JSON.stringify(value));
+}
+
 function esc(value){
- return String(value??"").replace(/[&<>"']/g,m=>({
-  "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"
- }[m]));
+ return String(value??"")
+  .replaceAll("&","&amp;")
+  .replaceAll("<","&lt;")
+  .replaceAll(">","&gt;")
+  .replaceAll('"',"&quot;")
+  .replaceAll("'","&#039;");
 }
-function status(id,msg,type="info"){
- const el=$(id);if(!el)return;
- el.innerHTML=msg?`<div class="status ${type}">${esc(msg)}</div>`:"";
+
+function status(id,message,type="info"){
+ const el=$(id);
+ if(!el)return;
+ el.className="status "+type;
+ el.textContent=message;
 }
-function go(id){
- const el=$(id);if(el)el.scrollIntoView({behavior:"smooth",block:"start"});
+
+function toast(message,type="ok"){
+ const el=document.createElement("div");
+ el.textContent=message;
+ el.style.cssText=`
+ position:fixed;left:50%;bottom:90px;transform:translateX(-50%);
+ z-index:200;background:${type==="err"?"#5d1e2b":"#173c33"};
+ color:#fff;padding:12px 17px;border-radius:13px;
+ border:1px solid #ffffff22;box-shadow:0 10px 30px #0008
+ `;
+ document.body.appendChild(el);
+ setTimeout(()=>el.remove(),2200);
 }
-function setTheme(theme){
- document.documentElement.dataset.theme=theme;
- localStorage.setItem(KEYS.theme,theme);
- if(theme==="light"){
-  document.documentElement.style.setProperty("--bg","#f2f5fb");
-  document.documentElement.style.setProperty("--card","#ffffff");
-  document.documentElement.style.setProperty("--card2","#eef2f9");
-  document.documentElement.style.setProperty("--text","#101522");
-  document.documentElement.style.setProperty("--muted","#5e687c");
-  document.documentElement.style.setProperty("--line","#d7deea");
- }else{
-  document.documentElement.style.setProperty("--bg","#070a12");
-  document.documentElement.style.setProperty("--card","#101522");
-  document.documentElement.style.setProperty("--card2","#151b2b");
-  document.documentElement.style.setProperty("--text","#f5f7ff");
-  document.documentElement.style.setProperty("--muted","#9da7bd");
-  document.documentElement.style.setProperty("--line","#273047");
- }
-}
-function loadTheme(){setTheme(localStorage.getItem(KEYS.theme)||"dark")}
-function loadAll(){
- chats=loadJSON(KEYS.chats,[]);
- saved=loadJSON(KEYS.saved,[]);
- prompts=loadJSON(KEYS.prompts,[]);
- commands=loadJSON(KEYS.commands,[]);
- memory=loadJSON(KEYS.memory,[]);
- stats=loadJSON(KEYS.stats,{questions:0,tools:0,voice:0,saved:saved.length});
+
+function showApp(user){
+ currentUser=user||null;
+ $("authScreen").classList.add("hidden");
+ $("app").classList.remove("hidden");
+
+ if($("accountName"))
+  $("accountName").textContent=user?.user_metadata?.name||"AzDar AI User";
+
+ if($("accountEmail"))
+  $("accountEmail").textContent=user?.email||"";
+
  renderAll();
 }
-function saveStats(){
- stats.saved=saved.length;
+
+function showAuth(){
+ $("authScreen").classList.remove("hidden");
+ $("app").classList.add("hidden");
+}
+
+async function login(){
+ const email=$("authEmail").value.trim();
+ const password=$("authPassword").value;
+
+ if(!email||!password){
+  status("authStatus","Email and password required.","err");
+  return;
+ }
+
+ status("authStatus","Logging in...","info");
+
+ const {data,error}=await supabaseClient.auth.signInWithPassword({
+  email,
+  password
+ });
+
+ if(error){
+  status("authStatus",error.message,"err");
+  return;
+ }
+
+ status("authStatus","Login successful.","ok");
+ showApp(data.user);
+}
+
+async function register(){
+ const name=$("authName").value.trim();
+ const email=$("authEmail").value.trim();
+ const password=$("authPassword").value;
+
+ if(!name||!email||!password){
+  status("authStatus","Name, email and password required.","err");
+  return;
+ }
+
+ if(password.length<6){
+  status("authStatus","Password must be at least 6 characters.","err");
+  return;
+ }
+
+ status("authStatus","Creating account...","info");
+
+ const {data,error}=await supabaseClient.auth.signUp({
+  email,
+  password,
+  options:{
+   data:{name}
+  }
+ });
+
+ if(error){
+  status("authStatus",error.message,"err");
+  return;
+ }
+
+ if(data.session){
+  status("authStatus","Account created successfully.","ok");
+  showApp(data.user);
+ }else{
+  status("authStatus","Account created. Check your email if confirmation is required.","ok");
+ }
+}
+
+function setRegisterMode(value){
+ isRegister=value;
+ $("authName").classList.toggle("hidden",!value);
+ $("nameBreak").classList.toggle("hidden",!value);
+ $("authSubmit").textContent=value?"Register":"Login";
+ $("forgotBtn").classList.toggle("hidden",value);
+ $("loginTab").classList.toggle("primary",!value);
+ $("registerTab").classList.toggle("primary",value);
+}
+
+async function forgotPassword(){
+ const email=$("authEmail").value.trim();
+
+ if(!email){
+  status("authStatus","Enter your email first.","err");
+  return;
+ }
+
+ const {error}=await supabaseClient.auth.resetPasswordForEmail(email);
+
+ if(error){
+  status("authStatus",error.message,"err");
+  return;
+ }
+
+ status("authStatus","Password reset email sent.","ok");
+}
+
+async function logout(){
+ await supabaseClient.auth.signOut();
+ currentUser=null;
+ showAuth();
+}
+
+$("loginTab").addEventListener("click",()=>setRegisterMode(false));
+$("registerTab").addEventListener("click",()=>setRegisterMode(true));
+$("authSubmit").addEventListener("click",()=>isRegister?register():login());
+$("forgotBtn").addEventListener("click",forgotPassword);
+
+supabaseClient.auth.onAuthStateChange((event,session)=>{
+ if(session){
+  showApp(session.user);
+ }else{
+  showAuth();
+ }
+});
+
+(async()=>{
+ const {data}=await supabaseClient.auth.getSession();
+ if(data.session)showApp(data.session.user);
+ else showAuth();
+})();
+
+ async function askAI(){
+ const q=$("question").value.trim();
+
+ if(!q){
+  status("aiStatus","Please enter a question.","err");
+  return;
+ }
+
+ const btn=$("askButton");
+ btn.disabled=true;
+ status("aiStatus","AzDar AI is thinking...","info");
+ $("answer").textContent="Working...";
+
+ let finalQuestion=q;
+
+ if(memory.length){
+  finalQuestion+=
+   "\n\nRelevant user memory:\n"+
+   memory.map(x=>"- "+x.text).join("\n");
+ }
+
+ try{
+  const res=await fetch(AI_API_URL,{
+   method:"POST",
+   headers:{
+    "Content-Type":"application/json"
+   },
+   body:JSON.stringify({
+    question:finalQuestion
+   })
+  });
+
+  const raw=await res.text();
+
+  let data={};
+  try{
+   data=JSON.parse(raw);
+  }catch(e){
+   data={};
+  }
+
+  if(!res.ok){
+   throw new Error(
+    data.error||
+    data.message||
+    raw||
+    `Backend error ${res.status}`
+   );
+  }
+
+  const answer=
+   data.answer||
+   data.reply||
+   data.response||
+   data.output||
+   data.text||
+   raw;
+
+  $("answer").textContent=answer||"No answer returned.";
+
+  addChat(q,answer||"");
+  stats.questions++;
+  saveStats();
+
+  status("aiStatus","Answer received.","ok");
+ }catch(e){
+  $("answer").textContent="AI request failed.";
+  status("aiStatus",e.message||"Failed to fetch","err");
+ }finally{
+  btn.disabled=false;
+ }
+}
+
+function promptAI(prefix){
+ const current=$("question").value.trim();
+ $("question").value=prefix+(current||"");
+ $("question").focus();
+ go("chat");
+}
+
+function newChat(){
+ $("question").value="";
+ $("answer").textContent="AI answer will appear here...";
+ $("aiStatus").innerHTML="";
+}
+
+function clearAI(){
+ newChat();
+}
+
+async function copyAnswer(){
+ const text=$("answer").textContent;
+ if(!text||text==="AI answer will appear here...")return;
+ await copyText(text,"aiStatus");
+}
+
+function readAnswer(){
+ const text=$("answer").textContent;
+ if(!text||text==="AI answer will appear here...")return;
+ speechSynthesis.cancel();
+ const u=new SpeechSynthesisUtterance(text);
+ u.rate=.95;
+ speechSynthesis.speak(u);
+}
+
+function stopReading(){
+ speechSynthesis.cancel();
+}
+
+function saveAnswer(){
+ const text=$("answer").textContent;
+
+ if(!text||text==="AI answer will appear here...")return;
+
+ saved.unshift({
+  id:Date.now(),
+  title:$("question").value.slice(0,70)||"AI Result",
+  text,
+  date:new Date().toLocaleString(),
+  type:"chat"
+ });
+
+ saveJSON(KEYS.saved,saved);
+ renderSaved();
+ updateStats();
+ toast("Answer saved.");
+}
+
+function addChat(question,answer){
+ chats.unshift({
+  id:Date.now(),
+  question,
+  answer,
+  date:new Date().toLocaleString()
+ });
+
+ if(chats.length>100)chats=chats.slice(0,100);
+
+ saveJSON(KEYS.chats,chats);
+ renderChats();
+}
+
+function renderChats(filter=""){
+ const list=$("chatList");
+ if(!list)return;
+
+ const q=(filter||"").toLowerCase();
+
+ const items=chats.filter(x=>
+  !q||
+  x.question.toLowerCase().includes(q)||
+  x.answer.toLowerCase().includes(q)
+ );
+
+ if(!items.length){
+  list.innerHTML='<div class="item muted">No conversations yet.</div>';
+  return;
+ }
+
+ list.innerHTML=items.map(x=>`
+  <div class="item">
+   <b>${esc(x.question)}</b>
+   <small>${esc(x.date)}</small>
+   <div style="margin-top:7px;white-space:pre-wrap">${esc(x.answer)}</div>
+  </div>
+ `).join("");
+}
+
+function renderSaved(filter=""){
+ const list=$("savedList");
+ if(!list)return;
+
+ const q=(filter||"").toLowerCase();
+
+ const items=saved.filter(x=>
+  !q||
+  x.title.toLowerCase().includes(q)||
+  x.text.toLowerCase().includes(q)
+ );
+
+ if(!items.length){
+  list.innerHTML='<div class="item muted">No saved results yet.</div>';
+  return;
+ }
+
+ list.innerHTML=items.map(x=>`
+  <div class="item">
+   <b>${esc(x.title)}</b>
+   <small>${esc(x.date||"")}</small>
+   <div style="margin-top:7px;white-space:pre-wrap">${esc(x.text)}</div>
+   <button class="btn" style="margin-top:8px" onclick="deleteSaved(${x.id})">Delete</button>
+  </div>
+ `).join("");
+}
+
+function deleteSaved(id){
+ saved=saved.filter(x=>x.id!==id);
+ saveJSON(KEYS.saved,saved);
+ renderSaved();
+ updateStats();
+ }
+
+ function saveStats(){
  saveJSON(KEYS.stats,stats);
  updateStats();
 }
+
 function updateStats(){
  $("statQuestions").textContent=stats.questions||0;
  $("statTools").textContent=stats.tools||0;
  $("statVoice").textContent=stats.voice||0;
  $("statSaved").textContent=saved.length;
-}
-function showApp(user){
- currentUser=user;
- $("authScreen").classList.add("hidden");
- $("app").classList.remove("hidden");
- $("accountEmail").textContent=user?.email||"—";
- $("accountName").textContent=
-  user?.user_metadata?.full_name||
-  user?.user_metadata?.name||
-  user?.email?.split("@")[0]||"User";
- loadAll();
-}
-function showAuth(){
- $("app").classList.add("hidden");
- $("authScreen").classList.remove("hidden");
-}
-function setAuthMode(mode){
- authMode=mode;
- const register=mode==="register";
- $("authName").classList.toggle("hidden",!register);
- $("nameBreak").classList.toggle("hidden",!register);
- $("authSubmit").textContent=register?"Create Account":"Login";
- $("loginTab").classList.toggle("primary",!register);
- $("registerTab").classList.toggle("primary",register);
- status("authStatus","");
-}
-$("loginTab").onclick=()=>setAuthMode("login");
-$("registerTab").onclick=()=>setAuthMode("register");
-
-$("authSubmit").onclick=async()=>{
- const email=$("authEmail").value.trim();
- const password=$("authPassword").value;
-  const name=$("authName").value.trim();
- if(!email||!password){
-  status("authStatus","Email and password are required.","err");return;
- }
- status("authStatus","Please wait...","info");
- try{
-  if(authMode==="register"){
-   const {data,error}=await supabaseClient.auth.signUp({
-    email,password,options:{data:{full_name:name||"AzDar User"}}
-   });
-   if(error)throw error;
-   if(data.session)showApp(data.user);
-   else status("authStatus","Registration successful. Check your email if confirmation is required.","ok");
-  }else{
-   const {data,error}=await supabaseClient.auth.signInWithPassword({email,password});
-   if(error)throw error;
-   showApp(data.user);
-  }
- }catch(e){status("authStatus",e.message||"Authentication error","err")}
-};
-
-$("forgotBtn").onclick=async()=>{
- const email=$("authEmail").value.trim();
- if(!email){status("authStatus","Enter your email first.","err");return}
- try{
-  const {error}=await supabaseClient.auth.resetPasswordForEmail(email,{
-   redirectTo:location.href
-  });
-  if(error)throw error;
-  status("authStatus","Password reset email sent if the account exists.","ok");
- }catch(e){status("authStatus",e.message,"err")}
-};
-
-async function logout(){
- try{await supabaseClient.auth.signOut()}catch(e){}
- currentUser=null;showAuth();
-}
-supabaseClient.auth.onAuthStateChange((event,session)=>{
- if(session?.user)showApp(session.user);
- else if(event==="SIGNED_OUT")showAuth();
-});
-
-async function checkSession(){
- const {data}=await supabaseClient.auth.getSession();
- if(data.session?.user)showApp(data.session.user);
- else showAuth();
+ updateV30Dashboard();
 }
 
-async function askAI(questionOverride=null){
- let q=questionOverride??$("question").value.trim();
- if(!q){status("aiStatus","Please enter a question.","err");return ""}
- const btn=$("askButton");btn.disabled=true;
- status("aiStatus","AzDar AI is thinking...","info");
- $("answer").textContent="Thinking...";
- let finalQuestion=q;
- if(memory.length){
-  const mem=memory.slice(-10).map(x=>"- "+x.text).join("\n");
-  finalQuestion=
-   "Use the following user memory only when relevant. Do not reveal the memory list.\n"+
-   mem+"\n\nUser request:\n"+q;
- }
- try{
-  const res=await fetch(AI_API_URL,{
-   method:"POST",
-   headers:{"Content-Type":"application/json"},
-   body:JSON.stringify({question:finalQuestion})
-  });
-  const raw=await res.text();
-  let data;
-  try{data=JSON.parse(raw)}
-  catch(e){throw new Error("Backend returned an invalid response.")}
-  if(!res.ok)throw new Error(data.error||data.message||"AI backend error");
-  const answer=data.answer??data.reply??data.response??data.output??data.text;
-  if(!answer)throw new Error("No AI answer was returned.");
-  $("answer").textContent=answer;
-  status("aiStatus","AI response received.","ok");
-  stats.questions++;
-  saveJSON(KEYS.stats,stats);
-  addChat(q,answer);
-  updateStats();
-  return answer;
- }catch(e){
-  $("answer").textContent="AI could not respond.";
-  status("aiStatus",e.message||"Failed to connect to AI backend.","err");
-  return "";
- }finally{btn.disabled=false}
-}
+function saveMemory(){
+ const text=$("memoryInput").value.trim();
 
-function promptAI(prefix){
- $("question").value=prefix;
- go("chat");
- $("question").focus();
-}
-function productivity(prefix){
- promptAI(prefix);
-}
-function newChat(){
- $("question").value="";
- $("answer").textContent="New chat started.";
- status("aiStatus","New conversation ready.","ok");
- go("chat");
-}
-function clearAI(){
- $("question").value="";
- $("answer").textContent="AI answer will appear here...";
- status("aiStatus","");
-}
-function getAnswer(){return $("answer").textContent.trim()}
-async function copyAnswer(){
- const text=getAnswer();
- if(!text||text==="AI answer will appear here...")return;
- await navigator.clipboard.writeText(text);
- status("aiStatus","Answer copied.","ok");
-}
-function readText(text){
  if(!text)return;
- speechSynthesis.cancel();
- speechSynthesis.speak(new SpeechSynthesisUtterance(text));
-}
-function readAnswer(){readText(getAnswer())}
-function stopReading(){speechSynthesis.cancel()}
-function saveAnswer(){
- const text=getAnswer();
- if(!text||text==="AI answer will appear here...")return;
- saved.unshift({id:Date.now(),title:$("question").value.trim()||"AI Answer",text,date:new Date().toLocaleString(),type:"chat"});
- saved=saved.slice(0,100);
- saveJSON(KEYS.saved,saved);saveStats();renderSaved();
- status("aiStatus","Answer saved.","ok");
-}
-function addChat(question,answer){
- chats.unshift({id:Date.now(),question,answer,date:new Date().toLocaleString()});
- chats=chats.slice(0,200);
- saveJSON(KEYS.chats,chats);
- renderChats();
-    }
 
-function renderChats(){
- const box=$("chatList");
- const query=($("chatSearch")?.value||"").toLowerCase().trim();
- const data=chats.filter(x=>
-  !query||x.question.toLowerCase().includes(query)||x.answer.toLowerCase().includes(query)
- );
- if(!data.length){box.innerHTML='<div class="item muted">No conversations found.</div>';return}
- box.innerHTML=data.map(x=>`
+ memory.unshift({
+  id:Date.now(),
+  text,
+  date:new Date().toLocaleString()
+ });
+
+ saveJSON(KEYS.memory,memory);
+ $("memoryInput").value="";
+ renderMemory();
+ updateV30Dashboard();
+ toast("Memory saved.");
+}
+
+function renderMemory(){
+ const list=$("memoryList");
+ if(!list)return;
+
+ if(!memory.length){
+  list.innerHTML='<div class="item muted">No memories saved.</div>';
+  return;
+ }
+
+ list.innerHTML=memory.map(x=>`
   <div class="item">
-   <b>${esc(x.question.slice(0,100))}</b>
+   <b>${esc(x.text)}</b>
    <small>${esc(x.date)}</small>
-   <p>${esc(x.answer.slice(0,180))}${x.answer.length>180?"…":""}</p>
-   <div class="row">
-    <button class="btn" onclick="openChat(${x.id})">Open</button>
-    <button class="btn danger" onclick="deleteChat(${x.id})">Delete</button>
-   </div>
+   <button class="btn" style="margin-top:8px" onclick="deleteMemory(${x.id})">Delete</button>
   </div>
  `).join("");
-}
-function openChat(id){
- const x=chats.find(v=>v.id===id);if(!x)return;
- $("question").value=x.question;
- $("answer").textContent=x.answer;
- go("chat");
-}
-function deleteChat(id){
- chats=chats.filter(x=>x.id!==id);
- saveJSON(KEYS.chats,chats);renderChats();
-}
-function clearChats(){
- if(!confirm("Clear all conversation history?"))return;
- chats=[];saveJSON(KEYS.chats,chats);renderChats();
 }
 
-function renderSaved(){
- const box=$("savedList");
- const query=($("savedSearch")?.value||"").toLowerCase().trim();
- const data=saved.filter(x=>
-  !query||(x.title+" "+x.text).toLowerCase().includes(query)
- );
- if(!data.length){box.innerHTML='<div class="item muted">No saved results.</div>';return}
- box.innerHTML=data.map(x=>`
-  <div class="item">
-   <b>${esc(x.title)}</b>
-   <small>${esc(x.date||"")}</small>
-   <p>${esc(x.text.slice(0,220))}${x.text.length>220?"…":""}</p>
-   <div class="row">
-    <button class="btn" onclick="openSaved(${x.id})">Open</button>
-    <button class="btn danger" onclick="deleteSaved(${x.id})">Delete</button>
-   </div>
-  </div>
- `).join("");
-}
-function openSaved(id){
- const x=saved.find(v=>v.id===id);if(!x)return;
- $("answer").textContent=x.text;go("chat");
-}
-function deleteSaved(id){
- saved=saved.filter(x=>x.id!==id);
- saveJSON(KEYS.saved,saved);saveStats();renderSaved();
+function deleteMemory(id){
+ memory=memory.filter(x=>x.id!==id);
+ saveJSON(KEYS.memory,memory);
+ renderMemory();
+ updateV30Dashboard();
 }
 
 function savePrompt(){
- const text=$("promptInput").value.trim();
- if(!text)return;
- prompts.unshift({id:Date.now(),text,date:new Date().toLocaleString()});
- prompts=prompts.slice(0,100);
+ const title=$("promptTitle").value.trim();
+ const text=$("promptText").value.trim();
+
+ if(!title||!text){
+  toast("Enter prompt title and text.","err");
+  return;
+ }
+
+ prompts.unshift({
+  id:Date.now(),
+  title,
+  text,
+  date:new Date().toLocaleString()
+ });
+
  saveJSON(KEYS.prompts,prompts);
- $("promptInput").value="";
+ $("promptTitle").value="";
+ $("promptText").value="";
  renderPrompts();
+ toast("Prompt saved.");
 }
+
 function renderPrompts(){
- const box=$("promptList");
- if(!prompts.length){box.innerHTML='<div class="item muted">No saved prompts.</div>';return}
- box.innerHTML=prompts.map(x=>`
+ const list=$("promptList");
+ if(!list)return;
+
+ if(!prompts.length){
+  list.innerHTML='<div class="item muted">No saved prompts.</div>';
+  return;
+ }
+
+ list.innerHTML=prompts.map(x=>`
   <div class="item">
-   <b>${esc(x.text.slice(0,100))}</b>
+   <b>${esc(x.title)}</b>
    <small>${esc(x.date)}</small>
+   <div style="white-space:pre-wrap;margin-top:7px">${esc(x.text)}</div>
    <div class="row" style="margin-top:8px">
-    <button class="btn" onclick="usePrompt(${x.id})">Use</button>
-    <button class="btn danger" onclick="deletePrompt(${x.id})">Delete</button>
+    <button class="btn primary" onclick="usePrompt(${x.id})">Use</button>
+    <button class="btn" onclick="deletePrompt(${x.id})">Delete</button>
    </div>
   </div>
  `).join("");
 }
+
 function usePrompt(id){
- const x=prompts.find(v=>v.id===id);if(!x)return;
- $("question").value=x.text;go("chat");
+ const p=prompts.find(x=>x.id===id);
+ if(!p)return;
+ $("question").value=p.text;
+ go("chat");
 }
+
 function deletePrompt(id){
  prompts=prompts.filter(x=>x.id!==id);
- saveJSON(KEYS.prompts,prompts);renderPrompts();
+ saveJSON(KEYS.prompts,prompts);
+ renderPrompts();
 }
 
 const toolData={
  writer:{
   title:"✍️ AI Writer",
-  description:"Create professional, natural and useful written content.",
-  prompt:"Write high-quality content based on this request:\n"
+  description:"Write professional, natural and useful content.",
+  prompt:"Write the following professionally and naturally:\n\n"
  },
  translator:{
   title:"🌐 Translator",
-  description:"Translate text while preserving meaning and tone.",
-  prompt:"Translate the following text. Preserve its meaning and natural tone:\n"
+  description:"Translate text while preserving meaning.",
+  prompt:"Translate the following accurately. Preserve the original meaning and tone:\n\n"
  },
  summarizer:{
   title:"📝 Summarizer",
-  description:"Turn long text into a clear concise summary.",
-  prompt:"Summarize the following text with the most important information:\n"
+  description:"Turn long content into clear key points.",
+  prompt:"Summarize the following into clear key points and important details:\n\n"
  },
  study:{
-  title:"📚 Study Assistant",
-  description:"Explain topics, create notes and help with learning.",
-  prompt:"Act as a helpful study assistant. Explain and organize this topic clearly:\n"
+  title:"🎓 Study Assistant",
+  description:"Understand difficult topics step by step.",
+  prompt:"Act as a friendly study tutor. Explain this simply, give examples, and finish with a short quiz:\n\n"
  },
  coding:{
   title:"💻 Coding Assistant",
-  description:"Help understand, debug and improve code.",
-  prompt:"Act as a coding assistant. Analyze and solve this request. Explain the solution clearly:\n"
+  description:"Analyze and solve coding problems.",
+  prompt:"Act as a senior developer. Explain the problem simply and provide a corrected solution:\n\n"
  },
  business:{
   title:"💼 Business Assistant",
-  description:"Generate practical business ideas, plans and copy.",
-  prompt:"Act as a practical business assistant. Help with this request:\n"
+  description:"Develop practical business ideas.",
+  prompt:"Help me develop this business idea. Include target users, value proposition, costs, revenue options and practical next steps:\n\n"
  },
  social:{
-  title:"📱 Social Media Assistant",
-  description:"Create captions, hooks, content ideas and posts.",
-  prompt:"Act as a social media content assistant. Create useful content for:\n"
+  title:"📱 Social Media",
+  description:"Create natural social content.",
+  prompt:"Create engaging and natural social-media content for:\n\n"
  },
  ideas:{
   title:"💡 Idea Generator",
-  description:"Generate creative and practical ideas.",
-  prompt:"Generate creative, practical and varied ideas for:\n"
+  description:"Generate useful ideas and possibilities.",
+  prompt:"Generate practical and creative ideas for:\n\n"
  },
  email:{
   title:"📧 Email Writer",
-  description:"Create professional emails.",
-  prompt:"Write a professional and natural email for:\n"
+  description:"Write clear professional emails.",
+  prompt:"Write a professional, natural and concise email about:\n\n"
  },
  problem:{
-  title:"🎯 Problem Solver",
-  description:"Break down a problem and suggest practical solutions.",
-  prompt:"Analyze this problem and provide practical step-by-step solutions:\n"
+  title:"🧩 Problem Solver",
+  description:"Break a problem into practical steps.",
+  prompt:"Analyze this problem and give a practical step-by-step solution:\n\n"
  }
 };
 
 function renderTools(){
- $("toolsGrid").innerHTML=Object.entries(toolData).map(([id,t])=>`
+ const grid=$("toolsGrid");
+ if(!grid)return;
+
+ grid.innerHTML=Object.entries(toolData).map(([id,t])=>`
   <div class="tool">
    <strong>${esc(t.title)}</strong>
    <small class="muted">${esc(t.description)}</small>
-   <button class="btn primary" style="margin-top:10px;width:100%" onclick="openTool('${id}')">Open</button>
+   <button class="btn primary" style="margin-top:10px;width:100%" onclick="openTool('${id}')">
+    Open Tool
+   </button>
   </div>
  `).join("");
 }
+
 function openTool(id){
- currentTool=id;
  const t=toolData[id];
+ if(!t)return;
+
+ currentTool=id;
  $("toolTitle").textContent=t.title;
  $("toolDescription").textContent=t.description;
  $("toolInput").value="";
  $("toolOutput").textContent="Tool output will appear here...";
- status("toolStatus","");
  $("toolPanel").classList.remove("hidden");
+ $("toolPanel").dataset.custom="false";
  go("toolPanel");
 }
+
 function closeTool(){
- currentTool=null;$("toolPanel").classList.add("hidden");
+ $("toolPanel").classList.add("hidden");
+ currentTool=null;
+}
+
+function clearTool(){
+ $("toolInput").value="";
+ $("toolOutput").textContent="Tool output will appear here...";
+ $("toolStatus").innerHTML="";
 }
 
 async function runTool(){
- if(!currentTool)return;
- const input=$("toolInput").value.trim();
- if(!input){status("toolStatus","Enter some content first.","err");return}
  const t=toolData[currentTool];
+
+ if(!t){
+  status("toolStatus","Select a tool first.","err");
+  return;
+ }
+
+ const input=$("toolInput").value.trim();
+
+ if(!input){
+  status("toolStatus","Enter some content first.","err");
+  return;
+ }
+
  status("toolStatus","Running AI tool...","info");
-  $("toolOutput").textContent="Working...";
+ $("toolOutput").textContent="Working...";
+
  try{
   const result=await askRawAI(t.prompt+input);
   $("toolOutput").textContent=result;
+
   stats.tools++;
-  saveJSON(KEYS.stats,stats);updateStats();
+  saveStats();
+
   status("toolStatus","Tool completed.","ok");
  }catch(e){
   $("toolOutput").textContent="Tool failed.";
   status("toolStatus",e.message,"err");
  }
 }
+
 async function askRawAI(question){
  const res=await fetch(AI_API_URL,{
   method:"POST",
-  headers:{"Content-Type":"application/json"},
-  body:JSON.stringify({question})
+  headers:{
+   "Content-Type":"application/json"
+  },
+  body:JSON.stringify({
+   question
+  })
  });
+
  const raw=await res.text();
- let data;
- try{data=JSON.parse(raw)}catch(e){throw new Error("Invalid backend response.")}
- if(!res.ok)throw new Error(data.error||data.message||"AI request failed");
- const answer=data.answer??data.reply??data.response??data.output??data.text;
- if(!answer)throw new Error("Empty AI response");
- return String(answer);
-}
-async function copyTool(){
- const text=$("toolOutput").textContent.trim();
- if(text)await navigator.clipboard.writeText(text);
- status("toolStatus","Tool output copied.","ok");
-}
-function readTool(){readText($("toolOutput").textContent)}
-function saveTool(){
- const text=$("toolOutput").textContent.trim();
- if(!text||text==="Tool output will appear here...")return;
- saved.unshift({
-  id:Date.now(),
-  title:currentTool?(toolData[currentTool]?.title||"AI Tool"):"AI Tool",
-  text,date:new Date().toLocaleString(),type:"tool"
- });
- saved=saved.slice(0,100);
- saveJSON(KEYS.saved,saved);saveStats();renderSaved();
- status("toolStatus","Tool output saved.","ok");
+
+ let data={};
+ try{
+  data=JSON.parse(raw);
+ }catch(e){}
+
+ if(!res.ok){
+  throw new Error(
+   data.error||
+   data.message||
+   raw||
+   `Backend error ${res.status}`
+  );
+ }
+
+ return data.answer||
+  data.reply||
+  data.response||
+  data.output||
+  data.text||
+  raw;
 }
 
-async function extractDocument(){
+async function copyToolOutput(){
+ const text=$("toolOutput").textContent;
+ if(text)await copyText(text,"toolStatus");
+}
+
+function saveToolOutput(){
+ const text=$("toolOutput").textContent;
+
+ if(!text||text==="Tool output will appear here...")return;
+
+ saved.unshift({
+  id:Date.now(),
+  title:$("toolTitle").textContent,
+  text,
+  date:new Date().toLocaleString(),
+  type:"tool"
+ });
+
+ saveJSON(KEYS.saved,saved);
+ renderSaved();
+ updateStats();
+ toast("Tool result saved.");
+    }
+
+ async function extractDocument(){
  const file=$("documentFile").files[0];
- if(!file){status("documentStatus","Select a PDF, DOCX or TXT file first.","err");return}
+
+ if(!file){
+  status("documentStatus","Select a document first.","err");
+  return;
+ }
+
  status("documentStatus","Extracting document...","info");
- $("documentText").value="";
+
  try{
   let text="";
+
   if(file.name.toLowerCase().endsWith(".txt")){
    text=await file.text();
-  }else if(file.name.toLowerCase().endsWith(".docx")){
-   if(!window.mammoth)throw new Error("DOCX library is still loading. Try again.");
-   const buffer=await file.arrayBuffer();
-   const result=await mammoth.extractRawText({arrayBuffer:buffer});
+  }
+  else if(file.name.toLowerCase().endsWith(".docx")){
+   const arrayBuffer=await file.arrayBuffer();
+   const result=await mammoth.extractRawText({arrayBuffer});
    text=result.value;
-  }else if(file.name.toLowerCase().endsWith(".pdf")){
-   const pdfjs=await import("https://cdnjs.cloudflare.com/ajax/libs/pdf.js/4.4.168/pdf.min.mjs");
-   pdfjs.GlobalWorkerOptions.workerSrc=
-    "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/4.4.168/pdf.worker.min.mjs";
-   const buffer=await file.arrayBuffer();
-   const pdf=await pdfjs.getDocument({data:buffer}).promise;
-   let pages=[];
+  }
+  else if(file.name.toLowerCase().endsWith(".pdf")){
+   const arrayBuffer=await file.arrayBuffer();
+
+   const pdfjsLib=window.pdfjsLib;
+
+   if(!pdfjsLib){
+    throw new Error("PDF library is still loading. Try again.");
+   }
+
+   const pdf=await pdfjsLib.getDocument({
+    data:arrayBuffer
+   }).promise;
+
+   const pages=[];
+
    for(let i=1;i<=pdf.numPages;i++){
     const page=await pdf.getPage(i);
     const content=await page.getTextContent();
-    pages.push(content.items.map(x=>x.str).join(" "));
-   }
-   text=pages.join("\n\n");
-  }else{
-   throw new Error("Only PDF, DOCX and TXT are supported.");
-  }
-  if(!text.trim())throw new Error("No readable text was found.");
-  $("documentText").value=text;
-  status("documentStatus",`Extracted ${text.length.toLocaleString()} characters.`,"ok");
- }catch(e){status("documentStatus",e.message||"Document extraction failed.","err")}
-}
 
-async function documentAction(action){
- const text=$("documentText").value.trim();
- if(!text){status("documentStatus","Extract a document first.","err");return}
- let instruction="";
- if(action==="summary")instruction="Summarize this document clearly. Include the main ideas and important details:\n";
- if(action==="questions")instruction="Create useful questions and answers based only on this document:\n";
- if(action==="points")instruction="Extract the most important key points from this document:\n";
- status("documentStatus","AI is analyzing the document...","info");
- $("documentResult").textContent="Working...";
- try{
-  const result=await askRawAI(instruction+text.slice(0,120000));
-  $("documentResult").textContent=result;
-  status("documentStatus","Document AI completed.","ok");
-  saved.unshift({
-   id:Date.now(),title:"Document "+action,text:result,
-   date:new Date().toLocaleString(),type:"document"
-  });
-  saved=saved.slice(0,100);saveJSON(KEYS.saved,saved);saveStats();renderSaved();
+    pages.push(
+     content.items.map(item=>item.str).join(" ")
+    );
+   }
+
+   text=pages.join("\n\n");
+  }
+  else{
+   throw new Error("Unsupported file type.");
+  }
+
+  $("documentText").textContent=text||"No readable text found.";
+  status("documentStatus","Document extracted successfully.","ok");
  }catch(e){
-  $("documentResult").textContent="Document AI failed.";
+  $("documentText").textContent="";
   status("documentStatus",e.message,"err");
  }
 }
 
-function saveMemory(){
- const text=$("memoryInput").value.trim();
- if(!text)return;
- memory.push({id:Date.now(),text,date:new Date().toLocaleString()});
- memory=memory.slice(-50);
- saveJSON(KEYS.memory,memory);
- $("memoryInput").value="";
- renderMemory();
-}
-function renderMemory(){
- const box=$("memoryList");
- if(!memory.length){
-  box.innerHTML='<div class="item muted">No memories saved.</div>';return;
- }
- box.innerHTML=memory.map(x=>`
-  <div class="item">
-   <b>${esc(x.text)}</b>
-   <small>${esc(x.date)}</small>
-   <button class="btn danger" style="margin-top:7px" onclick="deleteMemory(${x.id})">Delete</button>
-  </div>
- `).join("");
-}
-function deleteMemory(id){
- memory=memory.filter(x=>x.id!==id);
- saveJSON(KEYS.memory,memory);renderMemory();
-}
-function clearMemory(){
- if(!confirm("Clear all Smart Memory?"))return;
- memory=[];saveJSON(KEYS.memory,memory);renderMemory();
+function clearDocument(){
+ $("documentFile").value="";
+ $("documentText").textContent="Document text will appear here...";
+ $("documentAIOutput").textContent="AI document result will appear here...";
+ $("documentStatus").innerHTML="";
+ $("documentAIStatus").innerHTML="";
 }
 
-function universalSearchRun(){
- const q=$("universalSearch").value.toLowerCase().trim();
-  const box=$("universalResults");
- if(!q){box.innerHTML="";return}
- let results=[];
- chats.forEach(x=>{
-  if((x.question+" "+x.answer).toLowerCase().includes(q))
-   results.push({type:"Chat",title:x.question,text:x.answer,id:x.id});
- });
- saved.forEach(x=>{
-  if((x.title+" "+x.text).toLowerCase().includes(q))
-   results.push({type:"Saved",title:x.title,text:x.text,id:x.id});
- });
- prompts.forEach(x=>{
-  if(x.text.toLowerCase().includes(q))
-   results.push({type:"Prompt",title:x.text,text:"Saved prompt",id:x.id});
- });
- memory.forEach(x=>{
-  if(x.text.toLowerCase().includes(q))
-   results.push({type:"Memory",title:x.text,text:"Smart Memory",id:x.id});
- });
- results=results.slice(0,30);
- if(!results.length){
-  box.innerHTML='<div class="item muted">Nothing found.</div>';return;
+async function documentAI(instruction){
+ const text=$("documentText").textContent.trim();
+
+ if(!text||text==="Document text will appear here..."){
+  status("documentAIStatus","Extract a document first.","err");
+  return;
  }
- box.innerHTML=results.map(x=>`
+
+ status("documentAIStatus","AI is analyzing the document...","info");
+ $("documentAIOutput").textContent="Working...";
+
+ try{
+  const result=await askRawAI(
+   instruction+
+   "\n\nDocument:\n"+
+   text
+  );
+
+  $("documentAIOutput").textContent=result;
+  status("documentAIStatus","Document analysis completed.","ok");
+ }catch(e){
+  $("documentAIOutput").textContent="Document AI failed.";
+  status("documentAIStatus",e.message,"err");
+ }
+}
+
+function universalSearch(){
+ const q=$("searchInput").value.trim();
+
+ if(!q)return;
+
+ const lower=q.toLowerCase();
+
+ const results=[
+  ...chats
+   .filter(x=>x.question.toLowerCase().includes(lower)||x.answer.toLowerCase().includes(lower))
+   .map(x=>({
+    type:"Chat",
+    title:x.question,
+    text:x.answer
+   })),
+  ...saved
+   .filter(x=>x.title.toLowerCase().includes(lower)||x.text.toLowerCase().includes(lower))
+   .map(x=>({
+    type:"Saved",
+    title:x.title,
+    text:x.text
+   })),
+  ...prompts
+   .filter(x=>x.title.toLowerCase().includes(lower)||x.text.toLowerCase().includes(lower))
+   .map(x=>({
+    type:"Prompt",
+    title:x.title,
+    text:x.text
+   }))
+ ];
+
+ const box=$("searchResults");
+
+ if(!results.length){
+  box.innerHTML='<div class="item muted">No workspace results found.</div>';
+  return;
+ }
+
+ box.innerHTML=results.slice(0,30).map(x=>`
   <div class="item">
    <span class="pill">${esc(x.type)}</span>
-   <b>${esc(x.title.slice(0,120))}</b>
-   <p>${esc(x.text.slice(0,180))}</p>
+   <b>${esc(x.title)}</b>
+   <div style="white-space:pre-wrap;margin-top:6px">${esc(x.text)}</div>
   </div>
  `).join("");
 }
-function webSearch(){
- const q=$("universalSearch").value.trim();
- if(!q){alert("Enter something to search.");return}
- window.open("https://www.google.com/search?q="+encodeURIComponent(q),"_blank");
+
+function googleSearch(){
+ const q=$("searchInput").value.trim();
+
+ if(!q){
+  alert("Enter a search query.");
+  return;
+ }
+
+ window.open(
+  "https://www.google.com/search?q="+encodeURIComponent(q),
+  "_blank"
+ );
 }
 
-function addCustomCommand(){
- const command=$("customCommand").value.trim().toLowerCase();
- const url=$("customURL").value.trim();
- if(!command||!url){alert("Enter both command and URL.");return}
- let finalURL=url;
- if(!/^https?:\/\//i.test(finalURL))finalURL="https://"+finalURL;
- commands.push({id:Date.now(),command,url:finalURL});
- commands=commands.slice(-100);
- saveJSON(KEYS.commands,commands);
- $("customCommand").value="";$("customURL").value="";
- renderCommands();
-}
-function renderCommands(){
- const box=$("customList");
- if(!commands.length){
-  box.innerHTML='<div class="item muted">No custom commands.</div>';return;
- }
- box.innerHTML=commands.map(x=>`
-  <div class="item">
-   <b>“${esc(x.command)}”</b>
-   <small>${esc(x.url)}</small>
-   <div class="row" style="margin-top:7px">
-    <button class="btn" onclick="testCommand(${x.id})">Test</button>
-    <button class="btn danger" onclick="deleteCommand(${x.id})">Delete</button>
-   </div>
-  </div>
- `).join("");
-}
-function testCommand(id){
- const x=commands.find(v=>v.id===id);if(x)openURL(x.url);
-}
-function deleteCommand(id){
- commands=commands.filter(x=>x.id!==id);
- saveJSON(KEYS.commands,commands);renderCommands();
-}
-function clearCustomCommands(){
- if(!confirm("Clear all custom commands?"))return;
- commands=[];saveJSON(KEYS.commands,commands);renderCommands();
-}
-function openURL(url){window.open(url,"_blank","noopener,noreferrer")}
-
-function processCommand(raw){
- const text=raw.toLowerCase().trim();
- const custom=commands.find(x=>text===x.command||text.includes(x.command));
- if(custom){openURL(custom.url);return true}
- if(text.includes("youtube")||text.includes("you tube")){
-  if(text.includes("search")||text.includes("dhoondo")){
-   const q=text.replace(/youtube|you tube|search|dhoondo|khojo|par/gi,"").trim();
-   openURL("https://www.youtube.com/results?search_query="+encodeURIComponent(q||""));
-  }else openURL("https://www.youtube.com/");
-  return true;
- }
- if(text.includes("google")&&(
-  text.includes("search")||text.includes("khojo")||text.includes("dhoondo"))){
-  const q=text.replace(/google|search|khojo|dhoondo|par/gi,"").trim();
-  openURL("https://www.google.com/search?q="+encodeURIComponent(q||""));
-  return true;
- }
- const sites={
+function runCommand(type){
+ const urls={
+  youtube:"https://www.youtube.com/",
+  google:"https://www.google.com/",
   whatsapp:"https://web.whatsapp.com/",
   facebook:"https://www.facebook.com/",
   instagram:"https://www.instagram.com/",
   tiktok:"https://www.tiktok.com/"
  };
- for(const [name,url] of Object.entries(sites)){
-  if(text.includes(name)){openURL(url);return true}
+
+ if(urls[type]){
+  window.open(urls[type],"_blank");
+  return;
  }
- if(text.includes("time")){
-  alert(new Date().toLocaleTimeString());return true
+
+ if(type==="time"){
+  alert(new Date().toLocaleTimeString());
+  return;
  }
- if(text.includes("date")){
-  alert(new Date().toLocaleDateString());return true
+
+ if(type==="date"){
+  alert(new Date().toLocaleDateString());
+  return;
  }
- if(text.includes("dark")){setTheme("dark");return true}
- if(text.includes("light")){setTheme("light");return true}
- if(text.includes("back")){history.back();return true}
- if(text.includes("refresh")){location.reload();return true}
- if(text.includes("new chat")){newChat();return true}
- return false;
+
+ if(type==="dark"){
+  setTheme("dark");
+  return;
+ }
+
+ if(type==="light"){
+  setTheme("light");
+  return;
+ }
+
+ if(type==="back"){
+  history.back();
+  return;
+ }
+
+ if(type==="refresh"){
+  location.reload();
+ }
 }
 
-function startVoice(){
- const SR=window.SpeechRecognition||window.webkitSpeechRecognition;
- if(!SR){
+function addCustomCommand(){
+ const name=$("commandName").value.trim();
+ const url=$("commandUrl").value.trim();
+
+ if(!name||!url){
+  alert("Enter command and URL.");
+  return;
+ }
+
+ commands.push({
+  id:Date.now(),
+  name,
+  url
+ });
+
+ saveJSON(KEYS.commands,commands);
+
+ $("commandName").value="";
+ $("commandUrl").value="";
+
+ renderCommands();
+ toast("Custom command added.");
+}
+
+function renderCommands(){
+ const list=$("commandList");
+ if(!list)return;
+
+ if(!commands.length){
+  list.innerHTML='<div class="item muted">No custom commands.</div>';
+  return;
+ }
+
+ list.innerHTML=commands.map(x=>`
+  <div class="item">
+   <b>${esc(x.name)}</b>
+   <small>${esc(x.url)}</small>
+   <div class="row" style="margin-top:8px">
+    <button class="btn primary" onclick="window.open('${esc(x.url)}','_blank')">Open</button>
+    <button class="btn" onclick="deleteCommand(${x.id})">Delete</button>
+   </div>
+  </div>
+ `).join("");
+}
+
+function deleteCommand(id){
+ commands=commands.filter(x=>x.id!==id);
+ saveJSON(KEYS.commands,commands);
+ renderCommands();
+}
+
+ function startVoice(){
+ const SpeechRecognition=
+  window.SpeechRecognition||
+  window.webkitSpeechRecognition;
+
+ if(!SpeechRecognition){
   status("voiceStatus","Speech recognition is not supported in this browser.","err");
   return;
  }
- if(recognition)try{recognition.stop()}catch(e){}
- recognition=new SR();
+
+ const recognition=new SpeechRecognition();
+
  recognition.lang="en-US";
  recognition.interimResults=false;
  recognition.continuous=false;
- recognition.onstart=()=>{
-  status("voiceStatus","Listening... Speak now.","ok");
- };
- recognition.onerror=e=>{
-  status("voiceStatus","Voice error: "+(e.error||"unknown"),"err");
- };
+
+ status("voiceStatus","Listening...","info");
+
  recognition.onresult=e=>{
-  const text=e.results[0][0].transcript.trim();
-  $("voiceText").textContent=text;
-  stats.voice++;
-  saveJSON(KEYS.stats,stats);updateStats();
-  processVoice(text);
- };
- recognition.onend=()=>{
-  if($("voiceStatus"))status("voiceStatus","Voice listening stopped.","info");
- };
- recognition.start();
-}
-function stopVoice(){
- if(recognition)try{recognition.stop()}catch(e){}
-}
-async function voiceAsk(){
- const SR=window.SpeechRecognition||window.webkitSpeechRecognition;
- if(!SR){
-  status("voiceStatus","Speech recognition is not supported.","err");return;
- }
- const r=new SR();
- r.lang="en-US";r.interimResults=false;r.continuous=false;
- status("voiceStatus","Listening for your AI question...","info");
- r.onresult=async e=>{
-  const text=e.results[0][0].transcript.trim();
+  const text=e.results[0][0].transcript;
+
   $("voiceText").textContent=text;
   $("question").value=text;
-  go("chat");
-  const answer=await askAI(text);
-  if(answer)readText(answer);
+
+  stats.voice++;
+  saveStats();
+
+  processVoiceCommand(text);
  };
- r.onerror=e=>status("voiceStatus","Voice error: "+e.error,"err");
- r.start();
+
+ recognition.onerror=e=>{
+  status("voiceStatus","Voice error: "+e.error,"err");
+ };
+
+ recognition.onend=()=>{
+  if($("voiceStatus"))
+   status("voiceStatus","Voice stopped.","ok");
+ };
+
+ recognition.start();
 }
-function processVoice(text){
- const handled=processCommand(text);
- if(handled){
-  status("voiceStatus","Command executed.","ok");return;
+
+function stopVoice(){
+ status("voiceStatus","Voice stopped.","info");
+}
+
+function voiceAsk(){
+ startVoice();
+}
+
+function processVoiceCommand(text){
+ const t=text.toLowerCase().trim();
+
+ const custom=commands.find(x=>{
+  const name=x.name.toLowerCase();
+  return t===name||t.includes(name);
+ });
+
+ if(custom){
+  window.open(custom.url,"_blank");
+  return;
  }
- $("question").value=text;
+
+ if(t.includes("youtube")){
+  runCommand("youtube");
+  return;
+ }
+
+ if(t.includes("google")){
+  runCommand("google");
+  return;
+ }
+
+ if(t.includes("whatsapp")){
+  runCommand("whatsapp");
+  return;
+ }
+
+ if(t.includes("facebook")){
+  runCommand("facebook");
+  return;
+ }
+
+ if(t.includes("instagram")){
+  runCommand("instagram");
+  return;
+ }
+
+ if(t.includes("tiktok")){
+  runCommand("tiktok");
+  return;
+ }
+
+ if(t.includes("time")){
+  runCommand("time");
+  return;
+ }
+
+ if(t.includes("date")){
+  runCommand("date");
+  return;
+ }
+
+ if(t.includes("dark")){
+  runCommand("dark");
+  return;
+ }
+
+ if(t.includes("light")){
+  runCommand("light");
+  return;
+ }
+
+ if(t.includes("back")){
+  runCommand("back");
+  return;
+ }
+
+ if(t.includes("refresh")){
+  runCommand("refresh");
+  return;
+ }
+
  go("chat");
- askAI(text);
+ askAI();
 }
 
-document.addEventListener("keydown",e=>{
- if((e.ctrlKey||e.metaKey)&&e.key==="Enter"){
-  if(document.activeElement===$("question"))askAI();
-  else if(document.activeElement===$("toolInput"))runTool();
+function setTheme(theme){
+ localStorage.setItem(KEYS.theme,theme);
+
+ if(theme==="light"){
+  document.documentElement.style.setProperty("--bg","#f4f6fb");
+  document.documentElement.style.setProperty("--card","#ffffff");
+  document.documentElement.style.setProperty("--card2","#eef1f8");
+  document.documentElement.style.setProperty("--text","#111827");
+  document.documentElement.style.setProperty("--muted","#5f6b7d");
+  document.body.style.background="#f4f6fb";
+ }else{
+  document.documentElement.style.setProperty("--bg","#070a12");
+  document.documentElement.style.setProperty("--card","#101522");
+  document.documentElement.style.setProperty("--card2","#151b2b");
+  document.documentElement.style.setProperty("--text","#f5f7ff");
+  document.documentElement.style.setProperty("--muted","#9da7bd");
+  document.body.style.background="radial-gradient(circle at top,#172044 0,#070a12 48%)";
  }
-});
 
-function openSettings(){$("settingsModal").classList.add("show")}
-function closeSettings(){$("settingsModal").classList.remove("show")}
-$("settingsModal").addEventListener("click",e=>{
- if(e.target.id==="settingsModal")closeSettings();
-});
+ if($("themeSelect"))
+  $("themeSelect").value=theme;
+}
 
-function clearEverything(){
- if(!confirm("This will delete local chats, saved results, prompts, commands, memory and statistics. Continue?"))return;
+function loadTheme(){
+ setTheme(localStorage.getItem(KEYS.theme)||"dark");
+}
+
+function openSettings(){
+ $("settingsModal").classList.add("show");
+ loadTheme();
+}
+
+function closeSettings(){
+ $("settingsModal").classList.remove("show");
+}
+
+function clearWorkspace(){
+ if(!confirm("Clear all local AzDar AI workspace data?"))return;
+
  Object.values(KEYS).forEach(k=>localStorage.removeItem(k));
- chats=[];saved=[];prompts=[];commands=[];memory=[];
- stats={questions:0,tools:0,voice:0,saved:0};
- loadAll();
- closeSettings();
- alert("Local workspace cleared.");
+
+ chats=[];
+ saved=[];
+ prompts=[];
+ commands=[];
+ memory=[];
+ stats={
+  questions:0,
+  tools:0,
+  voice:0
+ };
+
+ renderAll();
+ updateStats();
+
+ toast("Local workspace cleared.");
+}
+
+function go(id){
+ const el=$(id);
+
+ if(!el)return;
+
+ document.querySelectorAll("main section").forEach(s=>{
+  if(s.id==="toolPanel")return;
+ });
+
+ el.scrollIntoView({
+  behavior:"smooth",
+  block:"start"
+ });
 }
 
 function renderAll(){
- updateStats();
  renderTools();
  renderChats();
  renderSaved();
  renderPrompts();
  renderMemory();
  renderCommands();
- universalSearchRun();
+ updateStats();
+ loadTheme();
 }
 
-loadTheme();
-checkSession();
-</script>
-
-
-<script>
-/*
- AzDar AI V21 extended client functions.
- These functions are intentionally loaded after the main application
- so the core platform remains functional even if an optional feature
- is unavailable in a browser.
-*/
+window.addEventListener("click",e=>{
+ if(e.target===$("settingsModal")){
+  closeSettings();
+ }
+});
 
 function downloadTextFile(filename,text){
  const blob=new Blob([text],{type:"text/plain;charset=utf-8"});
- const a=document.createElement("a");
+  const a=document.createElement("a");
  a.href=URL.createObjectURL(blob);
  a.download=filename;
  document.body.appendChild(a);
@@ -1595,7 +1663,7 @@ function downloadTextFile(filename,text){
 
 function exportChats(){
  if(!chats.length){alert("No chats to export.");return}
- let text="AzDar AI V21 — Conversation Export\n\n";
+ let text="AzDar AI V30 — Conversation Export\n\n";
  chats.forEach((x,i)=>{
   text+=`CHAT ${i+1}\n`;
   text+=`Date: ${x.date}\n`;
@@ -1608,7 +1676,7 @@ function exportChats(){
 
 function exportSaved(){
  if(!saved.length){alert("No saved results to export.");return}
- let text="AzDar AI V21 — Saved Results\n\n";
+ let text="AzDar AI V30 — Saved Results\n\n";
  saved.forEach((x,i)=>{
   text+=`${i+1}. ${x.title}\n`;
   text+=`${x.date||""}\n\n`;
@@ -1692,7 +1760,7 @@ function openCustomTool(id){
  $("toolOutput").textContent="Tool output will appear here...";
  $("toolPanel").classList.remove("hidden");
  $("toolPanel").dataset.custom="true";
-  go("toolPanel");
+ go("toolPanel");
 }
 
 const originalRunTool=runTool;
@@ -1735,11 +1803,11 @@ renderTools=function(){
 function exportWorkspaceJSON(){
  const payload={
   exportedAt:new Date().toISOString(),
-  version:"V21",
+  version:"V30",
   chats,saved,prompts,commands,memory,stats,
   customTools:loadJSON("azdarV21CustomTools",[])
  };
- downloadTextFile("azdar-ai-workspace-v21.json",JSON.stringify(payload,null,2));
+ downloadTextFile("azdar-ai-workspace-v30.json",JSON.stringify(payload,null,2));
 }
 
 function showWorkspaceStatus(){
@@ -1766,7 +1834,7 @@ function workspaceStats(){
 
 function getPlatformSummary(){
  const s=workspaceStats();
- return `AzDar AI V21 Workspace
+ return `AzDar AI V30 Workspace
 AI Questions: ${s.questions}
 Tools Used: ${s.tools}
 Voice Uses: ${s.voice}
@@ -1801,7 +1869,6 @@ function addAdvancedWorkspaceButtons(){
  account.appendChild(box);
  updateWorkspaceSummary();
 }
-
 function updateWorkspaceSummary(){
  const el=$("workspaceSummary");
  if(el)el.textContent=getPlatformSummary();
@@ -1812,6 +1879,7 @@ renderAll=function(){
  oldRenderAll();
  addAdvancedWorkspaceButtons();
  updateWorkspaceSummary();
+ updateV30Dashboard();
 };
 
 const oldSaveStats=saveStats;
@@ -1863,7 +1931,38 @@ setTimeout(()=>{
  }catch(e){}
 },700);
 
-console.log("AzDar AI V21 loaded successfully.");
+function filterTools(query){
+ const q=(query||"").toLowerCase().trim();
+ document.querySelectorAll("#toolsGrid .tool").forEach(card=>{
+  card.style.display=!q||card.textContent.toLowerCase().includes(q)?"":"none";
+ });
+}
+
+const V30_PROMPTS={
+ professional:"Write this professionally and clearly. Keep the tone natural, concise and useful:\n\n",
+ study:"Act as my study tutor. Explain the following in simple steps, then give examples and a short quiz:\n\n",
+ business:"Help me turn this idea into a practical business plan. Include target users, value proposition, costs, revenue options and next steps:\n\n",
+ coding:"Act as a senior developer. Analyze the following code/problem, explain the issue simply, then provide a corrected solution:\n\n",
+ social:"Create 5 natural social-media captions for this idea. Keep them engaging and avoid exaggerated claims:\n\n",
+ summarize:"Summarize the following into key points, important details and action items:\n\n"
+};
+function insertPromptTemplate(type){
+ const text=V30_PROMPTS[type]||"";
+ insertText(text,"question");
+ go("chat");
+}
+function updateV30Dashboard(){
+ const s=workspaceStats();
+ const a=$("dashActivity"); if(a)a.textContent=(s.questions+s.tools+s.voice);
+ const b=$("dashSavedChats"); if(b)b.textContent=(s.saved+s.chats);
+ const m=$("dashMemory"); if(m)m.textContent=s.memories;
+ const p=$("connectionPill");
+ if(p){p.textContent=navigator.onLine?"🟢 Online":"🔴 Offline";p.style.background=navigator.onLine?"#123c30":"#431d28";}
+}
+window.addEventListener("online",updateV30Dashboard);
+window.addEventListener("offline",updateV30Dashboard);
+setInterval(updateV30Dashboard,1500);
+console.log("AzDar AI V30 loaded successfully.");
 </script>
 
 </body>
