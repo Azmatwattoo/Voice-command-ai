@@ -523,8 +523,7 @@ footer{
 </style>
 </head>
 <body>
-
-   <div id="authStatus"></div>
+  <div id="authStatus"></div>
   <input id="authName" placeholder="Your name" class="hidden">
   <br class="hidden" id="nameBreak">
   <input id="authEmail" type="email" placeholder="Email address">
@@ -648,7 +647,7 @@ footer{
 </section>
 
 <section class="section card">
-  <h3>⚡ Smart Website Commands</h3>
+ <h3>⚡ Smart Website Commands</h3>
  <div class="grid3">
   <button class="btn" onclick="processCommand('youtube kholo')">YouTube</button>
   <button class="btn" onclick="processCommand('google kholo')">Google</button>
@@ -757,7 +756,8 @@ footer{
   <div>
    <p><span class="muted">Platform</span><br><b>AzDar AI V21</b></p>
    <p><span class="muted">Creator</span><br><b>Azmat Ali</b></p>
-     </div>
+
+  </div>
  </div>
  <div class="row">
   <button class="btn" onclick="openSettings()">⚙️ Settings</button>
@@ -1218,7 +1218,7 @@ async function runTool(){
  if(!input){status("toolStatus","Enter some content first.","err");return}
  const t=toolData[currentTool];
  status("toolStatus","Running AI tool...","info");
- $("toolOutput").textContent="Working...";
+  $("toolOutput").textContent="Working...";
  try{
   const result=await askRawAI(t.prompt+input);
   $("toolOutput").textContent=result;
@@ -1508,7 +1508,7 @@ function stopVoice(){
 }
 async function voiceAsk(){
  const SR=window.SpeechRecognition||window.webkitSpeechRecognition;
-  if(!SR){
+ if(!SR){
   status("voiceStatus","Speech recognition is not supported.","err");return;
  }
  const r=new SR();
